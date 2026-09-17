@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import {
   Bell,
+  BookOpen,
   CalendarDays,
   ClipboardList,
   Crosshair,
@@ -17,6 +18,7 @@ import { StoreProvider } from "./lib/store"
 import type { View } from "./nav"
 import { BRAND } from "./data/brand"
 import { TodayView } from "./views/Today"
+import { LearnView } from "./views/Learn"
 import { DrillView } from "./views/Drill"
 import { TestsView } from "./views/Tests"
 import { SkillsView } from "./views/Skills"
@@ -33,12 +35,13 @@ type Tab = { id: View; label: string; icon: typeof Zap; short?: string }
 
 const PRIMARY_MOBILE: Tab[] = [
   { id: "today", label: "Today", icon: LayoutGrid },
+  { id: "learn", label: "Learn", icon: BookOpen },
   { id: "drill", label: "Drill", icon: Zap },
   { id: "skills", label: "Skills", icon: Swords },
-  { id: "jeopardy", label: "Jeopardy", icon: Trophy, short: "Board" },
 ]
 
 const MORE_TABS: Tab[] = [
+  { id: "jeopardy", label: "Jeopardy", icon: Trophy, short: "Board" },
   { id: "play", label: "Play / Buzz", icon: Bell },
   { id: "tests", label: "Unit tests", icon: ClipboardList },
   { id: "bench", label: "80-line bench", icon: Crosshair },
@@ -53,19 +56,29 @@ const ALL_TABS: Tab[] = [
 
 const MORE_VIEWS = new Set<View>(MORE_TABS.map((t) => t.id))
 
-function parseHash(): { view: View; chapter?: number; session?: string; testId?: string; playCode?: string } {
+function parseHash(): { view: View; chapter?: number; session?: string; testId?: string; playCode?: string; drillMode?: "call" | "exam"; learnChapter?: number } {
   const raw = window.location.hash.replace(/^#/, "") || "today"
   const [viewRaw, extra] = raw.split("/")
   const view = ALL_TABS.some((t) => t.id === viewRaw) ? (viewRaw as View) : "today"
+  const drillMode = view === "drill" && (extra === "call" || extra === "exam") ? extra : undefined
   const chapter = view === "drill" && extra?.startsWith("c") ? Number(extra.slice(1)) : undefined
+  const learnChapter = view === "learn" && extra?.startsWith("c") ? Number(extra.slice(1)) : undefined
   const session = view === "jeopardy" && extra?.length ? extra : undefined
   const testId = view === "tests" && extra ? extra : undefined
   const playCode = view === "play" && extra ? extra : undefined
-  return { view, chapter: Number.isFinite(chapter) ? chapter : undefined, session, testId, playCode }
+  return {
+    view,
+    chapter: Number.isFinite(chapter) ? chapter : undefined,
+    learnChapter: Number.isFinite(learnChapter) ? learnChapter : undefined,
+    session,
+    testId,
+    playCode,
+    drillMode,
+  }
 }
 
 function Shell() {
-  const [{ view, chapter, session, testId, playCode }, setRoute] = useState(parseHash)
+  const [{ view, chapter, session, testId, playCode, drillMode, learnChapter }, setRoute] = useState(parseHash)
   const [moreOpen, setMoreOpen] = useState(false)
   const { openAccount } = useAuth()
 
@@ -175,7 +188,8 @@ function Shell() {
         className="mx-auto max-w-6xl px-3 py-4 outline-none sm:px-4 sm:py-5 md:pb-10 pb-[calc(5.5rem+env(safe-area-inset-bottom))]"
       >
         {view === "today" && <TodayView go={go} />}
-        {view === "drill" && <DrillView seedChapter={chapter} />}
+        {view === "learn" && <LearnView seedChapter={learnChapter} go={go} />}
+        {view === "drill" && <DrillView seedChapter={chapter} seedMode={drillMode} />}
         {view === "tests" && <TestsView seedId={testId} go={go} />}
         {view === "skills" && <SkillsView />}
         {view === "bench" && <BenchView />}

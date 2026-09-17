@@ -143,11 +143,14 @@ export function TestsView({ seedId, go }: { seedId?: string; go: (view: View, ex
           <p className="mt-3 text-sm text-mute">
             {passed
               ? "Good. The real test still uses their items — do not treat this as a Thursday score."
-              : "Stay in the missed chapters tonight. Drill is for teaching; this mode is for the clock."}
+              : "Stay in the missed chapters tonight. Open Learn for the study pack, then Drill for retrieval."}
           </p>
           <div className="mt-6 flex flex-wrap gap-2">
             <button type="button" className="rounded-xl bg-tape px-4 py-2 font-display text-lg font-bold uppercase text-paper" onClick={() => start(test)}>
               Sit it again
+            </button>
+            <button type="button" className="rounded-xl border border-line px-4 py-2 text-sm" onClick={() => go("learn")}>
+              Learn weak chapters
             </button>
             <button type="button" className="rounded-xl border border-line px-4 py-2 text-sm" onClick={() => go("drill")}>
               Drill missed concepts

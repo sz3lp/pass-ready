@@ -1,11 +1,11 @@
-import { ArrowRight, ClipboardList, Clock, ShieldAlert, Swords, Trophy } from "lucide-react"
+import { ArrowRight, BookOpen, ClipboardList, Clock, ShieldAlert, Swords, Trophy } from "lucide-react"
 import { BLOCKS, CHAPTERS } from "../data/syllabus"
 import { questionsForBlock } from "../data/questions"
 import { SKILLS } from "../data/skills"
 import { classesForBlock } from "../data/brand"
 import { computeBench } from "../lib/bench"
-import { blockMeta, daysUntil, formatLong, nextSkills, nextWritten, pickMission } from "../lib/schedule"
-import { masteryByChapter } from "../lib/storage"
+import { blockMeta, daysUntil, dueTonightCount, dueQueue, formatLong, nextSkills, nextWritten } from "../lib/schedule"
+import { delayedRecall, masteryByChapter, runningAccuracy, sameDay } from "../lib/storage"
 import { useAppStore } from "../lib/store"
 import { useAuth } from "../lib/auth"
 import { Panel, Pill, barColor, pctColor } from "../components/ui"
@@ -24,10 +24,19 @@ export function TodayView({ go }: { go: (v: View, extra?: string) => void }) {
     .sort((a, b) => (a.m?.pct ?? 0) - (b.m?.pct ?? 0) || (a.m?.seen ?? 0) - (b.m?.seen ?? 0))
   const unseen = block.examChapters.filter((n) => !mastery.some((m) => m.chapter === n && m.seen > 0))
   const pool = questionsForBlock(block.id)
-  const mission = pickMission(pool, store.items, 15)
+  const dueN = dueTonightCount(pool, store.items)
+  const mission = dueQueue(pool, store.items, 15, block.examChapters)
   const dExam = written ? daysUntil(written.date) : null
+  const dSkills = skills ? daysUntil(skills.date) : null
   const skillCards = SKILLS.filter((s) => block.skillIds.includes(s.id))
   const classNight = classesForBlock(block.id)[0]
+  const retention = delayedRecall(store)
+  const running = runningAccuracy(store)
+  const callDone = sameDay(store.protocol.lastCallIt)
+  const buddyDone = sameDay(store.protocol.lastBuddySkill)
+  const skillsGate = dSkills !== null && dSkills <= 7
+  const dueEmpty = dueN === 0
+  const primary = dueEmpty ? { view: "drill" as const, extra: "call", label: "Call it · 10" } : { view: "drill" as const, extra: undefined, label: `Due tonight · ${Math.min(15, dueN)}` }
 
   return (
     <div className="grid gap-4">
@@ -40,12 +49,13 @@ export function TodayView({ go }: { go: (v: View, extra?: string) => void }) {
           Qualify together.
         </h1>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-mute">
-          Pass Ready is the SPFR desk for the KCEMS EMT Fall 2026 syllabus. Average <span className="text-ink font-medium">80% across 4 block exams and 5 quizzes</span> or you do not sit the December 10 final.
-          Then 70% on that 150-question test or you do not sit Saturday practicals. The crew either all crosses that line or we failed the assignment.
+          Crew protocol: the app is retrieval, spacing, and generation. A manikin is the hands. Average{" "}
+          <span className="text-ink font-medium">80% across 4 block exams and 5 quizzes</span> or you do not sit the December 10 final.
+          Then 70% on that 150-question test or you do not sit Saturday practicals.
         </p>
         <div className="mt-5 flex flex-wrap gap-2">
           <Pill tone="tape">{block.range}</Pill>
-          <Pill>{CHAPTERS.filter((c) => block.examChapters.includes(c.n)).length} exam chapters</Pill>
+          <Pill>{dueN} due tonight</Pill>
           <Pill>{skillCards.length} tested skill sheets</Pill>
         </div>
         {!user && (
@@ -57,6 +67,72 @@ export function TodayView({ go }: { go: (v: View, extra?: string) => void }) {
           </div>
         )}
       </Panel>
+
+      <Panel>
+        <p className="font-display text-xs font-semibold uppercase tracking-[0.2em] text-mute">Tonight's gate</p>
+        <h2 className="mt-1 font-display text-2xl font-bold uppercase text-ink">{primary.label}</h2>
+        <p className="mt-2 text-sm text-mute">
+          {dueEmpty
+            ? callDone
+              ? "Due queue is empty and you already called it today. Keep the streak — another Call it set still pays."
+              : "Nothing is overdue. Do not tap letters. Call the next 10 with the choices hidden."
+            : `${mission.length} overdue or unseen items from ${block.label}. Weak cards beat new ones.`}
+        </p>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          <div>
+            <p className="text-xs uppercase tracking-widest text-mute">Running</p>
+            <p className={`font-display text-3xl font-extrabold ${pctColor(running)}`}>{running == null ? "—" : `${running}%`}</p>
+          </div>
+          <div>
+            <p className="text-xs uppercase tracking-widest text-mute">Retention (≥3 days)</p>
+            <p className={`font-display text-3xl font-extrabold ${pctColor(retention)}`}>{retention == null ? "—" : `${retention}%`}</p>
+          </div>
+        </div>
+        <p className="mt-2 text-xs text-mute">Same-night 86% is fluency. Retention is whether you still know it.</p>
+        <button
+          type="button"
+          onClick={() => go(primary.view, primary.extra)}
+          className="mt-4 rounded-xl bg-tape px-4 py-2 font-display text-lg font-bold uppercase text-paper"
+        >
+          {primary.label} <ArrowRight className="ml-1 inline size-4" />
+        </button>
+      </Panel>
+
+      <button type="button" onClick={() => go("learn")} className="text-left">
+        <Panel className="hover:border-tape/50">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="font-display text-xs font-semibold uppercase tracking-[0.2em] text-mute">Study desk</p>
+              <h2 className="mt-1 font-display text-3xl font-bold uppercase text-ink">Learn · {block.label}</h2>
+              <p className="mt-1 text-sm text-mute">
+                Primary packs (must-knows, traps, terms) plus a weak-spot queue for chapters under 80%.
+                {unseen.length ? ` ${unseen.length} chapters in this block still unread.` : ""}
+              </p>
+            </div>
+            <BookOpen className="size-5 shrink-0 text-tape" />
+          </div>
+          <p className="mt-4 inline-flex items-center gap-1 text-sm text-tape">
+            Open Learn <ArrowRight className="size-4" />
+          </p>
+        </Panel>
+      </button>
+
+      {skillsGate && (
+        <button type="button" onClick={() => go("skills")} className="text-left">
+          <Panel className="border-tape/60 hover:border-tape">
+            <p className="font-display text-xs font-semibold uppercase tracking-[0.2em] text-tape">Skills night in {dSkills} day{dSkills === 1 ? "" : "s"}</p>
+            <h2 className="mt-1 font-display text-2xl font-bold uppercase text-ink">
+              {buddyDone ? "Buddy skill logged today" : "Buddy skill required"}
+            </h2>
+            <p className="mt-2 text-sm text-mute">
+              Recite auto-fails, keep buddy on, run the timer. Self-check with buddy off cannot pass. The phone is the script — a manikin is still the hands.
+            </p>
+            <p className="mt-4 inline-flex items-center gap-1 text-sm text-tape">
+              Run a station <ArrowRight className="size-4" />
+            </p>
+          </Panel>
+        </button>
+      )}
 
       <div className="grid gap-4 sm:grid-cols-2">
         <button type="button" onClick={() => go("drill")} className="text-left">
@@ -76,13 +152,8 @@ export function TodayView({ go }: { go: (v: View, extra?: string) => void }) {
               </div>
               <Clock className="size-5 text-tape" />
             </div>
-            {dExam !== null && dExam <= 10 && (
-              <p className="mt-4 text-sm text-ink">
-                {mission.length} high-yield items queued from {block.label}. Weak or unseen chapters go first.
-              </p>
-            )}
             <p className="mt-4 inline-flex items-center gap-1 text-sm text-tape">
-              Start tonight's 15 <ArrowRight className="size-4" />
+              Open drill <ArrowRight className="size-4" />
             </p>
           </Panel>
         </button>
@@ -138,7 +209,7 @@ export function TodayView({ go }: { go: (v: View, extra?: string) => void }) {
               <p className="font-display text-xs font-semibold uppercase tracking-[0.2em] text-mute">Unit test</p>
               <h2 className="mt-1 font-display text-3xl font-bold uppercase text-ink">{block.label} practice written</h2>
               <p className="mt-1 text-sm text-mute">
-                Timed, no answers until you submit. 80% line. Quiz for this block is on the same page.
+                Timed, exam-hard items first, no answers until you submit. 80% line.
               </p>
             </div>
             <ClipboardList className="size-5 shrink-0 text-tape" />
@@ -186,7 +257,7 @@ export function TodayView({ go }: { go: (v: View, extra?: string) => void }) {
               <button
                 key={n}
                 type="button"
-                onClick={() => go("drill", `c${n}`)}
+                onClick={() => go("learn", `c${n}`)}
                 className="flex items-center justify-between rounded-xl border border-line bg-raised px-3 py-2 text-left hover:border-tape/40"
               >
                 <span className="text-sm">
@@ -202,7 +273,7 @@ export function TodayView({ go }: { go: (v: View, extra?: string) => void }) {
         {weak[0] && (
           <p className="mt-3 flex items-start gap-2 text-sm text-warn">
             <ShieldAlert className="mt-0.5 size-4 shrink-0" />
-            Start with Ch. {weak[0].n} — {CHAPTERS.find((c) => c.n === weak[0].n)?.title}. Crews fail Block I on shock, airway numbers, and assessment order — not on trivia.
+            Start Learn with Ch. {weak[0].n} — {CHAPTERS.find((c) => c.n === weak[0].n)?.title}. Then drill. Crews fail Block I on shock, airway numbers, and assessment order — not on trivia.
           </p>
         )}
       </Panel>
