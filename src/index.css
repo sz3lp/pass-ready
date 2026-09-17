@@ -13,7 +13,9 @@
 @source "./views/Jeopardy.tsx";
 @source "./views/Tests.tsx";
 @source "./data/tests.ts";
+@source "./data/videos.ts";
 @source "./lib/practice.ts";
+@source "./components/VideoLinks.tsx";
 
 @theme {
   --font-display: "Barlow Condensed", sans-serif;

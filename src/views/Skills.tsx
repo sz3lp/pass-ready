@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from "react"
 import { BLOCKS } from "../data/syllabus"
 import { SKILLS, type Skill } from "../data/skills"
+import { MIRAMAR_HUB, videosForSkill } from "../data/videos"
 import { blockMeta } from "../lib/schedule"
 import { recordSkill } from "../lib/storage"
 import { useAppStore } from "../lib/store"
 import { Panel, Pill } from "../components/ui"
+import { VideoLinks } from "../components/VideoLinks"
 
 export function SkillsView() {
   const { store, setStore } = useAppStore()
@@ -85,6 +87,17 @@ export function SkillsView() {
             </p>
           )}
         </Panel>
+        {videosForSkill(active.id).length > 0 && (
+          <Panel>
+            <p className="font-display text-xs uppercase tracking-widest text-mute">Watch before you run it</p>
+            <p className="mt-1 text-sm text-mute">
+              Miramar demos are San Diego skill-sheet style. Paramedic Coach is cognitive overview. King County / WA sheets still win on test day.
+            </p>
+            <div className="mt-3">
+              <VideoLinks links={videosForSkill(active.id)} />
+            </div>
+          </Panel>
+        )}
         <ol className="grid gap-2">
           {active.steps.map((step, idx) => (
             <li key={idx}>
@@ -145,6 +158,12 @@ export function SkillsView() {
         <p className="mt-2 text-sm text-mute">
           Study checklists built from public NREMT / WA EMT station logic plus King County extras (i-gel, Check & Inject, nasal Narcan). Official packet sheets still win on test day. Critical lines in red are the ones that fail you even if the rest was pretty.
         </p>
+        <div className="mt-3">
+          <VideoLinks
+            links={[MIRAMAR_HUB]}
+            note="Recommended channels for demos and topic overviews: @Sandiegomiramaremtprogram6893 and @TheParamedicCoach. Open a sheet for the matching links."
+          />
+        </div>
         <div className="mt-4 flex flex-wrap gap-2">
           <button type="button" onClick={() => setFilter("now")} className={`rounded-full border px-3 py-1 text-xs ${filter === "now" ? "border-tape text-tape" : "border-line text-mute"}`}>
             This block
@@ -171,7 +190,10 @@ export function SkillsView() {
                     {s.sheet} · {typeof s.block === "number" ? `Block ${s.block}` : "Final"}
                   </p>
                   <h2 className="font-display text-2xl font-bold uppercase">{s.name}</h2>
-                  <p className="mt-1 text-sm text-mute">{s.steps.filter((x) => x.critical).length} criticals · {s.minutes} min</p>
+                  <p className="mt-1 text-sm text-mute">
+                    {s.steps.filter((x) => x.critical).length} criticals · {s.minutes} min
+                    {videosForSkill(s.id).length ? ` · ${videosForSkill(s.id).length} videos` : ""}
+                  </p>
                 </div>
                 {last && <Pill tone={last.passed ? "go" : "stop"}>{last.passed ? "last: pass" : "last: fail"}</Pill>}
               </div>

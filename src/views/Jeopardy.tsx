@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from "react"
 import { ArrowLeft } from "lucide-react"
 import { BRAND, classById, classesForBlock, type ClassSession } from "../data/brand"
+import { videosForTopic } from "../data/videos"
 import { currentBlock } from "../lib/schedule"
 import { buildBoard, clueOf, nudgeOf, responseOf, shuffledChoices, type CategoryCol } from "../lib/jeopardy"
 import { Panel } from "../components/ui"
+import { VideoLinks } from "../components/VideoLinks"
 import type { View } from "../nav"
 
 const BLOCK_LABEL: Record<ClassSession["block"], string> = {
@@ -43,17 +45,31 @@ function Lobby({ go }: { go: (view: View, extra?: string) => void }) {
             {block === live ? <span className="ml-2 text-sm font-semibold text-medic">now</span> : null}
           </h2>
           <div className="grid gap-2 sm:grid-cols-2">
-            {classesForBlock(block).map((c) => (
-              <button key={c.id} type="button" onClick={() => go("jeopardy", c.id)} className="text-left">
-                <Panel className="h-full hover:border-tape/50">
-                  <p className="font-display text-xs uppercase tracking-widest text-tape">{c.subtitle}</p>
-                  <h3 className="font-display text-2xl font-bold uppercase leading-tight">{c.title}</h3>
-                  <p className="mt-1 text-xs text-mute">
-                    {c.categories.length === 1 ? "1 category" : `${c.categories.length} categories`}
-                  </p>
-                </Panel>
-              </button>
-            ))}
+            {classesForBlock(block).map((c) => {
+              const vids = videosForTopic(c.id)
+              return (
+                <div key={c.id} className="grid gap-2">
+                  <button type="button" onClick={() => go("jeopardy", c.id)} className="text-left">
+                    <Panel className="h-full hover:border-tape/50">
+                      <p className="font-display text-xs uppercase tracking-widest text-tape">{c.subtitle}</p>
+                      <h3 className="font-display text-2xl font-bold uppercase leading-tight">{c.title}</h3>
+                      <p className="mt-1 text-xs text-mute">
+                        {c.categories.length === 1 ? "1 category" : `${c.categories.length} categories`}
+                        {vids.length ? ` · ${vids.length} topic videos` : ""}
+                      </p>
+                    </Panel>
+                  </button>
+                  {vids.length > 0 && (
+                    <Panel>
+                      <p className="font-display text-xs uppercase tracking-widest text-mute">Topic overview</p>
+                      <div className="mt-2">
+                        <VideoLinks links={vids} />
+                      </div>
+                    </Panel>
+                  )}
+                </div>
+              )
+            })}
           </div>
         </div>
       ))}
