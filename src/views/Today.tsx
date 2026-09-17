@@ -7,11 +7,13 @@ import { computeBench } from "../lib/bench"
 import { blockMeta, daysUntil, formatLong, nextSkills, nextWritten, pickMission } from "../lib/schedule"
 import { masteryByChapter } from "../lib/storage"
 import { useAppStore } from "../lib/store"
+import { useAuth } from "../lib/auth"
 import { Panel, Pill, barColor, pctColor } from "../components/ui"
 import type { View } from "../nav"
 
 export function TodayView({ go }: { go: (v: View, extra?: string) => void }) {
   const { store } = useAppStore()
+  const { user, openAccount } = useAuth()
   const block = blockMeta()
   const written = nextWritten()
   const skills = nextSkills()
@@ -46,6 +48,14 @@ export function TodayView({ go }: { go: (v: View, extra?: string) => void }) {
           <Pill>{CHAPTERS.filter((c) => block.examChapters.includes(c.n)).length} exam chapters</Pill>
           <Pill>{skillCards.length} tested skill sheets</Pill>
         </div>
+        {!user && (
+          <div className="mt-4 flex flex-wrap items-center gap-2">
+            <button type="button" onClick={() => openAccount("signup")} className="rounded-full bg-tape px-4 py-2 text-sm font-bold uppercase text-paper">
+              Create free account
+            </button>
+            <p className="text-xs text-mute">Keeps drill and scores on every phone. Guests still work on this device.</p>
+          </div>
+        )}
       </Panel>
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -110,7 +120,7 @@ export function TodayView({ go }: { go: (v: View, extra?: string) => void }) {
               <p className="font-display text-xs font-semibold uppercase tracking-[0.2em] text-mute">Class night</p>
               <h2 className="mt-1 font-display text-3xl font-bold uppercase text-ink">Jeopardy · {block.label}</h2>
               <p className="mt-1 text-sm text-mute">
-                {classNight ? `Start with “${classNight.title}” or pick any lecture from the board.` : "Open the class boards."} Two named teams. Clue up, buzz, answer out loud. No multiple choice.
+                {classNight ? `Start with “${classNight.title}” or pick any lecture from the board.` : "Open the class boards."} Host reads on the computer. Phones buzz from Play.
               </p>
             </div>
             <Trophy className="size-5 shrink-0 text-tape" />

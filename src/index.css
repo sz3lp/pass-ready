@@ -4,6 +4,10 @@
 @source "./nav.ts";
 @source "./components/ui.tsx";
 @source "./lib/store.tsx";
+@source "./lib/auth.tsx";
+@source "./lib/supabase.ts";
+@source "./lib/sync.ts";
+@source "./lib/live.ts";
 @source "./views/Today.tsx";
 @source "./views/Drill.tsx";
 @source "./views/Skills.tsx";
@@ -12,10 +16,12 @@
 @source "./views/Calendar.tsx";
 @source "./views/Jeopardy.tsx";
 @source "./views/Tests.tsx";
+@source "./views/Play.tsx";
 @source "./data/tests.ts";
 @source "./data/videos.ts";
 @source "./lib/practice.ts";
 @source "./components/VideoLinks.tsx";
+@source "./components/Account.tsx";
 
 @theme {
   --font-display: "Barlow Condensed", sans-serif;

@@ -30,6 +30,8 @@ jobs:
       - run: npm run build
         env:
           GITHUB_PAGES: "1"
+          VITE_SUPABASE_URL: https://vobpqyoiuatorqplfuqm.supabase.co
+          VITE_SUPABASE_ANON_KEY: sb_publishable_vy7hPFkIe60KtozjnYMS4g_QiZ3p_Gg
       - run: cp dist/index.html dist/404.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

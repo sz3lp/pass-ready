@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
-import { CalendarDays, ClipboardList, Crosshair, LayoutGrid, Swords, Trophy, Users, Zap } from "lucide-react"
+import { Bell, CalendarDays, ClipboardList, Crosshair, LayoutGrid, Swords, Trophy, Users, Zap } from "lucide-react"
+import { AuthProvider } from "./lib/auth"
 import { StoreProvider } from "./lib/store"
 import type { View } from "./nav"
 import { BRAND } from "./data/brand"
@@ -11,12 +12,15 @@ import { BenchView } from "./views/Bench"
 import { CrewView } from "./views/Crew"
 import { CalendarView } from "./views/Calendar"
 import { JeopardyView } from "./views/Jeopardy"
+import { PlayView } from "./views/Play"
+import { AccountBar } from "./components/Account"
 
 const asset = (file: string) => `${import.meta.env.BASE_URL}${file}`
 
 const TABS: { id: View; label: string; icon: typeof Zap }[] = [
   { id: "today", label: "Today", icon: LayoutGrid },
   { id: "jeopardy", label: "Jeopardy", icon: Trophy },
+  { id: "play", label: "Play", icon: Bell },
   { id: "drill", label: "Drill", icon: Zap },
   { id: "tests", label: "Tests", icon: ClipboardList },
   { id: "skills", label: "Skills", icon: Swords },
@@ -25,18 +29,19 @@ const TABS: { id: View; label: string; icon: typeof Zap }[] = [
   { id: "calendar", label: "Board", icon: CalendarDays },
 ]
 
-function parseHash(): { view: View; chapter?: number; session?: string; testId?: string } {
+function parseHash(): { view: View; chapter?: number; session?: string; testId?: string; playCode?: string } {
   const raw = window.location.hash.replace(/^#/, "") || "today"
   const [viewRaw, extra] = raw.split("/")
   const view = TABS.some((t) => t.id === viewRaw) ? (viewRaw as View) : "today"
   const chapter = view === "drill" && extra?.startsWith("c") ? Number(extra.slice(1)) : undefined
   const session = view === "jeopardy" && extra ? extra : undefined
   const testId = view === "tests" && extra ? extra : undefined
-  return { view, chapter: Number.isFinite(chapter) ? chapter : undefined, session, testId }
+  const playCode = view === "play" && extra ? extra : undefined
+  return { view, chapter: Number.isFinite(chapter) ? chapter : undefined, session, testId, playCode }
 }
 
 function Shell() {
-  const [{ view, chapter, session, testId }, setRoute] = useState(parseHash)
+  const [{ view, chapter, session, testId, playCode }, setRoute] = useState(parseHash)
 
   useEffect(() => {
     const onHash = () => setRoute(parseHash())
@@ -64,7 +69,10 @@ function Shell() {
               </p>
             </span>
           </button>
-          <img src={asset("medic-one.png")} alt="King County Medic One" className="h-14 w-auto shrink-0 object-contain" />
+          <div className="flex shrink-0 items-center gap-3">
+            <AccountBar />
+            <img src={asset("medic-one.png")} alt="King County Medic One" className="h-14 w-auto shrink-0 object-contain" />
+          </div>
         </div>
         <nav className="mx-auto flex max-w-5xl gap-1 overflow-x-auto px-3 pb-2">
           {TABS.map((t) => {
@@ -95,6 +103,7 @@ function Shell() {
         {view === "crew" && <CrewView />}
         {view === "calendar" && <CalendarView />}
         {view === "jeopardy" && <JeopardyView sessionId={session} go={go} />}
+        {view === "play" && <PlayView seedCode={playCode} />}
       </main>
     </div>
   )
@@ -102,8 +111,10 @@ function Shell() {
 
 export default function App() {
   return (
-    <StoreProvider>
-      <Shell />
-    </StoreProvider>
+    <AuthProvider>
+      <StoreProvider>
+        <Shell />
+      </StoreProvider>
+    </AuthProvider>
   )
 }

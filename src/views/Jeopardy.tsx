@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { ArrowLeft } from "lucide-react"
 import { BRAND, classById, classesForBlock, type ClassSession } from "../data/brand"
 import { videosForTopic } from "../data/videos"
@@ -6,6 +6,19 @@ import { currentBlock } from "../lib/schedule"
 import { buildBoard, clueOf, nudgeOf, responseOf, shuffledChoices, type CategoryCol } from "../lib/jeopardy"
 import { Panel } from "../components/ui"
 import { VideoLinks } from "../components/VideoLinks"
+import { useAuth } from "../lib/auth"
+import { CREW_JOIN_CODE } from "../lib/supabase"
+import {
+  asTeam,
+  buzzIn,
+  cellKey,
+  createLiveGame,
+  fetchPlayers,
+  patchGame,
+  snapshotBoard,
+  subscribeGame,
+  type PlayerRow,
+} from "../lib/live"
 import type { View } from "../nav"
 
 const BLOCK_LABEL: Record<ClassSession["block"], string> = {
@@ -22,7 +35,7 @@ type Phase = "clue" | "answering" | "steal"
 export function JeopardyView({ sessionId, go }: { sessionId?: string; go: (view: View, extra?: string) => void }) {
   const session = sessionId ? classById(sessionId) : undefined
   if (!session) return <Lobby go={go} />
-  return <Board key={session.id} session={session} onBack={() => go("jeopardy")} />
+  return <Board key={session.id} session={session} onBack={() => go("jeopardy")} go={go} />
 }
 
 function Lobby({ go }: { go: (view: View, extra?: string) => void }) {
@@ -35,7 +48,7 @@ function Lobby({ go }: { go: (view: View, extra?: string) => void }) {
         <p className="mt-1 font-display text-xs uppercase tracking-[0.22em] text-tape">{BRAND.deptShort} class night</p>
         <h1 className="font-display text-4xl font-extrabold uppercase text-ink">Jeopardy</h1>
         <p className="mt-2 max-w-2xl text-sm text-mute">
-          Real board, two teams. A clue goes up. First team to buzz answers out loud. If they’re stuck, the host can burn a nudge, then a multiple-choice hint. Wrong answers lose the value and the other team can steal.
+          Host on the computer. Teammates open <button type="button" className="text-tape" onClick={() => go("play")}>Play</button> on their phones, enter the live code, pick Red or Blue, and buzz. Hints stay on this screen — phones only get a BUZZ button.
         </p>
       </Panel>
       {groups.map((block) => (
@@ -77,7 +90,14 @@ function Lobby({ go }: { go: (view: View, extra?: string) => void }) {
   )
 }
 
-function Board({ session, onBack }: { session: ClassSession; onBack: () => void }) {
+function markTaken(cols: CategoryCol[], open: { ci: number; ri: number }) {
+  return cols.map((cat, ci) =>
+    ci !== open.ci ? cat : { ...cat, cells: cat.cells.map((c, ri) => (ri === open.ri ? { ...c, taken: true } : c)) },
+  )
+}
+
+function Board({ session, onBack, go }: { session: ClassSession; onBack: () => void; go: (view: View, extra?: string) => void }) {
+  const { user, profile, openAccount, joinCrew } = useAuth()
   const [deal, setDeal] = useState(1)
   const initial = useMemo(() => buildBoard(session, deal), [session, deal])
   const [cols, setCols] = useState<CategoryCol[]>(initial)
@@ -89,12 +109,55 @@ function Board({ session, onBack }: { session: ClassSession; onBack: () => void 
   const [firstBuzz, setFirstBuzz] = useState<TeamId | null>(null)
   const [showAnswer, setShowAnswer] = useState(false)
   const [hint, setHint] = useState(0)
+  const [live, setLive] = useState<{ id: string; code: string } | null>(null)
+  const [players, setPlayers] = useState<PlayerRow[]>([])
+  const [buzzerName, setBuzzerName] = useState<string | null>(null)
+  const [liveError, setLiveError] = useState<string | null>(null)
+  const [starting, setStarting] = useState(false)
+
+  const liveRef = useRef(live)
+  liveRef.current = live
+  const openRef = useRef(open)
+  openRef.current = open
 
   const current = open ? cols[open.ci]?.cells[open.ri] : null
   const choices = useMemo(() => (current ? shuffledChoices(current.q) : []), [current])
   const stealTeam: TeamId | null = firstBuzz === null ? null : firstBuzz === 0 ? 1 : 0
   const colsClass =
     cols.length >= 5 ? "grid-cols-2 lg:grid-cols-5" : cols.length === 4 ? "grid-cols-2 lg:grid-cols-4" : cols.length === 3 ? "grid-cols-3" : "grid-cols-2"
+
+  useEffect(() => {
+    if (!live) return
+    const load = () => {
+      void fetchPlayers(live.id).then(setPlayers)
+    }
+    load()
+    const stop = subscribeGame(
+      live.id,
+      (row) => {
+        setNames(Array.isArray(row.team_names) ? [row.team_names[0] ?? "Red", row.team_names[1] ?? "Blue"] : ["Red", "Blue"])
+        if (Array.isArray(row.scores)) setScores([Number(row.scores[0] ?? 0), Number(row.scores[1] ?? 0)])
+        if (row.phase === "clue" || row.phase === "answering" || row.phase === "steal") setPhase(row.phase)
+        setActive(asTeam(row.active_team))
+        setFirstBuzz(asTeam(row.first_buzz))
+        setShowAnswer(Boolean(row.show_answer))
+        setHint(row.hint ?? 0)
+        setBuzzerName(row.buzzer_name)
+        if (row.open_cell && typeof row.open_cell.ci === "number") setOpen({ ci: row.open_cell.ci, ri: row.open_cell.ri })
+        else if (row.phase === "board" && !row.show_answer) setOpen(null)
+      },
+      load,
+    )
+    return stop
+  }, [live?.id])
+
+  useEffect(() => {
+    if (!live) return
+    const t = window.setTimeout(() => {
+      void patchGame(live.id, { team_names: names })
+    }, 500)
+    return () => window.clearTimeout(t)
+  }, [names, live?.id])
 
   const closeClue = () => {
     setOpen(null)
@@ -103,27 +166,28 @@ function Board({ session, onBack }: { session: ClassSession; onBack: () => void 
     setFirstBuzz(null)
     setShowAnswer(false)
     setHint(0)
-  }
-
-  const takeCell = () => {
-    if (!open) return
-    setCols((prev) =>
-      prev.map((cat, ci) =>
-        ci !== open.ci ? cat : { ...cat, cells: cat.cells.map((c, ri) => (ri === open.ri ? { ...c, taken: true } : c)) },
-      ),
-    )
-  }
-
-  const addScore = (team: TeamId, delta: number) => {
-    setScores((s) => {
-      const next = [...s]
-      next[team] += delta
-      return next
-    })
+    setBuzzerName(null)
+    if (live) {
+      void patchGame(live.id, {
+        open_cell: null,
+        phase: "board",
+        active_team: null,
+        first_buzz: null,
+        show_answer: false,
+        hint: 0,
+        buzzer_name: null,
+        buzzer_id: null,
+      })
+    }
   }
 
   const buzz = (team: TeamId) => {
     if (!current || showAnswer) return
+    const game = liveRef.current
+    const cell = openRef.current
+    if (game && cell) {
+      void buzzIn(game.id, cellKey(cell.ci, cell.ri), team)
+    }
     if (phase === "clue") {
       setActive(team)
       setFirstBuzz(team)
@@ -137,33 +201,105 @@ function Board({ session, onBack }: { session: ClassSession; onBack: () => void 
   }
 
   const judge = (correct: boolean) => {
-    if (!current || active === null) return
-    addScore(active, correct ? current.value : -current.value)
+    if (!current || active === null || !open) return
+    const nextScores = [...scores]
+    nextScores[active] += correct ? current.value : -current.value
+    setScores(nextScores)
     if (correct) {
-      takeCell()
+      const nextCols = markTaken(cols, open)
+      setCols(nextCols)
       setShowAnswer(true)
+      if (live) void patchGame(live.id, { scores: nextScores, board: snapshotBoard(nextCols), show_answer: true })
       return
     }
     if (phase === "answering" && firstBuzz === active && stealTeam !== null) {
       setPhase("steal")
       setActive(null)
+      if (live) void patchGame(live.id, { scores: nextScores, phase: "steal", active_team: null })
       return
     }
-    takeCell()
+    const nextCols = markTaken(cols, open)
+    setCols(nextCols)
     setShowAnswer(true)
+    if (live) void patchGame(live.id, { scores: nextScores, board: snapshotBoard(nextCols), show_answer: true, phase: "answering" })
   }
 
   const passSteal = () => {
-    takeCell()
+    if (!open) return
+    const nextCols = markTaken(cols, open)
+    setCols(nextCols)
     setShowAnswer(true)
+    if (live) void patchGame(live.id, { board: snapshotBoard(nextCols), show_answer: true })
   }
 
   const redeal = () => {
     const next = deal + 1
+    const nextCols = buildBoard(session, next)
     setDeal(next)
-    setCols(buildBoard(session, next))
+    setCols(nextCols)
     setScores([0, 0])
     closeClue()
+    if (live) {
+      void patchGame(live.id, {
+        deal: next,
+        board: snapshotBoard(nextCols),
+        scores: [0, 0],
+        open_cell: null,
+        phase: "board",
+        show_answer: false,
+      })
+    }
+  }
+
+  const startLive = async () => {
+    setLiveError(null)
+    if (!user) {
+      openAccount("signup")
+      return
+    }
+    if (!profile?.crew_id) {
+      const joined = await joinCrew(CREW_JOIN_CODE)
+      if (!joined.ok) {
+        setLiveError(joined.error ?? "Join the crew with SPFR26 first.")
+        return
+      }
+    }
+    setStarting(true)
+    try {
+      const row = await createLiveGame({
+        classId: session.id,
+        board: snapshotBoard(cols),
+        names,
+        scores,
+        deal,
+      })
+      setLive({ id: row.id, code: row.code })
+    } catch (e) {
+      setLiveError(e instanceof Error ? e.message : "Could not start a live game.")
+    }
+    setStarting(false)
+  }
+
+  const openClue = (ci: number, ri: number) => {
+    setOpen({ ci, ri })
+    setPhase("clue")
+    setActive(null)
+    setFirstBuzz(null)
+    setShowAnswer(false)
+    setHint(0)
+    setBuzzerName(null)
+    if (live) {
+      void patchGame(live.id, {
+        open_cell: { ci, ri, key: cellKey(ci, ri) },
+        phase: "clue",
+        active_team: null,
+        first_buzz: null,
+        hint: 0,
+        show_answer: false,
+        buzzer_name: null,
+        buzzer_id: null,
+      })
+    }
   }
 
   useEffect(() => {
@@ -176,16 +312,41 @@ function Board({ session, onBack }: { session: ClassSession; onBack: () => void 
     return () => window.removeEventListener("keydown", onKey)
   })
 
+  const reds = players.filter((p) => p.team === 0)
+  const blues = players.filter((p) => p.team === 1)
+
   return (
     <div className="grid gap-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <button type="button" onClick={onBack} className="inline-flex items-center gap-1 text-sm text-mute">
           <ArrowLeft className="size-4" /> All classes
         </button>
-        <button type="button" onClick={redeal} className="text-sm text-tape">
-          New deal
-        </button>
+        <div className="flex flex-wrap items-center gap-3">
+          {!live && (
+            <button type="button" onClick={() => void startLive()} disabled={starting} className="text-sm font-semibold text-tape">
+              {starting ? "Starting…" : "Start live game"}
+            </button>
+          )}
+          <button type="button" onClick={redeal} className="text-sm text-tape">
+            New deal
+          </button>
+        </div>
       </div>
+      {liveError && <p className="text-sm text-stop">{liveError}</p>}
+
+      {live && (
+        <Panel className="border-tape/50">
+          <p className="font-display text-xs uppercase tracking-[0.2em] text-tape">Phones join at Play</p>
+          <p className="font-display text-6xl font-extrabold tracking-[0.18em] text-ink">{live.code}</p>
+          <p className="mt-1 text-sm text-mute">
+            Teammates open <button type="button" className="text-tape" onClick={() => go("play", live.code)}>Play</button> and enter that code, then pick Red or Blue.
+          </p>
+          <p className="mt-2 text-xs text-mute">
+            Red {reds.length ? reds.map((p) => p.display_name || "player").join(", ") : "empty"} · Blue{" "}
+            {blues.length ? blues.map((p) => p.display_name || "player").join(", ") : "empty"}
+          </p>
+        </Panel>
+      )}
 
       <div className="grid gap-3 sm:grid-cols-2">
         {([0, 1] as const).map((id) => (
@@ -202,7 +363,7 @@ function Board({ session, onBack }: { session: ClassSession; onBack: () => void 
               className={`w-full bg-transparent font-display text-sm font-semibold uppercase tracking-[0.2em] outline-none ${id === 0 ? "text-medic" : "text-tape"}`}
             />
             <p className={`font-display text-5xl font-extrabold ${id === 0 ? "text-medic" : "text-tape"}`}>{scores[id]}</p>
-            <p className="text-xs text-mute">Buzz with {id === 0 ? "1 / A" : "2 / B"}</p>
+            <p className="text-xs text-mute">Buzz with {id === 0 ? "1 / A" : "2 / B"}{live ? " or phones" : ""}</p>
           </Panel>
         ))}
       </div>
@@ -211,6 +372,14 @@ function Board({ session, onBack }: { session: ClassSession; onBack: () => void 
         <p className="font-display text-xs uppercase tracking-[0.2em] text-tape">{session.subtitle}</p>
         <h1 className="font-display text-3xl font-extrabold uppercase text-ink">{session.title}</h1>
         <p className="mt-1 text-sm text-mute">Pick a clue. First buzz answers out loud. Host can give a nudge, then a multiple-choice hint if they’re still stuck.</p>
+        {videosForTopic(session.id).length > 0 && (
+          <div className="mt-4 border-t border-line pt-4">
+            <p className="font-display text-xs uppercase tracking-widest text-mute">Watch before class</p>
+            <div className="mt-2">
+              <VideoLinks links={videosForTopic(session.id)} />
+            </div>
+          </div>
+        )}
       </Panel>
 
       <div className={`grid gap-2 ${colsClass}`}>
@@ -224,14 +393,7 @@ function Board({ session, onBack }: { session: ClassSession; onBack: () => void 
                 key={`${cat.name}-${c.value}-${c.q.id}`}
                 type="button"
                 disabled={c.taken}
-                onClick={() => {
-                  setOpen({ ci, ri })
-                  setPhase("clue")
-                  setActive(null)
-                  setFirstBuzz(null)
-                  setShowAnswer(false)
-                  setHint(0)
-                }}
+                onClick={() => openClue(ci, ri)}
                 className={`rounded-xl border py-4 font-display text-2xl font-extrabold ${
                   c.taken ? "border-line bg-raised text-line" : "border-tape/30 bg-panel text-tape hover:bg-raised"
                 }`}
@@ -254,13 +416,27 @@ function Board({ session, onBack }: { session: ClassSession; onBack: () => void 
             {!showAnswer && (
               <div className="mt-4 grid gap-2">
                 {hint === 0 && (
-                  <button type="button" onClick={() => setHint(1)} className="w-fit rounded-full border border-line px-3 py-1 text-xs text-mute">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setHint(1)
+                      if (live) void patchGame(live.id, { hint: 1 })
+                    }}
+                    className="w-fit rounded-full border border-line px-3 py-1 text-xs text-mute"
+                  >
                     Hint 1 · slight nudge
                   </button>
                 )}
                 {hint >= 1 && <p className="text-sm text-mute">{nudgeOf(current.q)}</p>}
                 {hint === 1 && (
-                  <button type="button" onClick={() => setHint(2)} className="w-fit rounded-full border border-line px-3 py-1 text-xs text-mute">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setHint(2)
+                      if (live) void patchGame(live.id, { hint: 2 })
+                    }}
+                    className="w-fit rounded-full border border-line px-3 py-1 text-xs text-mute"
+                  >
                     Hint 2 · multiple choice
                   </button>
                 )}
@@ -291,6 +467,7 @@ function Board({ session, onBack }: { session: ClassSession; onBack: () => void 
             {phase === "answering" && active !== null && !showAnswer && (
               <div className="mt-6 grid gap-3">
                 <p className={`font-display text-2xl font-bold uppercase ${active === 0 ? "text-medic" : "text-tape"}`}>
+                  {buzzerName ? `${buzzerName} · ` : ""}
                   {names[active]} is answering
                 </p>
                 <div className="flex flex-wrap gap-2">

@@ -1,1 +1,1 @@
-export type View = "today" | "drill" | "tests" | "skills" | "bench" | "crew" | "calendar" | "jeopardy"
+export type View = "today" | "drill" | "tests" | "skills" | "bench" | "crew" | "calendar" | "jeopardy" | "play"
