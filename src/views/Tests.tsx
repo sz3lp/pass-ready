@@ -342,7 +342,7 @@ export function TestsView({ seedId, go }: { seedId?: string; go: (view: "tests",
           </div>
           <p className="mt-4 text-sm leading-relaxed text-mute">{test.gate}</p>
           <p className="mt-2 text-sm leading-relaxed text-mute">
-            Exam conditions: no why until you submit, countdown clock, flag and jump around. Original items mapped to this syllabus — not the KCEMS bank.
+            Exam conditions: no why until you submit, countdown clock, flag and jump around. Items are vignette-heavy with near-miss distractors — built to feel like Thursday writtens, not the official KCEMS form.
           </p>
           {best && (
             <p className={`mt-4 font-display text-2xl font-bold ${pctColor(best.pct)}`}>
@@ -372,7 +372,7 @@ export function TestsView({ seedId, go }: { seedId?: string; go: (view: "tests",
       <Panel>
         <h1 className="font-display text-3xl font-extrabold uppercase">Unit tests</h1>
         <p className="mt-2 text-sm text-mute">
-          One practice written and one quiz for every block, plus Quiz 5 and a 150-style final. Same 80% / 70% lines as the course. Clock on, answers off, until you hand it in.
+          One practice written and one quiz for every block, plus Quiz 5 and a 150 final. Same 80% / 70% lines as the course. Unit tests draw from the hard vignette bank (scenario stems, priority traps). Clock on, answers off, until you hand it in.
         </p>
       </Panel>
       {UNIT_GROUPS.map((group) => (

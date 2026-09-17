@@ -1,8 +1,17 @@
-import { QUESTIONS, questionsForChapters, type Question } from "../data/questions"
+import {
+  EXAM_QUESTIONS,
+  QUESTIONS,
+  examQuestionsForChapters,
+  questionsForChapters,
+  type Question,
+} from "../data/questions"
 import type { PracticeTest } from "../data/tests"
 import { shuffle } from "./schedule"
 
+/** Unit tests use the exam-hard vignette bank only (Thursday-written style). */
 export function poolFor(test: PracticeTest) {
+  const exam = test.chapters.length ? examQuestionsForChapters(test.chapters) : EXAM_QUESTIONS
+  if (exam.length >= Math.min(test.target, 8)) return exam
   return test.chapters.length ? questionsForChapters(test.chapters) : QUESTIONS
 }
 

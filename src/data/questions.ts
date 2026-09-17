@@ -1,5 +1,9 @@
 import { CHAPTERS } from "./syllabus"
 import { EXTRA_QUESTIONS } from "./questions-extra"
+import { EXAM_B1 } from "./questions-exam-b1"
+import { EXAM_B2 } from "./questions-exam-b2"
+import { EXAM_B3 } from "./questions-exam-b3"
+import { EXAM_B4 } from "./questions-exam-b4"
 
 export type Question = {
   id: string
@@ -10,6 +14,7 @@ export type Question = {
   answer: number
   why: string
   tag: string
+  difficulty?: "drill" | "exam"
 }
 
 type Draft = {
@@ -1522,15 +1527,42 @@ const block4: Question[] = [
   ]),
 ]
 
-export const QUESTIONS: Question[] = [...block1, ...block2, ...block3, ...block4, ...EXTRA_QUESTIONS]
+/** Coach/drill bank (shorter stems) + exam-hard vignette bank for Thursday writtens. */
+export const QUESTIONS: Question[] = [
+  ...block1,
+  ...block2,
+  ...block3,
+  ...block4,
+  ...EXTRA_QUESTIONS,
+  ...EXAM_B1,
+  ...EXAM_B2,
+  ...EXAM_B3,
+  ...EXAM_B4,
+]
+
+/** Explicit exam bank — avoid filtering QUESTIONS in case of init order quirks. */
+export const EXAM_QUESTIONS: Question[] = [...EXAM_B1, ...EXAM_B2, ...EXAM_B3, ...EXAM_B4]
 
 export function questionsForChapters(chapters: number[]) {
   const set = new Set(chapters)
   return QUESTIONS.filter((q) => set.has(q.chapter))
 }
 
+export function examQuestionsForChapters(chapters: number[]) {
+  const set = new Set(chapters)
+  return EXAM_QUESTIONS.filter((q) => set.has(q.chapter))
+}
+
 export function questionsForBlock(block: 1 | 2 | 3 | 4) {
   return QUESTIONS.filter((q) => q.block === block)
+}
+
+export function examQuestionsForBlock(block: 1 | 2 | 3 | 4) {
+  return EXAM_QUESTIONS.filter((q) => q.block === block)
+}
+
+export function siblingsOf(q: Question) {
+  return QUESTIONS.filter((x) => x.id !== q.id && x.chapter === q.chapter && x.tag === q.tag)
 }
 
 export function chapterTitle(n: number) {
