@@ -102,8 +102,21 @@ function Shell() {
             className="tap flex min-w-0 items-center gap-2.5 rounded-xl text-left outline-none focus-visible:ring-2 focus-visible:ring-tape/40"
             aria-label="Pass Ready home"
           >
-            <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-tape p-1 sm:size-14">
-              <img src={asset("spfr.png")} alt="" width={48} height={48} className="h-9 w-auto object-contain sm:h-12" />
+            <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-panel p-1 ring-1 ring-line sm:size-14 sm:bg-tape sm:ring-0 sm:p-1">
+              <img
+                src={asset("medic-one.png")}
+                alt=""
+                width={48}
+                height={48}
+                className="h-9 w-auto object-contain sm:hidden"
+              />
+              <img
+                src={asset("spfr.png")}
+                alt=""
+                width={48}
+                height={48}
+                className="hidden h-12 w-auto object-contain sm:block"
+              />
             </span>
             <span className="min-w-0">
               <p className="font-display text-xl font-extrabold uppercase leading-none tracking-wide text-tape sm:text-2xl">{BRAND.name}</p>
@@ -114,6 +127,13 @@ function Shell() {
           </button>
           <div className="flex shrink-0 items-center gap-2 sm:gap-3">
             <AccountBar />
+            <img
+              src={asset("spfr.png")}
+              alt="Snoqualmie Pass Fire & Rescue"
+              width={56}
+              height={56}
+              className="h-11 w-auto object-contain sm:hidden"
+            />
             <img
               src={asset("medic-one.png")}
               alt="King County Medic One"
