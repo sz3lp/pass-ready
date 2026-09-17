@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react"
 import { ArrowRight, BookOpen, TriangleAlert } from "lucide-react"
 import { BLOCKS, type BlockId } from "../data/syllabus"
-import { primaryPath, studyPack, topicKeyForChapter, chapterTitle } from "../data/notes"
-import { videosForTopic } from "../data/videos"
+import { primaryPath, studyPack, chapterTitle } from "../data/notes"
+import { videosForChapter } from "../data/videos"
 import { blockMeta } from "../lib/schedule"
 import { masteryByChapter } from "../lib/storage"
 import { useAppStore } from "../lib/store"
@@ -52,8 +52,7 @@ export function LearnView({
     const pack = studyPack(active)
     const title = chapterTitle(active)
     const m = mastery.find((x) => x.chapter === active)
-    const topic = topicKeyForChapter(active)
-    const videos = topic ? videosForTopic(topic) : []
+    const videos = videosForChapter(active)
     const blockId = BLOCKS.find((b) => b.examChapters.includes(active))?.id
 
     return (
