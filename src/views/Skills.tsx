@@ -78,9 +78,15 @@ export function SkillsView() {
           <div className="flex flex-wrap items-center gap-2">
             <Pill tone="tape">{active.sheet}</Pill>
             <Pill>{active.minutes} min station</Pill>
+            {active.totalPoints > 0 && (
+              <Pill>
+                Pass {active.passingScore}/{active.totalPoints}
+              </Pill>
+            )}
             {active.kcNote && <Pill tone="warn">KC protocol</Pill>}
           </div>
           <h1 className="mt-2 font-display text-3xl font-extrabold uppercase">{active.name}</h1>
+          <p className="mt-1 text-xs text-mute">{active.source}</p>
           <p className="mt-2 text-sm text-mute">{active.setup}</p>
           {active.kcNote && <p className="mt-2 text-sm text-tape">{active.kcNote}</p>}
           {buddy && (
@@ -221,6 +227,7 @@ export function SkillsView() {
                   <h2 className="font-display text-2xl font-bold uppercase">{s.name}</h2>
                   <p className="mt-1 text-sm text-mute">
                     {s.steps.filter((x) => x.critical && !x.evaluatorNote).length} criticals · {s.minutes} min
+                    {s.totalPoints > 0 ? ` · pass ${s.passingScore}/${s.totalPoints}` : ""}
                     {videosForSkill(s.id).length ? ` · ${videosForSkill(s.id).length} videos` : ""}
                   </p>
                 </div>
