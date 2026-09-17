@@ -1,0 +1,82 @@
+@import "tailwindcss";
+@source "./App.tsx";
+@source "./main.tsx";
+@source "./nav.ts";
+@source "./components/ui.tsx";
+@source "./lib/store.tsx";
+@source "./views/Today.tsx";
+@source "./views/Drill.tsx";
+@source "./views/Skills.tsx";
+@source "./views/Bench.tsx";
+@source "./views/Crew.tsx";
+@source "./views/Calendar.tsx";
+@source "./views/Jeopardy.tsx";
+@source "./views/Tests.tsx";
+@source "./data/tests.ts";
+@source "./lib/practice.ts";
+
+@theme {
+  --font-display: "Barlow Condensed", sans-serif;
+  --font-sans: "IBM Plex Sans", sans-serif;
+  --color-paper: #f4f1ea;
+  --color-ink: #1b2a4a;
+  --color-panel: #ffffff;
+  --color-raised: #eef2f7;
+  --color-line: #d4dce6;
+  --color-tape: #1e4a8c;
+  --color-gold: #c4a035;
+  --color-medic: #b71c2c;
+  --color-go: #1b8f5a;
+  --color-stop: #c62828;
+  --color-warn: #c47a16;
+  --color-mute: #5c6b7d;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  width: 100%;
+  max-width: none;
+  min-height: 100svh;
+  text-align: left;
+  border: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.tape-stripe {
+  background: repeating-linear-gradient(
+    -45deg,
+    #1e4a8c,
+    #1e4a8c 10px,
+    #c4a035 10px,
+    #c4a035 20px
+  );
+}
+
+.crit-stripe {
+  background: repeating-linear-gradient(
+    -45deg,
+    #b71c2c,
+    #b71c2c 6px,
+    #f4f1ea 6px,
+    #f4f1ea 12px
+  );
+}
