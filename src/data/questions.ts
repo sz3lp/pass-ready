@@ -4,6 +4,10 @@ import { EXAM_B1 } from "./questions-exam-b1"
 import { EXAM_B2 } from "./questions-exam-b2"
 import { EXAM_B3 } from "./questions-exam-b3"
 import { EXAM_B4 } from "./questions-exam-b4"
+import { EXAM_EXP_B1 } from "./questions-exam-exp-b1"
+import { EXAM_EXP_B2 } from "./questions-exam-exp-b2"
+import { EXAM_EXP_B3 } from "./questions-exam-exp-b3"
+import { EXAM_EXP_B4 } from "./questions-exam-exp-b4"
 
 export type Question = {
   id: string
@@ -1538,10 +1542,23 @@ export const QUESTIONS: Question[] = [
   ...EXAM_B2,
   ...EXAM_B3,
   ...EXAM_B4,
+  ...EXAM_EXP_B1,
+  ...EXAM_EXP_B2,
+  ...EXAM_EXP_B3,
+  ...EXAM_EXP_B4,
 ]
 
-/** Explicit exam bank — avoid filtering QUESTIONS in case of init order quirks. */
-export const EXAM_QUESTIONS: Question[] = [...EXAM_B1, ...EXAM_B2, ...EXAM_B3, ...EXAM_B4]
+/** Hand-authored exam cores + ~10× expanded vignette variants for practice writtens. */
+export const EXAM_QUESTIONS: Question[] = [
+  ...EXAM_B1,
+  ...EXAM_B2,
+  ...EXAM_B3,
+  ...EXAM_B4,
+  ...EXAM_EXP_B1,
+  ...EXAM_EXP_B2,
+  ...EXAM_EXP_B3,
+  ...EXAM_EXP_B4,
+]
 
 export function questionsForChapters(chapters: number[]) {
   const set = new Set(chapters)

@@ -4,14 +4,15 @@ import { BLOCKS, chapterByNumber } from "../data/syllabus"
 import { chapterTitle, type Question } from "../data/questions"
 import { PRACTICE_TESTS, UNIT_GROUPS, testById, type PracticeTest } from "../data/tests"
 import { blockMeta, shuffle } from "../lib/schedule"
-import { buildTestQueue, chapterBreakdown, formatClock, poolFor } from "../lib/practice"
+import { buildTestQueue, chapterBreakdown, formatClock, poolFor, recentItemIds } from "../lib/practice"
 import { bestRun, recordAnswer, recordTestRun, runsForTest } from "../lib/storage"
 import { useAppStore } from "../lib/store"
 import { Panel, Pill, pctColor } from "../components/ui"
+import type { View } from "../nav"
 
 type Phase = "lobby" | "intro" | "exam" | "review"
 
-export function TestsView({ seedId, go }: { seedId?: string; go: (view: "tests", extra?: string) => void }) {
+export function TestsView({ seedId, go }: { seedId?: string; go: (view: View, extra?: string) => void }) {
   const { store, setStore } = useAppStore()
   const live = blockMeta()
   const [test, setTest] = useState<PracticeTest | null>(() => (seedId ? testById(seedId) ?? null : null))
@@ -37,7 +38,7 @@ export function TestsView({ seedId, go }: { seedId?: string; go: (view: "tests",
   }, [seedId, phase])
 
   const start = (t: PracticeTest) => {
-    const q = buildTestQueue(t)
+    const q = buildTestQueue(t, Date.now(), { excludeIds: recentItemIds(store, t.id, 3) })
     setTest(t)
     setQueue(q)
     setPicks(Array.from({ length: q.length }, () => null))
@@ -74,6 +75,7 @@ export function TestsView({ seedId, go }: { seedId?: string; go: (view: "tests",
       elapsedSec,
       timedOut: timeout,
       missedIds: snap.queue.filter((item, idx) => snap.picks[idx] !== item.answer).map((item) => item.id),
+      itemIds: snap.queue.map((item) => item.id),
     })
     setStore(next)
     setTimedOut(timeout)
@@ -146,6 +148,9 @@ export function TestsView({ seedId, go }: { seedId?: string; go: (view: "tests",
           <div className="mt-6 flex flex-wrap gap-2">
             <button type="button" className="rounded-xl bg-tape px-4 py-2 font-display text-lg font-bold uppercase text-paper" onClick={() => start(test)}>
               Sit it again
+            </button>
+            <button type="button" className="rounded-xl border border-line px-4 py-2 text-sm" onClick={() => go("drill")}>
+              Drill missed concepts
             </button>
             <button type="button" className="rounded-xl border border-line px-4 py-2 text-sm" onClick={backLobby}>
               All unit tests
@@ -339,10 +344,11 @@ export function TestsView({ seedId, go }: { seedId?: string; go: (view: "tests",
             <Pill>{n} questions</Pill>
             <Pill>{test.minutes} min</Pill>
             <Pill tone="tape">{test.passLine}% line</Pill>
+            <Pill>pool {pool.length}</Pill>
           </div>
           <p className="mt-4 text-sm leading-relaxed text-mute">{test.gate}</p>
           <p className="mt-2 text-sm leading-relaxed text-mute">
-            Exam conditions: no why until you submit, countdown clock, flag and jump around. Items are vignette-heavy with near-miss distractors — built to feel like Thursday writtens, not the official KCEMS form.
+            Each start draws a fresh random form from the large pool (chapter-balanced). Recent attempts are de-prioritized so you don’t keep seeing the same items. Exam conditions: no why until you submit, countdown clock, flag and jump around.
           </p>
           {best && (
             <p className={`mt-4 font-display text-2xl font-bold ${pctColor(best.pct)}`}>
@@ -372,7 +378,7 @@ export function TestsView({ seedId, go }: { seedId?: string; go: (view: "tests",
       <Panel>
         <h1 className="font-display text-3xl font-extrabold uppercase">Unit tests</h1>
         <p className="mt-2 text-sm text-mute">
-          One practice written and one quiz for every block, plus Quiz 5 and a 150 final. Same 80% / 70% lines as the course. Unit tests draw from the hard vignette bank (scenario stems, priority traps). Clock on, answers off, until you hand it in.
+          One practice written and one quiz for every block, plus Quiz 5 and a 150 final. Same 80% / 70% lines as the course. Large randomized pools so retakes aren’t the same form. Clock on, answers off, until you hand it in.
         </p>
       </Panel>
       {UNIT_GROUPS.map((group) => (
@@ -393,7 +399,7 @@ export function TestsView({ seedId, go }: { seedId?: string; go: (view: "tests",
                   <p className="font-display text-xs uppercase tracking-widest text-tape">{t.kind === "quiz" ? "Quiz" : t.kind === "final" ? "Final" : "Written"}</p>
                   <p className="font-display text-xl font-bold uppercase">{t.label}</p>
                   <p className="mt-1 text-sm text-mute">
-                    {n} q · {t.minutes} min · {t.passLine}% line
+                    {n} q · pool {pool.length} · {t.minutes} min · {t.passLine}% line
                   </p>
                   {best ? (
                     <p className={`mt-2 font-display text-lg font-bold ${pctColor(best.pct)}`}>

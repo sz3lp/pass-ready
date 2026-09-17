@@ -6,6 +6,8 @@ import {
   type Question,
 } from "../data/questions"
 import type { PracticeTest } from "../data/tests"
+import type { Store } from "./storage"
+import { runsForTest } from "./storage"
 import { shuffle } from "./schedule"
 
 /** Unit tests use the exam-hard vignette bank only (Thursday-written style). */
@@ -15,24 +17,52 @@ export function poolFor(test: PracticeTest) {
   return test.chapters.length ? questionsForChapters(test.chapters) : QUESTIONS
 }
 
-export function buildTestQueue(test: PracticeTest, seed = Date.now()): Question[] {
+/** Prefer items not seen on recent attempts of the same test. */
+export function recentItemIds(store: Store | undefined, testId: string, lastN = 3): Set<string> {
+  const ids = new Set<string>()
+  if (!store) return ids
+  for (const run of runsForTest(store, testId).slice(-lastN)) {
+    for (const id of run.itemIds ?? []) ids.add(id)
+  }
+  return ids
+}
+
+export function buildTestQueue(
+  test: PracticeTest,
+  seed = Date.now(),
+  opts?: { excludeIds?: Set<string> },
+): Question[] {
   const pool = poolFor(test)
-  const byChapter = new Map<number, Question[]>()
+  const exclude = opts?.excludeIds ?? new Set<string>()
+  const byChapter = new Map<number, { fresh: Question[]; used: Question[] }>()
+
   for (const q of pool) {
-    const list = byChapter.get(q.chapter) ?? []
-    list.push(q)
-    byChapter.set(q.chapter, list)
+    const bucket = byChapter.get(q.chapter) ?? { fresh: [], used: [] }
+    if (exclude.has(q.id)) bucket.used.push(q)
+    else bucket.fresh.push(q)
+    byChapter.set(q.chapter, bucket)
   }
-  for (const [ch, list] of byChapter) {
-    byChapter.set(ch, shuffle(list, seed + ch * 17))
+
+  for (const [ch, bucket] of byChapter) {
+    byChapter.set(ch, {
+      fresh: shuffle(bucket.fresh, seed + ch * 17),
+      used: shuffle(bucket.used, seed + ch * 31),
+    })
   }
+
   const chapters = [...byChapter.keys()].sort((a, b) => a - b)
+  const queues = new Map<number, Question[]>()
+  for (const ch of chapters) {
+    const b = byChapter.get(ch)!
+    queues.set(ch, [...b.fresh, ...b.used])
+  }
+
   const picked: Question[] = []
   const target = Math.min(test.target, pool.length)
   let i = 0
   while (picked.length < target && i < target * chapters.length + 8) {
     const ch = chapters[i % chapters.length]
-    const take = byChapter.get(ch)?.shift()
+    const take = queues.get(ch)?.shift()
     if (take) picked.push(take)
     i++
   }

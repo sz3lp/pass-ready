@@ -3,12 +3,18 @@ import { QUESTIONS } from "../data/questions"
 
 const KEY = "passready-v1"
 const LEGACY_KEY = "crew80-v1"
+const DAY = 86_400_000
+
+export type SrsQuality = "again" | "good" | "easy"
 
 export type ItemStats = {
   seen: number
   correct: number
   streak: number
   last?: number
+  ease?: number
+  intervalDays?: number
+  due?: number
 }
 
 export type SkillRun = {
@@ -16,6 +22,8 @@ export type SkillRun = {
   passed: boolean
   missedCritical: number
   elapsedSec: number
+  buddy?: boolean
+  recited?: boolean
 }
 
 export type CrewFlag = {
@@ -34,6 +42,13 @@ export type TestRun = {
   elapsedSec: number
   timedOut: boolean
   missedIds: string[]
+  /** Question ids served on this attempt — used to avoid repeat forms. */
+  itemIds?: string[]
+}
+
+export type Protocol = {
+  lastCallIt: number | null
+  lastBuddySkill: number | null
 }
 
 export type Store = {
@@ -44,6 +59,7 @@ export type Store = {
   crew: CrewFlag[]
   jeopardySeen: string[]
   testRuns: TestRun[]
+  protocol: Protocol
 }
 
 const empty = (): Store => ({
@@ -54,6 +70,7 @@ const empty = (): Store => ({
   crew: [],
   jeopardySeen: [],
   testRuns: [],
+  protocol: { lastCallIt: null, lastBuddySkill: null },
 })
 
 export function loadStore(): Store {
@@ -61,7 +78,12 @@ export function loadStore(): Store {
     const raw = localStorage.getItem(KEY) ?? localStorage.getItem(LEGACY_KEY)
     if (!raw) return empty()
     const parsed = JSON.parse(raw) as Store
-    return { ...empty(), ...parsed, testRuns: parsed.testRuns ?? [] }
+    return {
+      ...empty(),
+      ...parsed,
+      testRuns: parsed.testRuns ?? [],
+      protocol: parsed.protocol ?? { lastCallIt: null, lastBuddySkill: null },
+    }
   } catch {
     return empty()
   }
@@ -71,20 +93,48 @@ export function saveStore(store: Store) {
   localStorage.setItem(KEY, JSON.stringify(store))
 }
 
-export function recordAnswer(store: Store, id: string, correct: boolean): Store {
-  const prev = store.items[id] ?? { seen: 0, correct: 0, streak: 0 }
-  const next: ItemStats = {
-    seen: prev.seen + 1,
-    correct: prev.correct + (correct ? 1 : 0),
-    streak: correct ? prev.streak + 1 : 0,
-    last: Date.now(),
+export function applySrs(prev: ItemStats | undefined, correct: boolean, quality?: SrsQuality): ItemStats {
+  const now = Date.now()
+  const q: SrsQuality = quality ?? (correct ? "good" : "again")
+  const seen = (prev?.seen ?? 0) + 1
+  const nextCorrect = (prev?.correct ?? 0) + (correct ? 1 : 0)
+  const streak = correct ? (prev?.streak ?? 0) + 1 : 0
+  let ease = prev?.ease ?? 2.5
+  let intervalDays = prev?.intervalDays ?? 0
+
+  if (q === "again" || !correct) {
+    ease = Math.max(1.3, ease - 0.2)
+    intervalDays = 0
+  } else if (q === "easy") {
+    ease = Math.min(2.8, ease + 0.15)
+    intervalDays = intervalDays <= 0 ? 2 : Math.max(2, Math.round(intervalDays * ease * 1.3))
+  } else {
+    ease = Math.min(2.8, ease + 0.05)
+    if (intervalDays <= 0) intervalDays = 1
+    else if (intervalDays === 1) intervalDays = 3
+    else intervalDays = Math.max(3, Math.round(intervalDays * ease))
   }
+
+  const due = intervalDays <= 0 ? now : now + intervalDays * DAY
+  return { seen, correct: nextCorrect, streak, last: now, ease, intervalDays, due }
+}
+
+export function recordAnswer(store: Store, id: string, correct: boolean, quality?: SrsQuality): Store {
+  const next = applySrs(store.items[id], correct, quality)
   return { ...store, items: { ...store.items, [id]: next } }
+}
+
+export function recordCallIt(store: Store): Store {
+  return { ...store, protocol: { ...store.protocol, lastCallIt: Date.now() } }
 }
 
 export function recordSkill(store: Store, skillId: string, run: SkillRun): Store {
   const list = store.skillRuns[skillId] ?? []
-  return { ...store, skillRuns: { ...store.skillRuns, [skillId]: [...list, run].slice(-20) } }
+  const protocol =
+    run.passed && run.buddy && run.recited
+      ? { ...store.protocol, lastBuddySkill: run.at }
+      : store.protocol
+  return { ...store, skillRuns: { ...store.skillRuns, [skillId]: [...list, run].slice(-20) }, protocol }
 }
 
 export function recordTestRun(store: Store, run: TestRun): Store {
@@ -123,6 +173,38 @@ export function masteryByChapter(store: Store): ChapterMastery[] {
     const pct = v.seen ? Math.round((v.correct / v.seen) * 100) : null
     return { chapter, seen: v.seen, correct: v.correct, pct, weak: pct !== null && pct < 80 }
   })
+}
+
+/** Running accuracy on cards last seen at least `minAgeDays` ago — honest retention. */
+export function delayedRecall(store: Store, minAgeDays = 3) {
+  const cutoff = Date.now() - minAgeDays * DAY
+  let seen = 0
+  let correct = 0
+  for (const s of Object.values(store.items)) {
+    if (!s.last || s.last > cutoff || s.seen === 0) continue
+    seen += s.seen
+    correct += s.correct
+  }
+  if (!seen) return null
+  return Math.round((correct / seen) * 100)
+}
+
+export function runningAccuracy(store: Store) {
+  let seen = 0
+  let correct = 0
+  for (const s of Object.values(store.items)) {
+    seen += s.seen
+    correct += s.correct
+  }
+  if (!seen) return null
+  return Math.round((correct / seen) * 100)
+}
+
+export function sameDay(a: number | null | undefined, b = Date.now()) {
+  if (!a) return false
+  const da = new Date(a)
+  const db = new Date(b)
+  return da.getFullYear() === db.getFullYear() && da.getMonth() === db.getMonth() && da.getDate() === db.getDate()
 }
 
 export function encodeCrewPayload(store: Store) {
