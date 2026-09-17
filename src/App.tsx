@@ -12,6 +12,8 @@ import { CrewView } from "./views/Crew"
 import { CalendarView } from "./views/Calendar"
 import { JeopardyView } from "./views/Jeopardy"
 
+const asset = (file: string) => `${import.meta.env.BASE_URL}${file}`
+
 const TABS: { id: View; label: string; icon: typeof Zap }[] = [
   { id: "today", label: "Today", icon: LayoutGrid },
   { id: "jeopardy", label: "Jeopardy", icon: Trophy },
@@ -52,7 +54,7 @@ function Shell() {
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-2.5">
           <button type="button" onClick={() => go("today")} className="flex min-w-0 items-center gap-3 text-left">
             <span className="flex size-14 shrink-0 items-center justify-center rounded-xl bg-tape p-1">
-              <img src="/spfr.png" alt="" className="h-12 w-auto object-contain" />
+              <img src={asset("spfr.png")} alt="" className="h-12 w-auto object-contain" />
             </span>
             <span>
               <p className="font-display text-2xl font-extrabold uppercase leading-none tracking-wide text-tape">{BRAND.name}</p>
@@ -62,7 +64,7 @@ function Shell() {
               </p>
             </span>
           </button>
-          <img src="/medic-one.png" alt="King County Medic One" className="h-14 w-auto shrink-0 object-contain" />
+          <img src={asset("medic-one.png")} alt="King County Medic One" className="h-14 w-auto shrink-0 object-contain" />
         </div>
         <nav className="mx-auto flex max-w-5xl gap-1 overflow-x-auto px-3 pb-2">
           {TABS.map((t) => {
