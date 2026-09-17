@@ -62,19 +62,73 @@ export function shuffle<T>(list: T[], seed = Date.now()) {
   return copy
 }
 
+export type QueueStats = {
+  seen: number
+  correct: number
+  streak: number
+  last?: number
+  due?: number
+}
+
+/** Overdue first (weak/stale beat new), then unseen in current chapters, then fill. */
+export function dueQueue<T extends { id: string; chapter: number }>(
+  pool: T[],
+  stats: Record<string, QueueStats>,
+  n: number,
+  currentChapters?: number[],
+  now = Date.now(),
+) {
+  const chSet = currentChapters ? new Set(currentChapters) : null
+  const overdue: { q: T; rank: number }[] = []
+  const unseen: T[] = []
+  const rest: T[] = []
+
+  for (const q of pool) {
+    const s = stats[q.id]
+    if (!s || s.seen === 0) {
+      if (!chSet || chSet.has(q.chapter)) unseen.push(q)
+      else rest.push(q)
+      continue
+    }
+    const due = s.due ?? 0
+    if (due <= now) {
+      const pct = s.correct / Math.max(1, s.seen)
+      const wrong = pct < 0.8 ? 2000 : 0
+      const stale = (now - (s.last ?? 0)) / 86_400_000
+      overdue.push({ q, rank: wrong + stale })
+    } else rest.push(q)
+  }
+
+  overdue.sort((a, b) => b.rank - a.rank)
+  const out: T[] = []
+  const seenIds = new Set<string>()
+  const take = (list: T[]) => {
+    for (const q of list) {
+      if (out.length >= n) break
+      if (seenIds.has(q.id)) continue
+      seenIds.add(q.id)
+      out.push(q)
+    }
+  }
+  take(overdue.map((x) => x.q))
+  take(shuffle(unseen, now))
+  if (out.length < n) take(shuffle(rest, now + 7))
+  return out.slice(0, n)
+}
+
+export function dueTonightCount<T extends { id: string }>(pool: T[], stats: Record<string, QueueStats>, now = Date.now()) {
+  return pool.filter((q) => {
+    const s = stats[q.id]
+    if (!s || s.seen === 0) return true
+    return (s.due ?? 0) <= now
+  }).length
+}
+
 export function pickMission<T extends { id: string; chapter: number }>(
   pool: T[],
-  stats: Record<string, { seen: number; correct: number; streak: number }>,
+  stats: Record<string, QueueStats>,
   n: number,
+  currentChapters?: number[],
 ) {
-  const scored = pool.map((q) => {
-    const s = stats[q.id]
-    const seen = s?.seen ?? 0
-    const pct = seen ? (s!.correct / seen) : 0
-    const stale = !s?.streak || s.streak < 2
-    const weight = (seen === 0 ? 4 : 0) + (pct < 0.8 ? 3 : 0) + (stale ? 2 : 0) + Math.random()
-    return { q, weight }
-  })
-  scored.sort((a, b) => b.weight - a.weight)
-  return scored.slice(0, n).map((x) => x.q)
+  return dueQueue(pool, stats, n, currentChapters)
 }

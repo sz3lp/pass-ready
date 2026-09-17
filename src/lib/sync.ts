@@ -23,6 +23,9 @@ export function mergeStores(local: Store, remote: Store, profileName?: string): 
       correct: Math.max(a.correct, b.correct),
       streak: Math.max(a.streak, b.streak),
       last: Math.max(a.last ?? 0, b.last ?? 0) || undefined,
+      ease: (a.last ?? 0) >= (b.last ?? 0) ? (a.ease ?? b.ease) : (b.ease ?? a.ease),
+      intervalDays: Math.max(a.intervalDays ?? 0, b.intervalDays ?? 0) || undefined,
+      due: Math.max(a.due ?? 0, b.due ?? 0) || undefined,
     }
   }
 
@@ -57,8 +60,12 @@ export function mergeStores(local: Store, remote: Store, profileName?: string): 
 
   const seen = new Set([...(remote.jeopardySeen ?? []), ...(local.jeopardySeen ?? [])])
   const name = (profileName?.trim() || local.name || remote.name).trim()
+  const protocol = {
+    lastCallIt: Math.max(local.protocol?.lastCallIt ?? 0, remote.protocol?.lastCallIt ?? 0) || null,
+    lastBuddySkill: Math.max(local.protocol?.lastBuddySkill ?? 0, remote.protocol?.lastBuddySkill ?? 0) || null,
+  }
 
-  return { name, scores, items, skillRuns, crew, jeopardySeen: [...seen], testRuns }
+  return { name, scores, items, skillRuns, crew, jeopardySeen: [...seen], testRuns, protocol }
 }
 
 export async function pullProgress(userId: string, displayName: string): Promise<Store> {
@@ -70,6 +77,7 @@ export async function pullProgress(userId: string, displayName: string): Promise
     crew: [],
     jeopardySeen: [],
     testRuns: [],
+    protocol: { lastCallIt: null, lastBuddySkill: null },
   }
   if (!supabase) return empty
 
