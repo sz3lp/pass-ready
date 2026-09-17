@@ -406,8 +406,8 @@ function Board({ session, onBack, go }: { session: ClassSession; onBack: () => v
       </div>
 
       {current && (
-        <div className="fixed inset-0 z-20 flex items-end justify-center bg-ink/50 p-4 sm:items-center">
-          <Panel className="w-full max-w-2xl shadow-xl">
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-ink/50 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] sm:items-center sm:p-4">
+          <Panel className="sheet-safe w-full max-w-2xl shadow-xl">
             <p className="font-display text-xs uppercase tracking-[0.2em] text-mute">
               {cols[open!.ci].name} · {current.value}
             </p>

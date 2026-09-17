@@ -23,12 +23,51 @@ export function Pill({ children, tone = "default" }: { children: React.ReactNode
     tape: "bg-tape/10 text-tape border-tape/25",
   }
   return (
-    <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] font-medium uppercase tracking-wide ${map[tone]}`}>
+    <span className={`inline-flex items-center rounded-full border px-2.5 py-1 text-[11px] font-medium uppercase tracking-wide ${map[tone]}`}>
       {children}
     </span>
   )
 }
 
-export function Panel({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return <section className={`rounded-2xl border border-line bg-panel p-4 shadow-sm sm:p-5 ${className}`}>{children}</section>
+export function Panel({
+  children,
+  className = "",
+  onClick,
+}: {
+  children: React.ReactNode
+  className?: string
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void
+}) {
+  return (
+    <section onClick={onClick} className={`rounded-2xl border border-line bg-panel p-4 shadow-sm sm:p-5 ${className}`}>
+      {children}
+    </section>
+  )
 }
+
+export function Field({
+  label,
+  children,
+  hint,
+}: {
+  label: string
+  children: React.ReactNode
+  hint?: string
+}) {
+  return (
+    <label className="grid gap-1.5 text-sm">
+      <span className="font-medium text-ink">{label}</span>
+      {children}
+      {hint && <span className="text-xs text-mute">{hint}</span>}
+    </label>
+  )
+}
+
+export const inputClass =
+  "min-h-12 w-full rounded-xl border border-line bg-raised px-3 py-3 text-base text-ink outline-none transition focus-visible:ring-2 focus-visible:ring-tape/40"
+
+export const btnPrimary =
+  "tap inline-flex min-h-12 items-center justify-center rounded-xl bg-tape px-4 py-3 font-display text-lg font-bold uppercase tracking-wide text-paper outline-none transition focus-visible:ring-2 focus-visible:ring-tape/40 disabled:cursor-not-allowed disabled:opacity-50"
+
+export const btnSecondary =
+  "tap inline-flex min-h-11 items-center justify-center rounded-xl border border-line bg-panel px-4 py-2.5 text-sm font-medium text-ink outline-none transition hover:bg-raised focus-visible:ring-2 focus-visible:ring-tape/40"

@@ -120,9 +120,10 @@ export function PlayView({ seedCode }: { seedCode?: string }) {
               onChange={(e) => setCode(e.target.value.toUpperCase())}
               placeholder="ABC12"
               maxLength={6}
-              className="w-full rounded-xl border border-line bg-raised px-3 py-3 font-display text-2xl font-bold uppercase tracking-[0.3em] outline-none"
+              aria-label="Live game code"
+              className="min-h-14 w-full rounded-xl border border-line bg-raised px-3 py-3 font-display text-2xl font-bold uppercase tracking-[0.3em] outline-none focus-visible:ring-2 focus-visible:ring-tape/40"
             />
-            <button type="submit" className="rounded-xl bg-tape px-4 py-3 font-display font-bold uppercase text-paper">
+            <button type="submit" className="tap min-h-14 rounded-xl bg-tape px-4 py-3 font-display font-bold uppercase text-paper outline-none focus-visible:ring-2 focus-visible:ring-tape/40">
               Join
             </button>
           </form>
@@ -177,7 +178,7 @@ export function PlayView({ seedCode }: { seedCode?: string }) {
             type="button"
             disabled={!canBuzz || buzzing}
             onClick={() => void buzz()}
-            className={`mt-4 flex min-h-44 w-full touch-manipulation items-center justify-center rounded-3xl font-display text-6xl font-extrabold uppercase text-paper disabled:opacity-40 ${
+            className={`tap mt-4 flex min-h-44 w-full touch-manipulation items-center justify-center rounded-3xl font-display text-5xl font-extrabold uppercase text-paper outline-none focus-visible:ring-4 focus-visible:ring-ink/20 disabled:opacity-40 sm:text-6xl ${
               team === 0 ? "bg-medic" : "bg-tape"
             }`}
           >
