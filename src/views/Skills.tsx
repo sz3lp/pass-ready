@@ -40,7 +40,9 @@ export function SkillsView() {
 
   const finish = () => {
     if (!active) return
-    const missedCritical = active.steps.filter((s, idx) => s.critical && !checked[idx]).length
+    const missedCritical = active.steps.filter(
+      (s, idx) => s.critical && !s.evaluatorNote && !checked[idx],
+    ).length
     const passed = missedCritical === 0
     setResult(passed ? "pass" : "fail")
     setStore(
@@ -99,26 +101,44 @@ export function SkillsView() {
           </Panel>
         )}
         <ol className="grid gap-2">
-          {active.steps.map((step, idx) => (
-            <li key={idx}>
-              <button
-                type="button"
-                disabled={!!result}
-                onClick={() => setChecked((c) => ({ ...c, [idx]: !c[idx] }))}
-                className={`flex w-full items-start gap-3 rounded-xl border px-3 py-3 text-left ${
-                  step.critical ? "border-stop/40" : "border-line"
-                } ${checked[idx] ? "bg-go/10" : "bg-panel"}`}
-              >
-                <span className={`mt-0.5 flex size-5 shrink-0 items-center justify-center rounded border ${checked[idx] ? "border-go bg-go text-paper" : "border-mute/40"}`}>
-                  {checked[idx] ? "✓" : idx + 1}
-                </span>
-                <span>
-                  {step.critical && <span className="mr-2 font-display text-xs font-bold uppercase text-stop">Critical</span>}
-                  <span className="text-sm leading-snug">{step.text}</span>
-                </span>
-              </button>
-            </li>
-          ))}
+          {active.steps.map((step, idx) => {
+            if (step.evaluatorNote) {
+              return (
+                <li key={idx}>
+                  <div className="rounded-xl border border-line/60 bg-raised px-3 py-2 text-sm leading-snug text-mute">
+                    {step.text}
+                  </div>
+                </li>
+              )
+            }
+            const scorableIdx = active.steps.slice(0, idx + 1).filter((s) => !s.evaluatorNote).length
+            return (
+              <li key={idx}>
+                <button
+                  type="button"
+                  disabled={!!result}
+                  onClick={() => setChecked((c) => ({ ...c, [idx]: !c[idx] }))}
+                  className={`flex w-full items-start gap-3 rounded-xl border px-3 py-3 text-left ${
+                    step.critical ? "border-stop/40" : "border-line"
+                  } ${checked[idx] ? "bg-go/10" : "bg-panel"}`}
+                >
+                  <span
+                    className={`mt-0.5 flex size-5 shrink-0 items-center justify-center rounded border ${
+                      checked[idx] ? "border-go bg-go text-paper" : "border-mute/40"
+                    }`}
+                  >
+                    {checked[idx] ? "✓" : scorableIdx}
+                  </span>
+                  <span>
+                    {step.critical && (
+                      <span className="mr-2 font-display text-xs font-bold uppercase text-stop">Critical</span>
+                    )}
+                    <span className="text-sm leading-snug">{step.text}</span>
+                  </span>
+                </button>
+              </li>
+            )
+          })}
         </ol>
         <Panel>
           <p className="font-display text-xs uppercase tracking-widest text-stop">Auto-fail if</p>
@@ -156,7 +176,16 @@ export function SkillsView() {
       <Panel>
         <h1 className="font-display text-3xl font-extrabold uppercase">Skill sheets</h1>
         <p className="mt-2 text-sm text-mute">
-          Study checklists built from public NREMT / WA EMT station logic plus King County extras (i-gel, Check & Inject, nasal Narcan). Official packet sheets still win on test day. Critical lines in red are the ones that fail you even if the rest was pretty.
+          Station checklists are WA DOH 530-226 (January 2022) skill sheets verbatim. King County protocol notes (i-gel, Check & Inject, etc.) appear separately and are not part of the scored lines. Critical lines in red auto-fail if left unchecked. Official PDF:{" "}
+          <a
+            className="text-tape underline"
+            href="https://doh.wa.gov/sites/default/files/2022-02/530226.pdf"
+            target="_blank"
+            rel="noreferrer"
+          >
+            doh.wa.gov … 530226.pdf
+          </a>
+          .
         </p>
         <div className="mt-3">
           <VideoLinks
@@ -191,7 +220,7 @@ export function SkillsView() {
                   </p>
                   <h2 className="font-display text-2xl font-bold uppercase">{s.name}</h2>
                   <p className="mt-1 text-sm text-mute">
-                    {s.steps.filter((x) => x.critical).length} criticals · {s.minutes} min
+                    {s.steps.filter((x) => x.critical && !x.evaluatorNote).length} criticals · {s.minutes} min
                     {videosForSkill(s.id).length ? ` · ${videosForSkill(s.id).length} videos` : ""}
                   </p>
                 </div>

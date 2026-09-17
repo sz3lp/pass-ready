@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+tmp-530226.pdf
+tmp-530226.txt
+tmp-pages/
