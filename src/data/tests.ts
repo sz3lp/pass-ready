@@ -28,7 +28,7 @@ export const PRACTICE_TESTS: PracticeTest[] = [
     target: 50,
     minutes: 90,
     passLine: 80,
-    gate: "Exam-hard vignettes (NEXT / priority / near-miss distractors). Real Thursday score still feeds the 80% bench — this does not replace it.",
+    gate: "JB/TestPrep style: short vignette + vitals → next action. Near-miss distractors (wrong rate, order, definition). Real Thursday still feeds the 80% bench.",
   },
   {
     id: "q1",
@@ -41,7 +41,7 @@ export const PRACTICE_TESTS: PracticeTest[] = [
     target: 10,
     minutes: 15,
     passLine: 80,
-    gate: "10 exam-style items. An 8/10 is the line. Counts toward the bench on the real quiz.",
+    gate: "10 vignette items. An 8/10 is the line. After misses: Learn pack → Call it, same night.",
   },
   {
     id: "b2",
@@ -54,7 +54,7 @@ export const PRACTICE_TESTS: PracticeTest[] = [
     target: 50,
     minutes: 90,
     passLine: 80,
-    gate: "Exam-hard vignettes (NEXT / priority / near-miss distractors). Real Thursday score still feeds the 80% bench — this does not replace it.",
+    gate: "JB/TestPrep style: short vignette + vitals → next action. Near-miss distractors (wrong rate, order, definition). Real Thursday still feeds the 80% bench.",
   },
   {
     id: "q2",
@@ -67,7 +67,7 @@ export const PRACTICE_TESTS: PracticeTest[] = [
     target: 10,
     minutes: 15,
     passLine: 80,
-    gate: "10 exam-style items. An 8/10 is the line. Counts toward the bench on the real quiz.",
+    gate: "10 vignette items. An 8/10 is the line. After misses: Learn pack → Call it, same night.",
   },
   {
     id: "b3",
@@ -80,7 +80,7 @@ export const PRACTICE_TESTS: PracticeTest[] = [
     target: 50,
     minutes: 90,
     passLine: 80,
-    gate: "Exam-hard vignettes (NEXT / priority / near-miss distractors). Real Thursday score still feeds the 80% bench — this does not replace it.",
+    gate: "JB/TestPrep style: short vignette + vitals → next action. Near-miss distractors (wrong rate, order, definition). Real Thursday still feeds the 80% bench.",
   },
   {
     id: "q3",
@@ -93,7 +93,7 @@ export const PRACTICE_TESTS: PracticeTest[] = [
     target: 10,
     minutes: 15,
     passLine: 80,
-    gate: "10 exam-style items. An 8/10 is the line. Counts toward the bench on the real quiz.",
+    gate: "10 vignette items. An 8/10 is the line. After misses: Learn pack → Call it, same night.",
   },
   {
     id: "b4",
@@ -106,7 +106,7 @@ export const PRACTICE_TESTS: PracticeTest[] = [
     target: 50,
     minutes: 90,
     passLine: 80,
-    gate: "Exam-hard vignettes (NEXT / priority / near-miss distractors). Real Monday score still feeds the 80% bench — this does not replace it.",
+    gate: "JB/TestPrep style: short vignette + vitals → next action. Near-miss distractors (wrong rate, order, definition). Real Monday still feeds the 80% bench.",
   },
   {
     id: "q4",
@@ -119,7 +119,7 @@ export const PRACTICE_TESTS: PracticeTest[] = [
     target: 10,
     minutes: 15,
     passLine: 80,
-    gate: "10 exam-style items. An 8/10 is the line. Counts toward the bench on the real quiz.",
+    gate: "10 vignette items. An 8/10 is the line. After misses: Learn pack → Call it, same night.",
   },
   {
     id: "q5",
@@ -132,7 +132,7 @@ export const PRACTICE_TESTS: PracticeTest[] = [
     target: 10,
     minutes: 15,
     passLine: 80,
-    gate: "Last numbered quiz on the 80% bench. Cumulative exam-hard items on purpose.",
+    gate: "Last numbered quiz on the 80% bench. Mixed vignettes on purpose — expect definition + math traps.",
   },
   {
     id: "final",
@@ -145,7 +145,7 @@ export const PRACTICE_TESTS: PracticeTest[] = [
     target: 150,
     minutes: 180,
     passLine: 70,
-    gate: "70% on the real 150 sits you for Saturday practicals. Practice this bank like you need 80.",
+    gate: "70% on the real 150 sits you for Saturday practicals. Practice like JB: vignette → next action → 80% bar.",
   },
 ]
 

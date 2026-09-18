@@ -49,9 +49,10 @@ export function TodayView({ go }: { go: (v: View, extra?: string) => void }) {
           Qualify together.
         </h1>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-mute">
-          Crew protocol: the app is retrieval, spacing, and generation. A manikin is the hands. Average{" "}
+          Crew protocol: Learn the pack → retrieve (due / Call it) → timed practice written → fix misses the same night.
+          Writtens are JB-style vignettes, not trivia. Average{" "}
           <span className="text-ink font-medium">80% across 4 block exams and 5 quizzes</span> or you do not sit the December 10 final.
-          Then 70% on that 150-question test or you do not sit Saturday practicals.
+          Then 70% on that 150 or you do not sit Saturday practicals.
         </p>
         <div className="mt-5 flex flex-wrap gap-2">
           <Pill tone="tape">{block.range}</Pill>
@@ -105,7 +106,7 @@ export function TodayView({ go }: { go: (v: View, extra?: string) => void }) {
               <p className="font-display text-xs font-semibold uppercase tracking-[0.2em] text-mute">Study desk</p>
               <h2 className="mt-1 font-display text-3xl font-bold uppercase text-ink">Learn · {block.label}</h2>
               <p className="mt-1 text-sm text-mute">
-                Primary packs (must-knows, traps, terms) plus a weak-spot queue for chapters under 80%.
+                Exam strategy + chapter packs. Weak spots under 80%. Study like the written: vignette → next action.
                 {unseen.length ? ` ${unseen.length} chapters in this block still unread.` : ""}
               </p>
             </div>
@@ -209,7 +210,7 @@ export function TodayView({ go }: { go: (v: View, extra?: string) => void }) {
               <p className="font-display text-xs font-semibold uppercase tracking-[0.2em] text-mute">Unit test</p>
               <h2 className="mt-1 font-display text-3xl font-bold uppercase text-ink">{block.label} practice written</h2>
               <p className="mt-1 text-sm text-mute">
-                Timed, exam-hard items first, no answers until you submit. 80% line.
+                Timed JB-style vignettes, no answers until submit. 80% line. Miss → Learn → Call it same night.
               </p>
             </div>
             <ClipboardList className="size-5 shrink-0 text-tape" />
@@ -273,7 +274,8 @@ export function TodayView({ go }: { go: (v: View, extra?: string) => void }) {
         {weak[0] && (
           <p className="mt-3 flex items-start gap-2 text-sm text-warn">
             <ShieldAlert className="mt-0.5 size-4 shrink-0" />
-            Start Learn with Ch. {weak[0].n} — {CHAPTERS.find((c) => c.n === weak[0].n)?.title}. Then drill. Crews fail Block I on shock, airway numbers, and assessment order — not on trivia.
+            Start Learn with Ch. {weak[0].n} — {CHAPTERS.find((c) => c.n === weak[0].n)?.title}. Then Call it.
+            Block I fails on airway numbers (rate, ETCO₂, cylinder math), shock, and assessment order — not trivia.
           </p>
         )}
       </Panel>

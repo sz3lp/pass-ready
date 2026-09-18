@@ -142,8 +142,8 @@ export function TestsView({ seedId, go }: { seedId?: string; go: (view: View, ex
           </div>
           <p className="mt-3 text-sm text-mute">
             {passed
-              ? "Good. The real test still uses their items — do not treat this as a Thursday score."
-              : "Stay in the missed chapters tonight. Open Learn for the study pack, then Drill for retrieval."}
+              ? "Good. Real Thursday still uses their bank — treat this as JB-style reps, not a free score."
+              : "Miss pattern first: Learn the chapter pack, name the trap, then Call it before you sit again."}
           </p>
           <div className="mt-6 flex flex-wrap gap-2">
             <button type="button" className="rounded-xl bg-tape px-4 py-2 font-display text-lg font-bold uppercase text-paper" onClick={() => start(test)}>
@@ -351,7 +351,7 @@ export function TestsView({ seedId, go }: { seedId?: string; go: (view: View, ex
           </div>
           <p className="mt-4 text-sm leading-relaxed text-mute">{test.gate}</p>
           <p className="mt-2 text-sm leading-relaxed text-mute">
-            Each start draws a fresh random form from the large pool (chapter-balanced). Recent attempts are de-prioritized so you don’t keep seeing the same items. Exam conditions: no why until you submit, countdown clock, flag and jump around.
+            Fresh random form each start (chapter-balanced; recent items de-prioritized). Read for the one decision — next action, cause, or definition trap. No why until submit.
           </p>
           {best && (
             <p className={`mt-4 font-display text-2xl font-bold ${pctColor(best.pct)}`}>

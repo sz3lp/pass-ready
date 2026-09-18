@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react"
 import { ArrowRight, BookOpen, TriangleAlert } from "lucide-react"
 import { BLOCKS, type BlockId } from "../data/syllabus"
 import { primaryPath, studyPack, chapterTitle } from "../data/notes"
+import { AIRWAY_EXAM_TRAPS, EXAM_STYLE, NIGHTLY_PROTOCOL } from "../data/studyStrategy"
 import { videosForChapter } from "../data/videos"
 import { blockMeta } from "../lib/schedule"
 import { masteryByChapter } from "../lib/storage"
@@ -160,7 +161,7 @@ export function LearnView({
           <div>
             <h1 className="font-display text-3xl font-extrabold uppercase">Learn</h1>
             <p className="mt-2 text-sm leading-relaxed text-mute">
-              Primary learning first: chapter packs with must-knows, traps, and terms. Then fix weak spots the drill stats flag under 80%.
+              Primary packs first, then weak spots under 80%. Writtens hit like JB TestPrep: vignette + vitals → next action, with near-miss distractors.
             </p>
           </div>
         </div>
@@ -182,8 +183,46 @@ export function LearnView({
         </div>
       </Panel>
 
+      <Panel>
+        <p className="font-display text-xs uppercase tracking-widest text-tape">{EXAM_STYLE.title}</p>
+        <p className="mt-2 text-sm leading-relaxed text-mute">{EXAM_STYLE.blurb}</p>
+        <ol className="mt-3 list-decimal space-y-1.5 pl-5 text-sm leading-snug">
+          {EXAM_STYLE.moves.map((m) => (
+            <li key={m}>{m}</li>
+          ))}
+        </ol>
+        <div className="mt-4 grid gap-2 sm:grid-cols-2">
+          {NIGHTLY_PROTOCOL.map((row) => (
+            <div key={row.step} className="rounded-xl border border-line bg-raised px-3 py-2">
+              <p className="font-display text-xs uppercase tracking-widest text-tape">
+                {row.step} · {row.label}
+              </p>
+              <p className="mt-1 text-sm text-mute">{row.detail}</p>
+            </div>
+          ))}
+        </div>
+      </Panel>
+
       {tab === "primary" && (
         <>
+          {block === 1 && (
+            <Panel className="border-tape/40">
+              <p className="font-display text-xs uppercase tracking-widest text-tape">Block I · airway written traps</p>
+              <p className="mt-1 text-sm text-mute">Lock these before Thursday — they are the exact miss pattern on JB-style banks.</p>
+              <ul className="mt-3 list-disc space-y-1.5 pl-5 text-sm leading-snug">
+                {AIRWAY_EXAM_TRAPS.map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ul>
+              <button
+                type="button"
+                onClick={() => setActive(11)}
+                className="mt-4 rounded-xl bg-tape px-4 py-2 font-display text-sm font-bold uppercase text-paper"
+              >
+                Open Ch. 11 pack
+              </button>
+            </Panel>
+          )}
           <Panel>
             <p className="font-display text-xs uppercase tracking-widest text-mute">Block path</p>
             <div className="mt-3 flex flex-wrap gap-2">
