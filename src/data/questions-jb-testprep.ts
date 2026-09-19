@@ -1464,6 +1464,54 @@ export const JB_TESTPREP: Question[] = [
   },
   {
     id: "jb-092",
+    chapter: 41,
+    block: 4,
+    stem: 'What is the primary clinical feature associated with exposure to a vesicant agent?',
+    choices: [
+      'Tachycardia',
+      'Skin blistering',
+      'Vomiting blood',
+      'Muscle twitching',
+    ],
+    answer: 1,
+    why: 'Vesicants are blister agents — the hallmark is skin blistering.',
+    tag: 'vesicant',
+    difficulty: "exam",
+  },
+  {
+    id: "jb-093",
+    chapter: 41,
+    block: 4,
+    stem: 'Following an apparent terrorist attack, numerous patients present with shortness of breath and persistent coughing. A green haze is noted in the area in which the patients are located. Which of the following agents should you suspect they were exposed to?',
+    choices: [
+      'Tabun (GA)',
+      'Phosgene oxime',
+      'V agent (VX)',
+      'Chlorine (CL)',
+    ],
+    answer: 3,
+    why: 'Green haze + coughing/dyspnea = chlorine (pulmonary/choking agent). Tabun and VX are nerve agents; phosgene oxime is a vesicant.',
+    tag: 'chlorine',
+    difficulty: "exam",
+  },
+  {
+    id: "jb-094",
+    chapter: 26,
+    block: 1,
+    stem: 'An injured man opens his eyes when you speak to him and pulls his arm away when you palpate it. He knows his name, but cannot remember what happened and does not know what day it is. What is his Glasgow Coma Scale (GCS) score?',
+    choices: [
+      '9',
+      '10',
+      '11',
+      '12',
+    ],
+    answer: 2,
+    why: 'Eyes to speech = 3, withdraws to pain = 4, confused verbal = 4 → GCS 11.',
+    tag: 'GCS',
+    difficulty: "exam",
+  },
+  {
+    id: "jb-095",
     chapter: 30,
     block: 2,
     stem: 'A man has a large knife impaled in the center of his chest. He is unresponsive, pulseless, and apneic. What should you do?',
@@ -1479,7 +1527,7 @@ export const JB_TESTPREP: Question[] = [
     difficulty: "exam",
   },
   {
-    id: "jb-093",
+    id: "jb-096",
     chapter: 31,
     block: 2,
     stem: 'Following penetrating trauma to the abdomen, a woman has a large laceration with a loop of protruding bowel. What should you do?',
@@ -1495,7 +1543,7 @@ export const JB_TESTPREP: Question[] = [
     difficulty: "exam",
   },
   {
-    id: "jb-094",
+    id: "jb-097",
     chapter: 26,
     block: 1,
     stem: 'What should you routinely do when assessing and treating a patient with a gunshot wound?',
@@ -1511,7 +1559,7 @@ export const JB_TESTPREP: Question[] = [
     difficulty: "exam",
   },
   {
-    id: "jb-095",
+    id: "jb-098",
     chapter: 32,
     block: 2,
     stem: 'Which of the following assessment findings indicates that a patient with a closed tibial fracture is developing compartment syndrome?',
@@ -1527,7 +1575,7 @@ export const JB_TESTPREP: Question[] = [
     difficulty: "exam",
   },
   {
-    id: "jb-096",
+    id: "jb-099",
     chapter: 26,
     block: 1,
     stem: 'Despite direct pressure, a large thigh laceration continues to bleed heavily. What should you do?',
@@ -1543,7 +1591,7 @@ export const JB_TESTPREP: Question[] = [
     difficulty: "exam",
   },
   {
-    id: "jb-097",
+    id: "jb-100",
     chapter: 30,
     block: 2,
     stem: 'Following blunt injury to the anterior torso, a patient is coughing up bright red blood. What should you suspect?',
@@ -1559,7 +1607,7 @@ export const JB_TESTPREP: Question[] = [
     difficulty: "exam",
   },
   {
-    id: "jb-098",
+    id: "jb-101",
     chapter: 32,
     block: 2,
     stem: 'A woman fell on her knee and is in severe pain. Her knee is flexed and severely deformed. Her leg is cold to the touch, and you are unable to palpate a distal pulse. What should you do?',
@@ -1575,7 +1623,7 @@ export const JB_TESTPREP: Question[] = [
     difficulty: "exam",
   },
   {
-    id: "jb-099",
+    id: "jb-102",
     chapter: 30,
     block: 2,
     stem: 'A man was stabbed two inches to the left of his sternum. He is diaphoretic and tachypneic, his BP is 90/68 mm Hg, and his pulse is rapid and weak. His breath sounds are equal bilaterally. What should you do?',
@@ -1591,7 +1639,7 @@ export const JB_TESTPREP: Question[] = [
     difficulty: "exam",
   },
   {
-    id: "jb-100",
+    id: "jb-103",
     chapter: 28,
     block: 1,
     stem: 'A man was hit in the nose during a fight. He has bruising under his left eye and a nosebleed. What should you do?',
@@ -1607,7 +1655,7 @@ export const JB_TESTPREP: Question[] = [
     difficulty: "exam",
   },
   {
-    id: "jb-101",
+    id: "jb-104",
     chapter: 29,
     block: 1,
     stem: 'A patient with multisystem trauma presents with decerebrate posturing, rapid irregular breathing, and bradycardia. You should suspect injury to which of the following?',
@@ -1623,7 +1671,7 @@ export const JB_TESTPREP: Question[] = [
     difficulty: "exam",
   },
   {
-    id: "jb-102",
+    id: "jb-105",
     chapter: 16,
     block: 2,
     stem: 'Assessment of a man with respiratory distress reveals that his chest has a barrel-shaped appearance and he is exhaling through pursed lips. Which of the following processes is causing his presentation?',
@@ -1639,7 +1687,7 @@ export const JB_TESTPREP: Question[] = [
     difficulty: "exam",
   },
   {
-    id: "jb-103",
+    id: "jb-106",
     chapter: 16,
     block: 2,
     stem: 'A 66-year-old man with a history of emphysema presents with respiratory distress. He is conscious but is tired and fatigued. His breathing is labored and shallow, his pulse is rapid and weak, and his skin is cool and pale. What should you do?',
@@ -1655,7 +1703,7 @@ export const JB_TESTPREP: Question[] = [
     difficulty: "exam",
   },
   {
-    id: "jb-104",
+    id: "jb-107",
     chapter: 16,
     block: 2,
     stem: 'An obese 56-year-old woman experienced a sudden onset of dyspnea and chest pain while reading a book. Her breathing is labored, and her heart rate is 130 beats/min. Despite supplemental oxygen, her oxygen saturation remains low. What should the EMT suspect?',
@@ -1671,7 +1719,7 @@ export const JB_TESTPREP: Question[] = [
     difficulty: "exam",
   },
   {
-    id: "jb-105",
+    id: "jb-108",
     chapter: 17,
     block: 2,
     stem: 'Which of the following cardiac rhythms originates in the ventricles, usually at a rate of 150 to 200 beats/min, and can cause low blood pressure?',
@@ -1687,7 +1735,7 @@ export const JB_TESTPREP: Question[] = [
     difficulty: "exam",
   },
   {
-    id: "jb-106",
+    id: "jb-109",
     chapter: 14,
     block: 1,
     stem: 'While performing CPR on a patient who is wearing an external defibrillator vest, the device alarms and indicates that a shock is about to be delivered. What should you do?',
@@ -1703,7 +1751,7 @@ export const JB_TESTPREP: Question[] = [
     difficulty: "exam",
   },
   {
-    id: "jb-107",
+    id: "jb-110",
     chapter: 6,
     block: 1,
     stem: 'Which of the following clinical signs would indicate increased sympathetic nervous system activity?',
@@ -1719,7 +1767,7 @@ export const JB_TESTPREP: Question[] = [
     difficulty: "exam",
   },
   {
-    id: "jb-108",
+    id: "jb-111",
     chapter: 21,
     block: 3,
     stem: 'Which of the following conditions could be made worse by the administration of epinephrine?',
@@ -1735,7 +1783,7 @@ export const JB_TESTPREP: Question[] = [
     difficulty: "exam",
   },
   {
-    id: "jb-109",
+    id: "jb-112",
     chapter: 40,
     block: 4,
     stem: 'While triaging patients at the scene of a mass-casualty incident, you encounter a 3-year-old boy who is unresponsive and apneic. After opening his airway, you determine that he remains apneic. According to the JumpSTART triage system, what should you do next?',
@@ -1751,7 +1799,7 @@ export const JB_TESTPREP: Question[] = [
     difficulty: "exam",
   },
   {
-    id: "jb-110",
+    id: "jb-113",
     chapter: 35,
     block: 4,
     stem: 'A week after a near-drowning incident, a 6-year-old boy presents with respiratory distress, tachypnea, and fever. What should you suspect?',
@@ -1767,7 +1815,7 @@ export const JB_TESTPREP: Question[] = [
     difficulty: "exam",
   },
   {
-    id: "jb-111",
+    id: "jb-114",
     chapter: 7,
     block: 4,
     stem: 'Which of the following represents a high normal respiratory rate for an infant between 1 month and 1 year of age?',
@@ -1783,7 +1831,7 @@ export const JB_TESTPREP: Question[] = [
     difficulty: "exam",
   },
   {
-    id: "jb-112",
+    id: "jb-115",
     chapter: 2,
     block: 3,
     stem: 'Which of the following processes involves the removal of dirt, dust, blood, or other visible contaminants from a surface or equipment?',
@@ -1799,7 +1847,7 @@ export const JB_TESTPREP: Question[] = [
     difficulty: "exam",
   },
   {
-    id: "jb-113",
+    id: "jb-116",
     chapter: 3,
     block: 4,
     stem: 'Which of the following is an example of informed consent?',
@@ -1815,7 +1863,7 @@ export const JB_TESTPREP: Question[] = [
     difficulty: "exam",
   },
   {
-    id: "jb-114",
+    id: "jb-117",
     chapter: 29,
     block: 1,
     stem: 'A woman was ejected from her car when it struck a bridge pillar. During your assessment, you notice that her chest collapses and her abdomen rises during inhalation. What should you suspect?',
@@ -1831,7 +1879,7 @@ export const JB_TESTPREP: Question[] = [
     difficulty: "exam",
   },
   {
-    id: "jb-115",
+    id: "jb-118",
     chapter: 29,
     block: 1,
     stem: 'A trauma patient has a BP of 172/94 mm Hg, a pulse rate of 45 beats/min, and a respiratory rate of 6 breaths/min. Which of the following conditions would likely cause these vital signs?',
@@ -1847,7 +1895,7 @@ export const JB_TESTPREP: Question[] = [
     difficulty: "exam",
   },
   {
-    id: "jb-116",
+    id: "jb-119",
     chapter: 27,
     block: 1,
     stem: 'A man has partial- and full-thickness burns to his chest and upper extremities. What should you do?',
@@ -1863,7 +1911,7 @@ export const JB_TESTPREP: Question[] = [
     difficulty: "exam",
   },
   {
-    id: "jb-117",
+    id: "jb-120",
     chapter: 22,
     block: 3,
     stem: 'A man is experiencing hallucinations and paranoia after abusing an unknown substance. His heart rate is 170 beats/min, he complains of a headache, and he is experiencing muscle twitching. Which of the following could explain his clinical presentation?',

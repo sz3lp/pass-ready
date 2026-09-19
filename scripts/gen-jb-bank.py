@@ -887,6 +887,24 @@ ITEMS = [
     "Radio reports are brief, concise, and factual — no patient name over the air.",
   ),
   (
+    "What is the primary clinical feature associated with exposure to a vesicant agent?",
+    ["Tachycardia", "Skin blistering", "Vomiting blood", "Muscle twitching"],
+    1, 41, "vesicant",
+    "Vesicants are blister agents — the hallmark is skin blistering.",
+  ),
+  (
+    "Following an apparent terrorist attack, numerous patients present with shortness of breath and persistent coughing. A green haze is noted in the area in which the patients are located. Which of the following agents should you suspect they were exposed to?",
+    ["Tabun (GA)", "Phosgene oxime", "V agent (VX)", "Chlorine (CL)"],
+    3, 41, "chlorine",
+    "Green haze + coughing/dyspnea = chlorine (pulmonary/choking agent). Tabun and VX are nerve agents; phosgene oxime is a vesicant.",
+  ),
+  (
+    "An injured man opens his eyes when you speak to him and pulls his arm away when you palpate it. He knows his name, but cannot remember what happened and does not know what day it is. What is his Glasgow Coma Scale (GCS) score?",
+    ["9", "10", "11", "12"],
+    2, 26, "GCS",
+    "Eyes to speech = 3, withdraws to pain = 4, confused verbal = 4 → GCS 11.",
+  ),
+  (
     "A man has a large knife impaled in the center of his chest. He is unresponsive, pulseless, and apneic. What should you do?",
     [
       "Carefully remove the knife, control the bleeding, and begin CPR",
