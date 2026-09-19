@@ -8,6 +8,7 @@ import { EXAM_EXP_B1 } from "./questions-exam-exp-b1"
 import { EXAM_EXP_B2 } from "./questions-exam-exp-b2"
 import { EXAM_EXP_B3 } from "./questions-exam-exp-b3"
 import { EXAM_EXP_B4 } from "./questions-exam-exp-b4"
+import { JB_TESTPREP } from "./questions-jb-testprep"
 
 export type Question = {
   id: string
@@ -1548,8 +1549,9 @@ export const QUESTIONS: Question[] = [
   ...EXAM_EXP_B4,
 ]
 
-/** Hand-authored exam cores + ~10× expanded vignette variants for practice writtens. */
+/** Hand-authored exam cores + JB TestPrep bank + ~10× expanded vignette variants. */
 export const EXAM_QUESTIONS: Question[] = [
+  ...JB_TESTPREP,
   ...EXAM_B1,
   ...EXAM_B2,
   ...EXAM_B3,
@@ -1559,6 +1561,9 @@ export const EXAM_QUESTIONS: Question[] = [
   ...EXAM_EXP_B3,
   ...EXAM_EXP_B4,
 ]
+
+/** Authentic JB / AAOS TestPrep items from crew screen recordings. */
+export { JB_TESTPREP }
 
 export function questionsForChapters(chapters: number[]) {
   const set = new Set(chapters)

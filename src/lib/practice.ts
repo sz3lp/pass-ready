@@ -1,5 +1,6 @@
 import {
   EXAM_QUESTIONS,
+  JB_TESTPREP,
   QUESTIONS,
   examQuestionsForChapters,
   questionsForChapters,
@@ -10,9 +11,20 @@ import type { Store } from "./storage"
 import { runsForTest } from "./storage"
 import { shuffle } from "./schedule"
 
-/** Unit tests use the exam-hard vignette bank only (Thursday-written style). */
+/** Unit tests: JB TestPrep bank preferred, then exam-hard vignettes. */
 export function poolFor(test: PracticeTest) {
+  if (test.id === "jb") return JB_TESTPREP
+
+  const jb = test.chapters.length
+    ? JB_TESTPREP.filter((q) => test.chapters.includes(q.chapter))
+    : JB_TESTPREP
   const exam = test.chapters.length ? examQuestionsForChapters(test.chapters) : EXAM_QUESTIONS
+  // Prefer authentic JB items when the chapter set has enough; fill from exam bank.
+  if (jb.length >= Math.min(test.target, 8)) {
+    const jbIds = new Set(jb.map((q) => q.id))
+    const fill = exam.filter((q) => !jbIds.has(q.id))
+    return [...jb, ...fill]
+  }
   if (exam.length >= Math.min(test.target, 8)) return exam
   return test.chapters.length ? questionsForChapters(test.chapters) : QUESTIONS
 }

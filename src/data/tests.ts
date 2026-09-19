@@ -1,6 +1,17 @@
 import { BLOCKS, type BlockId } from "./syllabus"
 
-export type PracticeTestId = "b1" | "b2" | "b3" | "b4" | "q1" | "q2" | "q3" | "q4" | "q5" | "final"
+export type PracticeTestId =
+  | "b1"
+  | "b2"
+  | "b3"
+  | "b4"
+  | "q1"
+  | "q2"
+  | "q3"
+  | "q4"
+  | "q5"
+  | "final"
+  | "jb"
 
 export type PracticeTest = {
   id: PracticeTestId
@@ -147,9 +158,23 @@ export const PRACTICE_TESTS: PracticeTest[] = [
     passLine: 70,
     gate: "70% on the real 150 sits you for Saturday practicals. Practice like JB: vignette → next action → 80% bar.",
   },
+  {
+    id: "jb",
+    label: "JB TestPrep · Full",
+    unit: "Crew bank",
+    kind: "final",
+    subtitle: "117 real TestPrep items from your screen recordings",
+    when: "Anytime · authentic JB / AAOS wording",
+    chapters: [],
+    target: 117,
+    minutes: 120,
+    passLine: 80,
+    gate: "This is the actual TestPrep bank transcribed from your recordings — vignette stems, near-miss distractors, keyed answers. Sit it like Thursday.",
+  },
 ]
 
 export const UNIT_GROUPS: { title: string; block?: BlockId; testIds: PracticeTestId[] }[] = [
+  { title: "JB TestPrep (actual bank)", testIds: ["jb"] },
   { title: "Block I", block: 1, testIds: ["b1", "q1"] },
   { title: "Block II", block: 2, testIds: ["b2", "q2"] },
   { title: "Block III", block: 3, testIds: ["b3", "q3"] },
