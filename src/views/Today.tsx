@@ -210,7 +210,9 @@ export function TodayView({ go }: { go: (v: View, extra?: string) => void }) {
               <p className="font-display text-xs font-semibold uppercase tracking-[0.2em] text-mute">Unit test</p>
               <h2 className="mt-1 font-display text-3xl font-bold uppercase text-ink">{block.label} practice written</h2>
               <p className="mt-1 text-sm text-mute">
-                Timed JB-style vignettes, no answers until submit. 80% line. Miss → Learn → Call it same night.
+                {block.id === 1
+                  ? "Cadre format: 70 Q · 90 min · miss ≤14 · national standards. Timed practice, answers off until submit."
+                  : "Timed JB-style vignettes, no answers until submit. 80% line. Miss → Learn → Call it same night."}
               </p>
             </div>
             <ClipboardList className="size-5 shrink-0 text-tape" />

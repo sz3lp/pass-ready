@@ -104,7 +104,7 @@ export type CalendarEvent = {
 
 export const CALENDAR: CalendarEvent[] = [
   { id: "b1-start", date: "2026-09-10", title: "Block I begins", kind: "class", detail: "EMS Systems, Sick/Not-Sick, lifting, med term, body, trauma, airway, head/spine." },
-  { id: "b1-exam", date: "2026-09-24", start: "18:00", end: "19:30", title: "Block I Written Exam", kind: "written", detail: "Ch. 1, 5, 6, 8, 10, 11, 13, 14, 25, 26, 27, 28, 29 (13 chapters)." },
+  { id: "b1-exam", date: "2026-09-24", start: "18:00", end: "19:30", title: "Block I Written Exam", kind: "written", detail: "70 MCQ · 90 min · 80% pass (miss ≤14). Ch. 1, 5, 6, 8, 10, 11, 13, 14, 25–29. National standards. Bring a charged device." },
   { id: "b1-skills", date: "2026-09-26", start: "08:50", end: "12:30", title: "Block I Skills", kind: "skills", detail: "#7 BVM adult · #11 O₂ NRB/NC · #39 i-gel · #87 NPA · #29 Bleeding/Shock." },
   { id: "b2-start", date: "2026-09-28", title: "Block II begins", kind: "class", detail: "Chest, GU-Abd, ortho, medical overview, cardiac, respiratory, neuro." },
   { id: "b2-exam", date: "2026-10-15", start: "18:00", end: "19:30", title: "Block II Written Exam", kind: "written", detail: "Ch. 15, 16, 17, 18, 30, 31, 32 (7 chapters)." },
@@ -143,7 +143,7 @@ export const BLOCKS: BlockMeta[] = [
     label: "Block I",
     weeks: "Weeks 1–3",
     range: "Sep 10 – Sep 26",
-    written: "Thu Sep 24, 1800–1930",
+    written: "Thu Sep 24, 1800–1930 · 70 Q · 80%",
     skills: "Sat Sep 26, 08:50–12:30",
     lecture: [
       "EMS Systems, Sick/Not-Sick, Lifting & Moving (Ch. 1, 8)",

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react"
 import { ArrowRight, BookOpen, TriangleAlert } from "lucide-react"
 import { BLOCKS, type BlockId } from "../data/syllabus"
 import { primaryPath, studyPack, chapterTitle } from "../data/notes"
-import { AIRWAY_EXAM_TRAPS, EXAM_STYLE, NIGHTLY_PROTOCOL } from "../data/studyStrategy"
+import { AIRWAY_EXAM_TRAPS, B1_CADRE_BRIEF, EXAM_STYLE, NIGHTLY_PROTOCOL } from "../data/studyStrategy"
 import { videosForChapter } from "../data/videos"
 import { blockMeta } from "../lib/schedule"
 import { masteryByChapter } from "../lib/storage"
@@ -206,22 +206,57 @@ export function LearnView({
       {tab === "primary" && (
         <>
           {block === 1 && (
-            <Panel className="border-tape/40">
-              <p className="font-display text-xs uppercase tracking-widest text-tape">Block I · airway written traps</p>
-              <p className="mt-1 text-sm text-mute">Lock these before Thursday — they are the exact miss pattern on JB-style banks.</p>
-              <ul className="mt-3 list-disc space-y-1.5 pl-5 text-sm leading-snug">
-                {AIRWAY_EXAM_TRAPS.map((line) => (
-                  <li key={line}>{line}</li>
-                ))}
-              </ul>
-              <button
-                type="button"
-                onClick={() => setActive(11)}
-                className="mt-4 rounded-xl bg-tape px-4 py-2 font-display text-sm font-bold uppercase text-paper"
-              >
-                Open Ch. 11 pack
-              </button>
-            </Panel>
+            <>
+              <Panel className="border-tape/50 bg-tape/5">
+                <p className="font-display text-xs uppercase tracking-widest text-tape">{B1_CADRE_BRIEF.title}</p>
+                <p className="mt-2 text-sm font-medium text-ink">{B1_CADRE_BRIEF.when}</p>
+                <p className="mt-1 text-sm text-ink">{B1_CADRE_BRIEF.format}</p>
+                <p className="mt-2 text-sm text-mute">{B1_CADRE_BRIEF.standards}</p>
+                <h3 className="mt-4 font-display text-sm font-bold uppercase tracking-wide">Study guide (Cadre)</h3>
+                <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm leading-snug">
+                  {B1_CADRE_BRIEF.studyGuide.map((line) => (
+                    <li key={line}>{line}</li>
+                  ))}
+                </ul>
+                <h3 className="mt-4 font-display text-sm font-bold uppercase tracking-wide">Testing tips</h3>
+                <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm leading-snug">
+                  {B1_CADRE_BRIEF.tips.map((line) => (
+                    <li key={line}>{line}</li>
+                  ))}
+                </ul>
+                <a
+                  href={B1_CADRE_BRIEF.bookWalkthroughUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-4 inline-flex text-sm text-tape underline-offset-2 hover:underline"
+                >
+                  Book walkthrough (YouTube audio)
+                </a>
+                <button
+                  type="button"
+                  onClick={() => go("tests", "b1")}
+                  className="mt-4 block rounded-xl bg-tape px-4 py-2 font-display text-sm font-bold uppercase text-paper"
+                >
+                  Sit 70-question Block I practice
+                </button>
+              </Panel>
+              <Panel className="border-tape/40">
+                <p className="font-display text-xs uppercase tracking-widest text-tape">Block I · airway written traps</p>
+                <p className="mt-1 text-sm text-mute">Lock these before Thursday — they are the exact miss pattern on JB-style banks.</p>
+                <ul className="mt-3 list-disc space-y-1.5 pl-5 text-sm leading-snug">
+                  {AIRWAY_EXAM_TRAPS.map((line) => (
+                    <li key={line}>{line}</li>
+                  ))}
+                </ul>
+                <button
+                  type="button"
+                  onClick={() => setActive(11)}
+                  className="mt-4 rounded-xl bg-tape px-4 py-2 font-display text-sm font-bold uppercase text-paper"
+                >
+                  Open Ch. 11 pack
+                </button>
+              </Panel>
+            </>
           )}
           <Panel>
             <p className="font-display text-xs uppercase tracking-widest text-mute">Block path</p>
