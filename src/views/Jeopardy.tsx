@@ -302,9 +302,22 @@ function Board({ session, onBack, go }: { session: ClassSession; onBack: () => v
     }
   }
 
+  const checkChoice = (choiceIndex: number) => {
+    if (!current || active === null || showAnswer || phase !== "answering") return
+    judge(choiceIndex === current.q.answer)
+  }
+
   useEffect(() => {
     if (!current || showAnswer) return
     const onKey = (e: KeyboardEvent) => {
+      if (phase === "answering" && active !== null && hint >= 2) {
+        const letter = e.key.toLowerCase()
+        const display = "abcd".indexOf(letter)
+        if (display >= 0 && choices[display]) {
+          checkChoice(choices[display].index)
+          return
+        }
+      }
       if (e.key === "1" || e.key === "a" || e.key === "A") buzz(0)
       if (e.key === "2" || e.key === "b" || e.key === "B") buzz(1)
     }
@@ -371,7 +384,7 @@ function Board({ session, onBack, go }: { session: ClassSession; onBack: () => v
       <Panel>
         <p className="font-display text-xs uppercase tracking-[0.2em] text-tape">{session.subtitle}</p>
         <h1 className="font-display text-3xl font-extrabold uppercase text-ink">{session.title}</h1>
-        <p className="mt-1 text-sm text-mute">Pick a clue. First buzz answers out loud. Host can give a nudge, then a multiple-choice hint if they’re still stuck.</p>
+        <p className="mt-1 text-sm text-mute">Pick a clue. First buzz answers out loud. Host can give a nudge, then a multiple-choice hint they can tap (or A–D) to check.</p>
         {videosForTopic(session.id).length > 0 && (
           <div className="mt-4 border-t border-line pt-4">
             <p className="font-display text-xs uppercase tracking-widest text-mute">Watch before class</p>
@@ -442,12 +455,31 @@ function Board({ session, onBack, go }: { session: ClassSession; onBack: () => v
                 )}
                 {hint >= 2 && (
                   <div className="grid gap-2">
-                    {choices.map((c, display) => (
-                      <div key={c.index} className="rounded-xl border border-line bg-raised px-3 py-2 text-sm">
-                        <span className="font-display font-bold text-tape">{"ABCD"[display]} </span>
-                        {c.text}
-                      </div>
-                    ))}
+                    {choices.map((c, display) => {
+                      const canCheck = phase === "answering" && active !== null
+                      if (canCheck) {
+                        return (
+                          <button
+                            key={c.index}
+                            type="button"
+                            onClick={() => checkChoice(c.index)}
+                            className="rounded-xl border border-line bg-raised px-3 py-2 text-left text-sm hover:border-tape/50"
+                          >
+                            <span className="font-display font-bold text-tape">{"ABCD"[display]} </span>
+                            {c.text}
+                          </button>
+                        )
+                      }
+                      return (
+                        <div key={c.index} className="rounded-xl border border-line bg-raised px-3 py-2 text-sm">
+                          <span className="font-display font-bold text-tape">{"ABCD"[display]} </span>
+                          {c.text}
+                        </div>
+                      )
+                    })}
+                    {phase === "answering" && active !== null && (
+                      <p className="text-xs text-mute">Tap a choice (or press A–D) to check against the keyed response.</p>
+                    )}
                   </div>
                 )}
               </div>
@@ -478,6 +510,9 @@ function Board({ session, onBack, go }: { session: ClassSession; onBack: () => v
                     Wrong · −{current.value}
                   </button>
                 </div>
+                {hint < 2 && (
+                  <p className="text-xs text-mute">Out-loud answers: host judges. Stuck? Use hints, then tap a choice to auto-check.</p>
+                )}
               </div>
             )}
 
