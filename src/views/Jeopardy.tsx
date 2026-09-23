@@ -435,7 +435,7 @@ function Board({ session, onBack, go }: { session: ClassSession; onBack: () => v
                       setHint(1)
                       if (live) void patchGame(live.id, { hint: 1 })
                     }}
-                    className="w-fit rounded-full border border-line px-3 py-1 text-xs text-mute"
+                    className="w-fit rounded-xl border border-line px-3 py-2 text-sm text-mute hover:border-tape/40"
                   >
                     Hint 1 · slight nudge
                   </button>
@@ -448,7 +448,7 @@ function Board({ session, onBack, go }: { session: ClassSession; onBack: () => v
                       setHint(2)
                       if (live) void patchGame(live.id, { hint: 2 })
                     }}
-                    className="w-fit rounded-full border border-line px-3 py-1 text-xs text-mute"
+                    className="w-fit rounded-xl border border-line px-3 py-2 text-sm text-mute hover:border-tape/40"
                   >
                     Hint 2 · multiple choice
                   </button>
