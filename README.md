@@ -21,7 +21,7 @@ If signup says to check email, confirm the link, then sign in. If no mail arrive
 1. Host computer: **Jeopardy** → pick the class → **Start live game**. The short code is huge on screen.
 2. Phones: **Play** (or `#play/CODE`) → sign in → enter the code → pick **Red** or **Blue**.
 3. Host opens a clue and reads it. Phones show a giant **BUZZ** only while the clue (or steal) is open.
-4. First successful buzz locks that team. Host judges correct/wrong on the computer. Steal lets the other team buzz.
+4. First successful buzz locks that team. Host judges correct/wrong on the computer, or after Hint 2 taps a multiple-choice option (or A–D) to auto-check. Steal lets the other team buzz.
 5. Host keyboard `1`/`A` and `2`/`B` still works as backup.
 
 ## Run it locally
