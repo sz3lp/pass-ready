@@ -3,6 +3,7 @@ import { BLOCKS, type BlockId } from "./syllabus"
 export type PracticeTestId =
   | "b1"
   | "b2"
+  | "b2i"
   | "b3"
   | "b4"
   | "q1"
@@ -55,11 +56,24 @@ export const PRACTICE_TESTS: PracticeTest[] = [
     gate: "10 vignette items. An 8/10 is the line. After misses: Learn pack → Call it, same night.",
   },
   {
+    id: "b2i",
+    label: "Block II · Instructor-style",
+    unit: "Block II",
+    kind: "block",
+    subtitle: "70 Q · Advantage Access / lecture recall · Ch. 15–18, 30–32",
+    when: "Practice like Thursday · try finishing in ~35–45 min",
+    chapters: BLOCKS[1].examChapters,
+    target: 70,
+    minutes: 90,
+    passLine: 80,
+    gate: "Written like your Block I final: short AAOS definitions, EXCEPT items, light scenarios — plus chest/abd/ortho points from class decks. Miss ≤14. Separate from the vignette bank so you train both sports.",
+  },
+  {
     id: "b2",
     label: "Block II Written",
     unit: "Block II",
     kind: "block",
-    subtitle: "Ch. 15–18, 30–32",
+    subtitle: "Ch. 15–18, 30–32 · JB / vignette bank",
     when: "Thu Oct 15 · 1800–1930",
     chapters: BLOCKS[1].examChapters,
     target: 50,
@@ -176,7 +190,7 @@ export const PRACTICE_TESTS: PracticeTest[] = [
 export const UNIT_GROUPS: { title: string; block?: BlockId; testIds: PracticeTestId[] }[] = [
   { title: "JB TestPrep (actual bank)", testIds: ["jb"] },
   { title: "Block I", block: 1, testIds: ["b1", "q1"] },
-  { title: "Block II", block: 2, testIds: ["b2", "q2"] },
+  { title: "Block II", block: 2, testIds: ["b2i", "b2", "q2"] },
   { title: "Block III", block: 3, testIds: ["b3", "q3"] },
   { title: "Block IV", block: 4, testIds: ["b4", "q4"] },
   { title: "Finals week", testIds: ["q5", "final"] },
