@@ -9,6 +9,7 @@ import { EXAM_EXP_B2 } from "./questions-exam-exp-b2"
 import { EXAM_EXP_B3 } from "./questions-exam-exp-b3"
 import { EXAM_EXP_B4 } from "./questions-exam-exp-b4"
 import { JB_TESTPREP } from "./questions-jb-testprep"
+import { INSTRUCTOR_B2 } from "./questions-instructor-b2"
 
 export type Question = {
   id: string
@@ -1564,6 +1565,9 @@ export const EXAM_QUESTIONS: Question[] = [
 
 /** Authentic JB / AAOS TestPrep items from crew screen recordings. */
 export { JB_TESTPREP }
+
+/** Fixed Block II form in KCEMS Advantage Access / lecture-recall style. */
+export { INSTRUCTOR_B2 }
 
 export function questionsForChapters(chapters: number[]) {
   const set = new Set(chapters)

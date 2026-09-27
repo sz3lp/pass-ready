@@ -6,6 +6,7 @@ import {
   questionsForChapters,
   type Question,
 } from "../data/questions"
+import { INSTRUCTOR_B2 } from "../data/questions-instructor-b2"
 import type { PracticeTest } from "../data/tests"
 import type { Store } from "./storage"
 import { runsForTest } from "./storage"
@@ -14,6 +15,7 @@ import { shuffle } from "./schedule"
 /** Unit tests: JB TestPrep bank preferred, then exam-hard vignettes. */
 export function poolFor(test: PracticeTest) {
   if (test.id === "jb") return JB_TESTPREP
+  if (test.id === "b2i") return INSTRUCTOR_B2
 
   const jb = test.chapters.length
     ? JB_TESTPREP.filter((q) => test.chapters.includes(q.chapter))
