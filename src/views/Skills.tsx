@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react"
 import { BLOCKS } from "../data/syllabus"
 import { SKILLS, type Skill } from "../data/skills"
 import { MIRAMAR_HUB, videosForSkill } from "../data/videos"
-import { blockMeta } from "../lib/schedule"
+import { blockMeta, shuffle } from "../lib/schedule"
 import { recordSkill } from "../lib/storage"
 import { useAppStore } from "../lib/store"
 import { Panel, Pill } from "../components/ui"
@@ -18,6 +18,8 @@ export function SkillsView() {
   const [started, setStarted] = useState<number | null>(null)
   const [elapsed, setElapsed] = useState(0)
   const [result, setResult] = useState<"pass" | "fail" | null>(null)
+  const [reciteOrder, setReciteOrder] = useState<number[]>([])
+  const [recitePicks, setRecitePicks] = useState<number[]>([])
 
   useEffect(() => {
     if (!started || result) return
@@ -36,14 +38,20 @@ export function SkillsView() {
     setStarted(Date.now())
     setElapsed(0)
     setResult(null)
+    setBuddy(true)
+    const idx = skill.failFast.map((_, i) => i)
+    setReciteOrder(shuffle(idx, Date.now() + skill.id.length))
+    setRecitePicks([])
   }
+
+  const recited = !active || active.failFast.length === 0 || recitePicks.length === active.failFast.length
 
   const finish = () => {
     if (!active) return
     const missedCritical = active.steps.filter(
       (s, idx) => s.critical && !s.evaluatorNote && !checked[idx],
     ).length
-    const passed = missedCritical === 0
+    const passed = missedCritical === 0 && buddy && recited
     setResult(passed ? "pass" : "fail")
     setStore(
       recordSkill(store, active.id, {
@@ -51,6 +59,8 @@ export function SkillsView() {
         passed,
         missedCritical,
         elapsedSec: elapsed,
+        buddy,
+        recited,
       }),
     )
   }
@@ -106,55 +116,98 @@ export function SkillsView() {
             </div>
           </Panel>
         )}
-        <ol className="grid gap-2">
-          {active.steps.map((step, idx) => {
-            if (step.evaluatorNote) {
-              return (
-                <li key={idx}>
-                  <div className="rounded-xl border border-line/60 bg-raised px-3 py-2 text-sm leading-snug text-mute">
-                    {step.text}
-                  </div>
-                </li>
-              )
-            }
-            const scorableIdx = active.steps.slice(0, idx + 1).filter((s) => !s.evaluatorNote).length
-            return (
-              <li key={idx}>
-                <button
-                  type="button"
-                  disabled={!!result}
-                  onClick={() => setChecked((c) => ({ ...c, [idx]: !c[idx] }))}
-                  className={`flex w-full items-start gap-3 rounded-xl border px-3 py-3 text-left ${
-                    step.critical ? "border-stop/40" : "border-line"
-                  } ${checked[idx] ? "bg-go/10" : "bg-panel"}`}
-                >
-                  <span
-                    className={`mt-0.5 flex size-5 shrink-0 items-center justify-center rounded border ${
-                      checked[idx] ? "border-go bg-go text-paper" : "border-mute/40"
+        {active.failFast.length > 0 && !recited && (
+          <Panel>
+            <p className="font-display text-xs uppercase tracking-widest text-tape">Recite to unlock</p>
+            <p className="mt-2 text-sm text-mute">
+              Tap the auto-fails in sheet order. Wrong tap resets. Checkboxes stay locked until you call them.
+            </p>
+            <div className="mt-3 grid gap-2">
+              {reciteOrder.map((orig) => {
+                const done = recitePicks.includes(orig)
+                return (
+                  <button
+                    key={orig}
+                    type="button"
+                    disabled={done}
+                    onClick={() => {
+                      if (orig === recitePicks.length) setRecitePicks((p) => [...p, orig])
+                      else setRecitePicks([])
+                    }}
+                    className={`rounded-xl border px-3 py-3 text-left text-sm ${
+                      done ? "border-go/40 bg-go/10 text-mute" : "border-line bg-raised hover:border-tape/40"
                     }`}
                   >
-                    {checked[idx] ? "✓" : scorableIdx}
-                  </span>
-                  <span>
-                    {step.critical && (
-                      <span className="mr-2 font-display text-xs font-bold uppercase text-stop">Critical</span>
-                    )}
-                    <span className="text-sm leading-snug">{step.text}</span>
-                  </span>
-                </button>
-              </li>
-            )
-          })}
-        </ol>
+                    {active.failFast[orig]}
+                  </button>
+                )
+              })}
+            </div>
+            <p className="mt-2 text-xs text-mute">
+              {recitePicks.length} / {active.failFast.length} in order
+            </p>
+          </Panel>
+        )}
+        {recited && (
+          <ol className="grid gap-2">
+            {active.steps.map((step, idx) => {
+              if (step.evaluatorNote) {
+                return (
+                  <li key={idx}>
+                    <div className="rounded-xl border border-line/60 bg-raised px-3 py-2 text-sm leading-snug text-mute">
+                      {step.text}
+                    </div>
+                  </li>
+                )
+              }
+              const scorableIdx = active.steps.slice(0, idx + 1).filter((s) => !s.evaluatorNote).length
+              return (
+                <li key={idx}>
+                  <button
+                    type="button"
+                    disabled={!!result}
+                    onClick={() => setChecked((c) => ({ ...c, [idx]: !c[idx] }))}
+                    className={`flex w-full items-start gap-3 rounded-xl border px-3 py-3 text-left ${
+                      step.critical ? "border-stop/40" : "border-line"
+                    } ${checked[idx] ? "bg-go/10" : "bg-panel"}`}
+                  >
+                    <span
+                      className={`mt-0.5 flex size-5 shrink-0 items-center justify-center rounded border ${
+                        checked[idx] ? "border-go bg-go text-paper" : "border-mute/40"
+                      }`}
+                    >
+                      {checked[idx] ? "✓" : scorableIdx}
+                    </span>
+                    <span>
+                      {step.critical && (
+                        <span className="mr-2 font-display text-xs font-bold uppercase text-stop">Critical</span>
+                      )}
+                      <span className="text-sm leading-snug">{step.text}</span>
+                    </span>
+                  </button>
+                </li>
+              )
+            })}
+          </ol>
+        )}
         <Panel>
           <p className="font-display text-xs uppercase tracking-widest text-stop">Auto-fail if</p>
-          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-mute">
-            {active.failFast.map((f) => (
-              <li key={f}>{f}</li>
-            ))}
-          </ul>
+          {recited ? (
+            <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-mute">
+              {active.failFast.map((f) => (
+                <li key={f}>{f}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="mt-2 text-sm text-mute">Call the auto-fails first. Buddy must stay on or this station cannot pass.</p>
+          )}
           {!result ? (
-            <button type="button" onClick={finish} className="mt-4 rounded-xl bg-tape px-4 py-2 font-display text-lg font-bold uppercase text-paper">
+            <button
+              type="button"
+              disabled={!recited}
+              onClick={finish}
+              className="mt-4 rounded-xl bg-tape px-4 py-2 font-display text-lg font-bold uppercase text-paper disabled:opacity-40"
+            >
               End station
             </button>
           ) : (
@@ -164,8 +217,10 @@ export function SkillsView() {
               </p>
               <p className="mt-1 text-sm text-mute">
                 {result === "pass"
-                  ? "No criticals missed. Run it once more silent, then swap roles."
-                  : "A critical was blank. Same station immediately — do not hop to a different sheet."}
+                  ? "Buddy on, auto-fails recited, no criticals missed. Run it once more silent, then swap roles."
+                  : !buddy
+                    ? "Self-check with buddy off cannot pass. Turn buddy on and reset."
+                    : "A critical was blank or you skipped recitation. Same station immediately."}
               </p>
               <button type="button" onClick={() => begin(active)} className="mt-3 rounded-xl border border-line px-4 py-2 text-sm">
                 Reset and go again
