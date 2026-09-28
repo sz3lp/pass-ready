@@ -1,0 +1,966 @@
+{
+  "15": [
+    {
+      "tag": "sample",
+      "stem": "In the SAMPLE history mnemonic, the letter \"A\" stands for:",
+      "choices": [
+        "Allergies",
+        "Airway status",
+        "AVPU score",
+        "Auscultation findings"
+      ],
+      "answer": 0,
+      "why": "SAMPLE: Signs/symptoms, Allergies, Medications, Past history, Last oral intake, Events. Allergies matter before you assist with meds."
+    },
+    {
+      "tag": "sample",
+      "stem": "The \"M\" in SAMPLE history refers to:",
+      "choices": [
+        "Mechanism of injury",
+        "Medications the patient takes",
+        "Mental status",
+        "Minute ventilation"
+      ],
+      "answer": 1,
+      "why": "Ask what drugs they take daily, including inhalers, nitro, insulin, and blood thinners \u2014 it shapes your differential and safety."
+    },
+    {
+      "tag": "sample",
+      "stem": "When taking SAMPLE history, \"L\" stands for:",
+      "choices": [
+        "Lung sounds",
+        "Level of consciousness",
+        "Last oral intake",
+        "Last blood pressure"
+      ],
+      "answer": 2,
+      "why": "Last oral intake helps with hypoglycemia, overdose timing, and hospital prep. It is not lung sounds or LOC."
+    },
+    {
+      "tag": "opqrst",
+      "stem": "In OPQRST, the \"O\" stands for:",
+      "choices": [
+        "Oxygen saturation",
+        "Orientation",
+        "Output of urine",
+        "Onset"
+      ],
+      "answer": 3,
+      "why": "Onset asks when the problem started and whether it was sudden or gradual \u2014 critical for ACS, stroke, and PE clocks."
+    },
+    {
+      "tag": "opqrst",
+      "stem": "In OPQRST assessment of pain or discomfort, \"Q\" stands for:",
+      "choices": [
+        "Quality of the symptom",
+        "Quantity of medications",
+        "Quick trauma exam",
+        "Quiet respirations"
+      ],
+      "answer": 0,
+      "why": "Quality is how they describe it (crushing, sharp, burning). That wording helps separate cardiac, pulmonary, and musculoskeletal causes."
+    },
+    {
+      "tag": "opqrst",
+      "stem": "The \"R\" in OPQRST asks about:",
+      "choices": [
+        "Respiratory rate only",
+        "Region / radiation of the symptom",
+        "Reassessment interval",
+        "Risk factors for trauma"
+      ],
+      "answer": 1,
+      "why": "Region/radiation maps where it hurts and where it travels \u2014 jaw, arm, or back radiation raises ACS concern."
+    },
+    {
+      "tag": "opqrst",
+      "stem": "In OPQRST, \"S\" refers to:",
+      "choices": [
+        "SAMPLE history",
+        "Skin color alone",
+        "Severity, often rated 0 to 10",
+        "Scene safety"
+      ],
+      "answer": 2,
+      "why": "Severity is the patient's numeric or descriptive intensity rating. Track it before and after treatment."
+    },
+    {
+      "tag": "opqrst",
+      "stem": "The \"T\" in OPQRST stands for:",
+      "choices": [
+        "Transport priority category",
+        "Temperature of the skin",
+        "Tracheal position",
+        "Time / timing of the symptom"
+      ],
+      "answer": 3,
+      "why": "Timing covers constant vs intermittent, how long each episode lasts, and whether it is getting worse."
+    },
+    {
+      "tag": "scene size-up",
+      "stem": "On arrival at a medical call, scene size-up should FIRST include:",
+      "choices": [
+        "Ensuring scene safety and determining the nature of illness",
+        "Obtaining a full 12-lead ECG",
+        "Starting an IV of normal saline",
+        "Completing a head-to-toe trauma exam"
+      ],
+      "answer": 0,
+      "why": "BSI/scene safety and NOI come before detailed history. You cannot treat if the scene is unsafe or the problem category is wrong."
+    },
+    {
+      "tag": "ppe",
+      "stem": "A patient with suspected meningococcal meningitis warrants which level of PPE emphasis?",
+      "choices": [
+        "Gloves only are always sufficient",
+        "Gloves plus mask (and eye protection as indicated) due to droplet risk",
+        "No PPE if the patient denies fever",
+        "Full biohazard suit with positive-pressure respirator on every call"
+      ],
+      "answer": 1,
+      "why": "Meningococcus spreads by respiratory droplets. Gloves plus surgical mask (and eye protection when splash risk exists) are standard EMT precautions."
+    },
+    {
+      "tag": "ppe",
+      "stem": "Standard precautions on a medical call mean you:",
+      "choices": [
+        "Wear PPE only after confirming a positive culture",
+        "Skip gloves if the patient looks clean",
+        "Assume body fluids may be infectious and use appropriate barriers",
+        "Use N95 respirators for every minor complaint"
+      ],
+      "answer": 2,
+      "why": "Treat all blood and body fluids as potentially infectious. Match PPE to the exposure risk, not to how healthy the patient looks."
+    },
+    {
+      "tag": "infectious",
+      "stem": "Which disease is MOST associated with airborne (not merely droplet) transmission precautions in EMS?",
+      "choices": [
+        "Gonorrhea",
+        "Athlete's foot",
+        "Urinary tract infection",
+        "Tuberculosis"
+      ],
+      "answer": 3,
+      "why": "TB is the classic EMS airborne concern \u2014 N95/respirator and early notification. Most bacterial STIs and UTIs are not airborne."
+    },
+    {
+      "tag": "avpu",
+      "stem": "On the AVPU scale, a patient who opens eyes only when you shout their name is classified as:",
+      "choices": [
+        "Verbal",
+        "Alert",
+        "Pain",
+        "Unresponsive"
+      ],
+      "answer": 0,
+      "why": "Verbal (V) means they respond to voice but are not spontaneously alert. Pain requires a physical stimulus; U means no response."
+    },
+    {
+      "tag": "avpu",
+      "stem": "A patient who does not respond to voice but withdraws when you pinch the trapezius is:",
+      "choices": [
+        "Alert",
+        "Painful (responsive to pain)",
+        "Verbal",
+        "Fully oriented"
+      ],
+      "answer": 1,
+      "why": "Pain response without voice response = P on AVPU. That is still a life-threatening presentation needing airway vigilance."
+    },
+    {
+      "tag": "transport",
+      "stem": "Which medical patient is the HIGHEST transport priority?",
+      "choices": [
+        "Stable 40-year-old with a week of mild sinus congestion",
+        "Patient requesting a refill of allergy medication",
+        "Confused febrile patient with hypotension and mottled skin",
+        "Patient with a resolved nosebleed and normal vitals"
+      ],
+      "answer": 2,
+      "why": "Altered mentation plus fever and hypoperfusion scream sepsis/shock \u2014 lights-and-siren priority with hospital notification."
+    },
+    {
+      "tag": "sepsis",
+      "stem": "Which cluster of findings BEST raises concern for sepsis in an adult?",
+      "choices": [
+        "Isolated ankle sprain after a fall",
+        "Chronic stable hypertension with a normal exam",
+        "Seasonal allergies with clear lungs",
+        "Fever or suspected infection with tachycardia, tachypnea, and altered mentation"
+      ],
+      "answer": 3,
+      "why": "Sepsis is infection plus a dysregulated host response. Fever/known source plus abnormal vitals and AMS = early hospital alert."
+    },
+    {
+      "tag": "signs symptoms",
+      "stem": "Which of the following is a SIGN rather than a symptom?",
+      "choices": [
+        "You observe diaphoresis and cool skin",
+        "The patient reports nausea",
+        "The patient describes crushing chest pain",
+        "The patient says they feel dizzy"
+      ],
+      "answer": 0,
+      "why": "Signs are what you observe or measure. Symptoms are what the patient reports. Diaphoresis is a sign."
+    },
+    {
+      "tag": "general impression",
+      "stem": "Your general impression of a medical patient is formed primarily from:",
+      "choices": [
+        "Lab results from the hospital",
+        "Overall appearance, work of breathing, and circulation as you approach",
+        "Only the dispatch complaint code",
+        "A complete neurologic exam before looking at ABCs"
+      ],
+      "answer": 1,
+      "why": "From the doorway: sick or not sick \u2014 appearance, breathing effort, and skin/perfusion cues guide urgency."
+    },
+    {
+      "tag": "history order",
+      "stem": "For a responsive medical patient with no immediate life threat, after ABCs you typically:",
+      "choices": [
+        "Skip history and drive immediately",
+        "Perform a full trauma log-roll on every call",
+        "Obtain a focused history (OPQRST/SAMPLE) and focused exam",
+        "Wait until the ED to ask any questions"
+      ],
+      "answer": 2,
+      "why": "Stable responsive medical patients get a complaint-driven history and exam. Do not shotgun trauma maneuvers without indication."
+    },
+    {
+      "tag": "unresponsive",
+      "stem": "An unresponsive medical patient should be assessed with emphasis FIRST on:",
+      "choices": [
+        "A complete allergy list from the fridge",
+        "Obtaining a detailed 20-minute past history",
+        "Having the patient sign a refusal form",
+        "Airway, breathing, and circulation with rapid exam for life threats"
+      ],
+      "answer": 3,
+      "why": "Unresponsive = treat like a high-priority patient. Secure ABCs, check glucose early, and gather history from bystanders as able."
+    },
+    {
+      "tag": "index of suspicion",
+      "stem": "\"Index of suspicion\" on a medical call means:",
+      "choices": [
+        "Your awareness of how serious the patient's condition might be based on clues",
+        "A formal legal diagnosis you must write on the PCR",
+        "Only the dispatch priority number",
+        "The patient's insurance approval status"
+      ],
+      "answer": 0,
+      "why": "Index of suspicion is your clinical antenna \u2014 NOI, appearance, and risk factors tell you how bad this could be."
+    },
+    {
+      "tag": "tunnel vision",
+      "stem": "Tunnel vision during medical assessment is dangerous because you may:",
+      "choices": [
+        "Document too many vital signs",
+        "Fixate on one finding and miss a competing life threat",
+        "Ask too many SAMPLE questions",
+        "Reassess the patient too often"
+      ],
+      "answer": 1,
+      "why": "Example: chasing a drunk story and missing hypoglycemia or head injury. Stay systematic."
+    },
+    {
+      "tag": "medic alert",
+      "stem": "A medical identification bracelet is MOST useful because it can:",
+      "choices": [
+        "Replace the need for vital signs",
+        "Confirm the patient does not need transport",
+        "Reveal allergies, medical conditions, or implanted devices",
+        "Provide a final hospital diagnosis"
+      ],
+      "answer": 2,
+      "why": "MedicAlert tags often list diabetes, seizures, allergies, or anticoagulants when the patient cannot speak."
+    },
+    {
+      "tag": "orientation",
+      "stem": "A patient who correctly states name, place, and approximate time is described as:",
+      "choices": [
+        "Unresponsive",
+        "Painfully responsive only",
+        "Disoriented to all spheres",
+        "Oriented times three (person, place, time)"
+      ],
+      "answer": 3,
+      "why": "Orientation x3 is a quick mental-status screen. Loss of orientation is an early \"sick\" clue."
+    },
+    {
+      "tag": "reassessment stable",
+      "stem": "For a stable medical patient, vital signs are generally reassessed about every:",
+      "choices": [
+        "15 minutes",
+        "1 minute",
+        "5 minutes",
+        "2 hours"
+      ],
+      "answer": 0,
+      "why": "Stable patients: ~every 15 minutes. Unstable: ~every 5 minutes and after each intervention."
+    },
+    {
+      "tag": "field impression",
+      "stem": "A field impression is BEST described as:",
+      "choices": [
+        "A courtroom-ready final diagnosis",
+        "Your working sense of the patient's problem based on assessment findings",
+        "Only what dispatch typed into the CAD",
+        "A lab-confirmed pathogen name"
+      ],
+      "answer": 1,
+      "why": "EMTs form a field impression (e.g., \"suspected CHF\") to guide treatment and destination \u2014 not a definitive hospital diagnosis."
+    },
+    {
+      "tag": "hepatitis",
+      "stem": "Which statement about hepatitis B and EMS is MOST accurate?",
+      "choices": [
+        "It cannot be transmitted by blood exposure",
+        "Airborne N95 use alone prevents all hepatitis B",
+        "Vaccination and standard precautions reduce occupational risk",
+        "Only elderly patients can carry hepatitis B"
+      ],
+      "answer": 2,
+      "why": "HBV is bloodborne. Vaccination plus gloves/eye protection after exposure risk is the EMT defense \u2014 not an N95 for every call."
+    },
+    {
+      "tag": "hiv",
+      "stem": "HIV transmission risk for EMS providers is BEST reduced by:",
+      "choices": [
+        "Avoiding all patient contact forever",
+        "Giving antibiotics to every patient",
+        "Only treating patients who deny HIV",
+        "Standard precautions and careful sharps handling"
+      ],
+      "answer": 3,
+      "why": "HIV is blood/body-fluid borne. Barriers and needle safety matter; you cannot screen by appearance or denial."
+    },
+    {
+      "tag": "communication",
+      "stem": "When interviewing an anxious medical patient, the BEST approach is to:",
+      "choices": [
+        "Use a calm tone, ask open then focused questions, and listen",
+        "Stand over them and speak as fast as possible",
+        "Only speak to family and ignore the patient",
+        "Refuse to explain procedures to reduce anxiety"
+      ],
+      "answer": 0,
+      "why": "Rapport improves history quality. Calm, clear questions beat rapid-fire interrogation."
+    },
+    {
+      "tag": "bystanders",
+      "stem": "If a medical patient is unresponsive, useful history is MOST often obtained from:",
+      "choices": [
+        "Only the hospital after arrival",
+        "Family, caregivers, or bystanders on scene",
+        "Guessing based on age alone",
+        "Skipping history entirely forever"
+      ],
+      "answer": 1,
+      "why": "Bystanders may know last known well, meds, diabetes, seizures, or overdose clues \u2014 ask before they leave."
+    },
+    {
+      "tag": "priority criteria",
+      "stem": "Which finding alone MOST strongly supports high-priority transport on a medical call?",
+      "choices": [
+        "Mild seasonal allergic rhinitis",
+        "A healed surgical scar from years ago",
+        "Difficulty breathing with inability to speak full sentences",
+        "A normal resting pulse and SpO2 of 99%"
+      ],
+      "answer": 2,
+      "why": "Severe respiratory distress is a classic priority criterion. Chronic scars and mild allergies are not."
+    },
+    {
+      "tag": "trauma vs medical",
+      "stem": "A patient found on the floor after \"passing out\" with unknown events should be treated as:",
+      "choices": [
+        "Medical only \u2014 trauma exam is never needed",
+        "Psychiatric only",
+        "A refusal without assessment",
+        "Potentially medical and trauma until assessment clarifies"
+      ],
+      "answer": 3,
+      "why": "Syncope can cause a fall and head injury. Keep a trauma index of suspicion until you prove otherwise."
+    },
+    {
+      "tag": "epidemic",
+      "stem": "During a known influenza outbreak, EMS providers should:",
+      "choices": [
+        "Use appropriate PPE and follow agency infection-control guidance",
+        "Ignore PPE because \"everyone already has it\"",
+        "Refuse all respiratory calls",
+        "Stop hand hygiene between patients"
+      ],
+      "answer": 0,
+      "why": "Outbreaks raise exposure risk. PPE, hand hygiene, and local protocols protect you and subsequent patients."
+    },
+    {
+      "tag": "secondary assessment",
+      "stem": "The secondary assessment on a medical patient is intended to:",
+      "choices": [
+        "Replace the primary survey entirely",
+        "Gather detailed history and a focused or full physical exam after life threats are addressed",
+        "Only measure blood pressure once",
+        "Establish a surgical diagnosis"
+      ],
+      "answer": 1,
+      "why": "Primary finds life threats; secondary digs into OPQRST/SAMPLE and exam details once ABCs are handled."
+    },
+    {
+      "tag": "skin",
+      "stem": "Cool, pale, diaphoretic skin in a medical patient MOST suggests:",
+      "choices": [
+        "Excellent perfusion",
+        "A normal finding in all adults",
+        "Poor perfusion or shock physiology",
+        "Hyperthermia only"
+      ],
+      "answer": 2,
+      "why": "Skin is a window to perfusion. Cool/clammy/pale = sympathetic response to hypoxia, shock, or hypoglycemia until proven otherwise."
+    },
+    {
+      "tag": "pulse oximetry",
+      "stem": "When applying a pulse oximeter during medical assessment, remember that:",
+      "choices": [
+        "SpO2 replaces the need to assess breathing effort",
+        "A reading of 100% proves the airway is patent forever",
+        "Pulse oximeters measure blood glucose",
+        "Poor perfusion, nail polish, or cold extremities can give false readings"
+      ],
+      "answer": 3,
+      "why": "SpO2 is helpful but imperfect. Treat the patient \u2014 work of breathing and mentation still rule."
+    },
+    {
+      "tag": "events",
+      "stem": "The \"E\" in SAMPLE history asks about:",
+      "choices": [
+        "Events leading up to the illness",
+        "End-tidal CO2 only",
+        "Emergency contact phone only",
+        "Edema measurement"
+      ],
+      "answer": 0,
+      "why": "Events reconstruct what happened before EMS arrival \u2014 onset activity, exposures, and preceding symptoms."
+    },
+    {
+      "tag": "past history",
+      "stem": "The \"P\" in SAMPLE refers to:",
+      "choices": [
+        "Provocation of pain",
+        "Past medical history",
+        "Pulse oximetry",
+        "Primary survey"
+      ],
+      "answer": 1,
+      "why": "Past history (diabetes, COPD, heart failure, seizures) frames the NOI. Provocation is the P in OPQRST."
+    },
+    {
+      "tag": "refusal risk",
+      "stem": "A confused febrile patient with low blood pressure who wants to \"just sleep it off\" should:",
+      "choices": [
+        "Be encouraged to refuse without further evaluation",
+        "Be left with family without documentation",
+        "Be considered high risk \u2014 altered patients often lack decision-making capacity",
+        "Be assumed safe if they can walk to the couch"
+      ],
+      "answer": 2,
+      "why": "Altered mentation and shock signs undermine informed refusal. Follow agency AMA/capacity policy and advocate for transport."
+    },
+    {
+      "tag": "dispatch",
+      "stem": "Dispatch information on a medical call is BEST used to:",
+      "choices": [
+        "Lock in a final diagnosis before arrival",
+        "Skip scene size-up entirely",
+        "Decide that PPE is never needed",
+        "Prepare mentally and with equipment, while remaining ready to find something different"
+      ],
+      "answer": 3,
+      "why": "CAD clues help you stage gear, but patients often present differently. Reassess NOI on arrival."
+    }
+  ],
+  "16": [
+    {
+      "tag": "accessory muscles",
+      "stem": "Use of accessory muscles of breathing MOST indicates:",
+      "choices": [
+        "Increased work of breathing and respiratory distress",
+        "Normal quiet breathing at rest",
+        "That the patient has no lung disease",
+        "Adequate ventilation without concern"
+      ],
+      "answer": 0,
+      "why": "Neck, intercostal, and abdominal muscle use means the patient is fighting to move air \u2014 a distress flag."
+    },
+    {
+      "tag": "tripod",
+      "stem": "A patient sitting upright, leaning forward with hands on knees to breathe is demonstrating:",
+      "choices": [
+        "The recovery position",
+        "The tripod position",
+        "Trendelenburg positioning",
+        "A seizure aura"
+      ],
+      "answer": 1,
+      "why": "Tripoding braces the chest wall and maximizes accessory muscle use. Treat as significant respiratory distress."
+    },
+    {
+      "tag": "cyanosis",
+      "stem": "Cyanosis of the lips and nail beds MOST suggests:",
+      "choices": [
+        "Excellent oxygenation",
+        "Only dehydration",
+        "Significant hypoxia until proven otherwise",
+        "A normal finding in athletes"
+      ],
+      "answer": 2,
+      "why": "Blue skin/mucosa from desaturated hemoglobin is a late but serious oxygenation clue \u2014 support airway and oxygen."
+    },
+    {
+      "tag": "hypoxia hypoxemia",
+      "stem": "Which statement correctly distinguishes hypoxia from hypoxemia?",
+      "choices": [
+        "They are identical terms with no difference",
+        "Hypoxia means high CO2 only; hypoxemia means fever",
+        "Hypoxemia only occurs in trauma; hypoxia only in medical patients",
+        "Hypoxemia is low oxygen in the blood; hypoxia is inadequate oxygen at the tissue level"
+      ],
+      "answer": 3,
+      "why": "Hypoxemia = low PaO2/SpO2 in blood. Hypoxia = cells not getting enough O2. You can have one without the other in special cases."
+    },
+    {
+      "tag": "spo2",
+      "stem": "For most acutely ill medical patients without COPD, a common SpO2 target range is approximately:",
+      "choices": [
+        "94% to 99%",
+        "70% to 75%",
+        "Exactly 100% at all times with maximum oxygen",
+        "Below 88% to avoid oxygen toxicity"
+      ],
+      "answer": 0,
+      "why": "Aim roughly mid-90s and up unless protocol says otherwise. Blind 100% forever is not always the goal; treat the patient."
+    },
+    {
+      "tag": "carbon monoxide",
+      "stem": "In suspected carbon monoxide exposure, standard pulse oximetry may be unreliable because:",
+      "choices": [
+        "CO always lowers SpO2 to zero instantly",
+        "Many pulse oximeters cannot distinguish carboxyhemoglobin from oxyhemoglobin and may read falsely high",
+        "Pulse oximeters measure CO2 instead",
+        "SpO2 is never used in EMS"
+      ],
+      "answer": 1,
+      "why": "CO poisoning can look \"normal\" on SpO2 while the patient is hypoxic. High-flow oxygen and specialty CO-oximetry/ED care matter."
+    },
+    {
+      "tag": "suction",
+      "stem": "Suctioning of the airway is indicated when you hear or see:",
+      "choices": [
+        "Quiet, clear breathing with a patent airway",
+        "Mild nasal congestion only",
+        "Gurgling and visible secretions, blood, or vomit in the airway",
+        "A patient who is speaking full sentences clearly"
+      ],
+      "answer": 2,
+      "why": "Gurgling means fluid in the airway. Suction before positive-pressure ventilation so you do not push vomit into the lungs."
+    },
+    {
+      "tag": "cpap",
+      "stem": "Which finding is a conceptual contraindication to CPAP at the EMT level?",
+      "choices": [
+        "Pulmonary edema with intact mentation and adequate blood pressure per protocol",
+        "SpO2 of 90% in a speaking CHF patient",
+        "Increased work of breathing with crackles",
+        "Unresponsive patient unable to follow commands or protect the airway"
+      ],
+      "answer": 3,
+      "why": "CPAP needs a cooperative patient who can protect their airway. Unresponsive, vomiting, or hypotensive patients are typical exclusions."
+    },
+    {
+      "tag": "mdi",
+      "stem": "When assisting a patient with a prescribed metered-dose inhaler (MDI), you should:",
+      "choices": [
+        "Confirm the medication is theirs, not expired, and follow local protocol/medical direction",
+        "Give it to every chest-pain patient without orders",
+        "Have them swallow the canister",
+        "Administer it only after needle decompression"
+      ],
+      "answer": 0,
+      "why": "EMTs assist with the patient's prescribed bronchodilator under protocol \u2014 verify the drug, dose, and indications first."
+    },
+    {
+      "tag": "asthma",
+      "stem": "Asthma is BEST characterized as:",
+      "choices": [
+        "Permanent alveolar destruction only",
+        "Reversible lower-airway inflammation, bronchospasm, and mucus production",
+        "Infection of the pleural space with pus",
+        "A clot lodged in a pulmonary artery"
+      ],
+      "answer": 1,
+      "why": "Asthma is reactive airway disease. Triggers cause wheeze, dyspnea, and accessory muscle use; severe attacks can progress to failure."
+    },
+    {
+      "tag": "copd",
+      "stem": "Chronic bronchitis as a COPD phenotype is classically associated with:",
+      "choices": [
+        "Only sudden anaphylaxis",
+        "Always normal lung sounds",
+        "A productive cough for months and chronic sputum production",
+        "Exclusive occurrence in nonsmokers under age 20"
+      ],
+      "answer": 2,
+      "why": "\"Blue bloater\" chronic bronchitis features chronic productive cough and hypoxia risk. Smoking is a major risk factor."
+    },
+    {
+      "tag": "emphysema",
+      "stem": "Emphysema is MOST associated with:",
+      "choices": [
+        "A foreign body stuck in the trachea only",
+        "Fluid overload from left heart failure exclusively",
+        "Bacterial meningitis",
+        "Destruction of alveolar walls and loss of elastic recoil"
+      ],
+      "answer": 3,
+      "why": "Emphysema destroys alveoli (\"pink puffer,\" barrel chest, pursed-lip breathing). Gas exchange surface shrinks."
+    },
+    {
+      "tag": "pursed lips",
+      "stem": "Pursed-lip breathing in a COPD patient helps primarily by:",
+      "choices": [
+        "Creating gentle back-pressure that can stent airways open during exhalation",
+        "Increasing the chance of aspiration",
+        "Stopping all CO2 production",
+        "Raising blood glucose"
+      ],
+      "answer": 0,
+      "why": "Pursed lips slow exhalation and keep small airways from collapsing \u2014 a compensatory trick you should allow."
+    },
+    {
+      "tag": "chf",
+      "stem": "Left-sided heart failure commonly causes dyspnea because:",
+      "choices": [
+        "The trachea spontaneously collapses in every patient",
+        "Fluid backs up into the pulmonary circulation and alveoli",
+        "It always creates a tension pneumothorax",
+        "It only affects the legs and never the lungs"
+      ],
+      "answer": 1,
+      "why": "Left pump failure raises pulmonary pressures \u2014 crackles, hypoxia, and respiratory distress follow."
+    },
+    {
+      "tag": "pe",
+      "stem": "A sudden-onset dyspnea patient who recently took a long flight and has unilateral leg swelling MOST suggests:",
+      "choices": [
+        "Simple muscle strain",
+        "Seasonal allergies",
+        "Pulmonary embolism",
+        "Cerumen impaction"
+      ],
+      "answer": 2,
+      "why": "Immobility + DVT clues + sudden SOB/chest pain/hypoxia = PE until proven otherwise. High-flow O2 and rapid transport."
+    },
+    {
+      "tag": "pneumonia",
+      "stem": "Pneumonia in adults often presents with:",
+      "choices": [
+        "Only painless ankle swelling without respiratory findings",
+        "Always bilateral wheezes that vanish with coaching",
+        "Normal vitals and no cough by definition",
+        "Fever, productive cough, and localized crackles or diminished sounds"
+      ],
+      "answer": 3,
+      "why": "Infection fills alveoli \u2014 fever, cough (often productive), pleuritic pain, and focal lung findings are classic."
+    },
+    {
+      "tag": "hyperventilation",
+      "stem": "A anxious patient with carpopedal spasm, tingling around the mouth, and rapid deep breathing MOST likely has:",
+      "choices": [
+        "Hyperventilation syndrome (after you rule out serious causes)",
+        "Confirmed STEMI requiring fibrinolysis by the EMT",
+        "Complete airway obstruction",
+        "Massive hemothorax requiring needle decompression by the EMT"
+      ],
+      "answer": 0,
+      "why": "Hyperventilation blows off CO2 and can cause perioral tingling and hand spasms. Still exclude hypoxia, PE, and metabolic causes."
+    },
+    {
+      "tag": "spontaneous pneumo",
+      "stem": "Spontaneous pneumothorax is MOST classically seen in:",
+      "choices": [
+        "Only infants with RSV",
+        "Tall, thin young adults, sometimes with sudden pleuritic pain and dyspnea",
+        "Only patients after cardiac bypass",
+        "Elderly patients with isolated UTI"
+      ],
+      "answer": 1,
+      "why": "Primary spontaneous pneumo loves tall thin young males (and smokers). Sudden unilateral pain/SOB \u2014 support O2; decompression is ALS."
+    },
+    {
+      "tag": "crackles",
+      "stem": "Crackles (rales) heard on auscultation MOST often suggest:",
+      "choices": [
+        "A completely clear pleural space with no pathology",
+        "Only upper-airway foreign body",
+        "Fluid or atelectasis in the smaller airways/alveoli",
+        "Normal findings in all sleeping adults"
+      ],
+      "answer": 2,
+      "why": "Crackles are discontinuous sounds \u2014 think pulmonary edema, pneumonia, or fibrosis, not stridor."
+    },
+    {
+      "tag": "rhonchi",
+      "stem": "Low-pitched rattling sounds that often clear somewhat with coughing are called:",
+      "choices": [
+        "Stridor",
+        "Pleural friction rub only",
+        "Heart murmurs",
+        "Rhonchi"
+      ],
+      "answer": 3,
+      "why": "Rhonchi suggest mucus in larger airways. Cough may temporarily clear them; pneumonia/bronchitis are common contexts."
+    },
+    {
+      "tag": "inadequate breathing",
+      "stem": "Which patient MOST clearly shows inadequate breathing requiring assisted ventilations?",
+      "choices": [
+        "Altered patient with shallow, slow respirations and cyanosis",
+        "Speaking full sentences with SpO2 98% on room air",
+        "Mild rhinitis with clear lungs",
+        "Anxiety with normal mentation and good tidal volume"
+      ],
+      "answer": 0,
+      "why": "Failure of rate, depth, or mentation = bag them. Dyspnea alone with good volume is not automatic BVM."
+    },
+    {
+      "tag": "snoring",
+      "stem": "Snoring respirations in an unresponsive patient usually indicate:",
+      "choices": [
+        "Normal nasal airflow",
+        "Partial upper-airway obstruction, often by the tongue",
+        "Only lower-airway wheezing",
+        "A need for immediate needle decompression"
+      ],
+      "answer": 1,
+      "why": "Tongue falls back when mentation drops. Open the airway (head-tilt/chin-lift or jaw-thrust as indicated)."
+    },
+    {
+      "tag": "status asthmaticus",
+      "stem": "Status asthmaticus refers to:",
+      "choices": [
+        "A mild wheeze that resolves with one puff at home",
+        "Any patient who owns an inhaler",
+        "A severe asthma attack that does not respond to usual therapy and risks respiratory failure",
+        "Seasonal allergies without bronchospasm"
+      ],
+      "answer": 2,
+      "why": "Prolonged, refractory asthma is a crash airway risk \u2014 ALS backup, oxygen, and rapid transport."
+    },
+    {
+      "tag": "barrel chest",
+      "stem": "A barrel-shaped chest in a long-time smoker is MOST consistent with:",
+      "choices": [
+        "Acute appendicitis",
+        "Isolated deep vein thrombosis without lung involvement",
+        "Normal anatomy in all children",
+        "Chronic air trapping from emphysema/COPD"
+      ],
+      "answer": 3,
+      "why": "Air trapping expands the AP chest diameter. Expect pursed lips and chronic dyspnea."
+    },
+    {
+      "tag": "nasal flaring",
+      "stem": "Nasal flaring in a pediatric respiratory patient indicates:",
+      "choices": [
+        "Increased work of breathing",
+        "That the child is joking",
+        "Only ear infection without respiratory stress",
+        "Adequate easy breathing"
+      ],
+      "answer": 0,
+      "why": "Flaring, retractions, and grunting are pediatric distress signs \u2014 do not wait for adult-style complaints."
+    },
+    {
+      "tag": "epiglottitis",
+      "stem": "A febrile child sitting forward, drooling, and speaking in a muffled voice raises concern for:",
+      "choices": [
+        "Simple allergic rhinitis \u2014 force them flat",
+        "Epiglottitis \u2014 avoid agitating and do not inspect the throat aggressively",
+        "Foreign body that always needs blind finger sweeps",
+        "Hyperventilation syndrome only"
+      ],
+      "answer": 1,
+      "why": "Epiglottitis is an airway emergency. Keep the child calm, give oxygen as tolerated, and avoid throat probes that trigger obstruction."
+    },
+    {
+      "tag": "croup",
+      "stem": "Croup is typically associated with:",
+      "choices": [
+        "Only pink frothy sputum in elderly CHF",
+        "Sudden PE after long travel in adults",
+        "A barking cough and stridor in a viral upper-airway illness of young children",
+        "Complete absence of any respiratory sound changes"
+      ],
+      "answer": 2,
+      "why": "Croup (laryngotracheobronchitis) = barky cough, hoarseness, stridor. Cool night air sometimes helps; still assess for failure."
+    },
+    {
+      "tag": "pertussis",
+      "stem": "Whooping cough (pertussis) is characterized by:",
+      "choices": [
+        "Only painless neck stiffness without cough",
+        "Always a silent chest from day one",
+        "Exclusive occurrence after myocardial infarction",
+        "Fits of coughing that may end with a \"whoop\" and post-tussive vomiting"
+      ],
+      "answer": 3,
+      "why": "Pertussis causes prolonged coughing paroxysms. PPE matters \u2014 it spreads by droplets."
+    },
+    {
+      "tag": "aspiration",
+      "stem": "Aspiration pneumonia risk is HIGHEST in which patient?",
+      "choices": [
+        "Elderly patient with impaired swallowing after a stroke who was found with emesis",
+        "Alert athlete after a short jog",
+        "Teen with seasonal allergies",
+        "Child with a mild cold and clear sensorium who is eating normally"
+      ],
+      "answer": 0,
+      "why": "Depressed mentation and poor airway protection let vomit/food enter the lungs \u2014 suction and position matter."
+    },
+    {
+      "tag": "alveoli",
+      "stem": "Gas exchange between air and blood primarily occurs in the:",
+      "choices": [
+        "Trachea only",
+        "Alveoli",
+        "Esophagus",
+        "Pleural fluid itself"
+      ],
+      "answer": 1,
+      "why": "Alveoli are the thin-walled air sacs where O2 and CO2 diffuse. Disease there (edema, pneumonia, emphysema) wrecks oxygenation."
+    },
+    {
+      "tag": "pleural space",
+      "stem": "Air entering the pleural space and collapsing the lung is called:",
+      "choices": [
+        "Pericarditis",
+        "Appendicitis",
+        "Pneumothorax",
+        "Sinusitis"
+      ],
+      "answer": 2,
+      "why": "Pneumothorax = air in the pleural space. Tension physiology with shock is ALS territory; EMTs support ABCs and transport."
+    },
+    {
+      "tag": "oxygen delivery",
+      "stem": "A dyspneic patient with SpO2 88% on room air who is speaking in short phrases MOST appropriately needs:",
+      "choices": [
+        "No oxygen because \"they are talking\"",
+        "Immediate surgical cricothyrotomy by the EMT",
+        "Only oral glucose",
+        "Supplemental oxygen titrated to improve SpO2 and distress per protocol"
+      ],
+      "answer": 3,
+      "why": "Hypoxemia plus distress = oxygen. Device choice (NC, NRB, BVM, CPAP) follows severity and protocol."
+    },
+    {
+      "tag": "retractions",
+      "stem": "Intercostal retractions indicate:",
+      "choices": [
+        "The chest wall is being pulled inward by high negative pressures from severe distress",
+        "Normal effortless breathing",
+        "That lungs are overexpanded with zero disease",
+        "Only abdominal bleeding"
+      ],
+      "answer": 0,
+      "why": "Retractions mean high work of breathing. Common in kids and severe asthma/COPD/CHF."
+    },
+    {
+      "tag": "tidal volume",
+      "stem": "Tidal volume refers to:",
+      "choices": [
+        "The patient's body weight in kilograms",
+        "The amount of air moved in one normal breath",
+        "The SpO2 percentage only",
+        "The number of alveoli destroyed by smoking"
+      ],
+      "answer": 1,
+      "why": "Minute ventilation = rate x tidal volume. Shallow breaths (low TV) can fail even if the rate looks \"normal.\""
+    },
+    {
+      "tag": "cf",
+      "stem": "Cystic fibrosis patients often present to EMS with:",
+      "choices": [
+        "Only isolated urinary retention",
+        "Always normal sputum and clear lungs",
+        "Thick mucus, chronic respiratory infections, and dyspnea",
+        "Exclusive cardiac chest pain without lung involvement"
+      ],
+      "answer": 2,
+      "why": "CF produces thick secretions and recurrent lung infections. Support oxygenation and bring usual meds/history."
+    },
+    {
+      "tag": "bronchiolitis",
+      "stem": "Bronchiolitis is MOST common in:",
+      "choices": [
+        "Only healthy marathon runners",
+        "Adults with isolated gout",
+        "Patients with cerumen impaction",
+        "Infants and young children, often after a viral illness with wheezing and distress"
+      ],
+      "answer": 3,
+      "why": "RSV bronchiolitis hits small airways in babies \u2014 watch for hypoxia, poor feeding, and apnea risk."
+    },
+    {
+      "tag": "seesaw",
+      "stem": "Seesaw breathing in an infant (abdomen rises while chest falls) suggests:",
+      "choices": [
+        "Severe respiratory distress / inadequate breathing",
+        "Normal quiet sleep breathing in all ages",
+        "Only constipation",
+        "Successful complete recovery"
+      ],
+      "answer": 0,
+      "why": "Paradoxical chest/abdomen motion is a pediatric failure sign \u2014 prepare to assist ventilations."
+    },
+    {
+      "tag": "position comfort",
+      "stem": "A conscious dyspneic patient should generally be allowed to:",
+      "choices": [
+        "Be forced fully supine against their will",
+        "Assume a position of comfort, often sitting upright",
+        "Be placed prone with no monitoring",
+        "Be hung in Trendelenburg for all respiratory complaints"
+      ],
+      "answer": 1,
+      "why": "Upright/sitting usually eases work of breathing. Forcing flat often worsens distress (unless trauma/spine rules apply)."
+    },
+    {
+      "tag": "wheeze vs failure",
+      "stem": "Which finding is MORE ominous than loud diffuse wheezes in asthma?",
+      "choices": [
+        "Improving speech and falling respiratory rate toward normal with better air movement",
+        "Mild cough after exercise that resolves at rest",
+        "Fatigue, declining mental status, and decreasing air movement",
+        "Normal SpO2 with easy conversation"
+      ],
+      "answer": 2,
+      "why": "Tiring out and quieting lungs mean air is barely moving. That is peri-arrest respiratory failure territory."
+    },
+    {
+      "tag": "nrB",
+      "stem": "A nonrebreather mask is MOST appropriate when:",
+      "choices": [
+        "The patient is apneic and needs artificial ventilation",
+        "You only want 2 L/min forever",
+        "The patient has a complete foreign-body obstruction still in place",
+        "The patient needs high-concentration oxygen and is breathing adequately on their own"
+      ],
+      "answer": 3,
+      "why": "NRB delivers high FiO2 to spontaneously breathing patients. Apnea needs BVM; obstruction needs removal first."
+    }
+  ]
+}

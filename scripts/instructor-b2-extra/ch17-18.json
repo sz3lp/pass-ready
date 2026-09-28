@@ -1,0 +1,966 @@
+{
+  "17": [
+    {
+      "tag": "stable angina",
+      "stem": "Stable angina is BEST distinguished from unstable angina by pain that:",
+      "choices": [
+        "Occurs at rest and lasts hours without relief",
+        "Is predictable with exertion and eases with rest or nitroglycerin",
+        "Always means a completed myocardial infarction",
+        "Only occurs in patients under age 40"
+      ],
+      "answer": 1,
+      "why": "Stable angina is exertional and reproducible. Unstable angina is new, crescendo, or at rest — treat as ACS."
+    },
+    {
+      "tag": "unstable angina",
+      "stem": "Which presentation MOST suggests unstable angina?",
+      "choices": [
+        "Chest pressure only after climbing two flights, relieved in two minutes by rest",
+        "New chest pressure at rest lasting 20 minutes with diaphoresis",
+        "Sharp chest wall pain reproduced by pressing on a rib",
+        "Brief palpitations after drinking coffee"
+      ],
+      "answer": 1,
+      "why": "Pain at rest, new onset, or worsening pattern = unstable. Transport and treat as ACS."
+    },
+    {
+      "tag": "right mi nitro",
+      "stem": "Nitroglycerin is used with caution in suspected right-sided / inferior MI because these patients are often:",
+      "choices": [
+        "Volume-overloaded and hypertensive",
+        "Preload-dependent, so vasodilation may cause severe hypotension",
+        "Immune to antiplatelet therapy",
+        "Unable to absorb sublingual medications"
+      ],
+      "answer": 1,
+      "why": "Right ventricular infarcts rely on preload. NTG drops venous return and BP can crash — check pressure and follow protocol."
+    },
+    {
+      "tag": "left chf",
+      "stem": "Which findings MOST suggest left-sided congestive heart failure?",
+      "choices": [
+        "Dependent edema and JVD without dyspnea",
+        "Pulmonary crackles, orthopnea, and dyspnea",
+        "Isolated calf pain with a warm red leg",
+        "Wheezing after allergen exposure with hives"
+      ],
+      "answer": 1,
+      "why": "Left failure backs blood into the lungs — crackles, orthopnea, pink frothy sputum. Right failure shows systemic congestion."
+    },
+    {
+      "tag": "right chf",
+      "stem": "Peripheral edema, ascites, and jugular venous distention without prominent pulmonary crackles MOST suggest:",
+      "choices": [
+        "Left-sided heart failure primarily",
+        "Right-sided heart failure or elevated venous pressure",
+        "Simple dehydration",
+        "An isolated asthma attack"
+      ],
+      "answer": 1,
+      "why": "Right heart / venous backup shows as JVD, edema, and hepatic congestion. Many patients have both sides failing."
+    },
+    {
+      "tag": "htn emergency",
+      "stem": "Hypertensive emergency differs from hypertensive urgency mainly because emergency includes:",
+      "choices": [
+        "Any reading over 140/90 on a single check",
+        "End-organ damage signs such as stroke, ACS, or acute pulmonary edema",
+        "Only anxiety without neurologic change",
+        "A normal neurologic exam and no symptoms"
+      ],
+      "answer": 1,
+      "why": "Urgency = very high BP without acute organ injury. Emergency = high BP plus damage (neuro, cardiac, renal)."
+    },
+    {
+      "tag": "htn urgency care",
+      "stem": "For a very high blood pressure reading without acute end-organ findings, the EMT should:",
+      "choices": [
+        "Rapidly lower BP with multiple nitroglycerin doses",
+        "Keep the patient calm, monitor, and transport for evaluation",
+        "Have the patient take an extra home antihypertensive immediately",
+        "Apply an AED prophylactically"
+      ],
+      "answer": 1,
+      "why": "EMTs do not aggressively chase BP numbers. Minimize stimulation, reassess, and let the hospital control titrated drops."
+    },
+    {
+      "tag": "aed who",
+      "stem": "An AED is indicated when the patient is:",
+      "choices": [
+        "Alert with chest pain and a strong radial pulse",
+        "Unresponsive, pulseless, and not breathing normally",
+        "Awake with a pulse of 40 and dizziness",
+        "Conscious with atrial fibrillation history"
+      ],
+      "answer": 1,
+      "why": "AEDs treat sudden cardiac arrest. A pulse means ACS/bradycardia care — not defibrillation."
+    },
+    {
+      "tag": "aed pads",
+      "stem": "When applying AED pads to an adult, you should:",
+      "choices": [
+        "Place both pads stacked directly over the sternum",
+        "Use manufacturer pad placement (typically anterolateral or anterior-posterior) on dry bare skin",
+        "Apply pads over a wet shirt to save time",
+        "Place pads only on the back so bystanders cannot see them"
+      ],
+      "answer": 1,
+      "why": "Bare, dry skin; follow pad diagrams. Moisture and clothing reduce energy delivery and risk arcing."
+    },
+    {
+      "tag": "aed analyze",
+      "stem": "While the AED is analyzing the rhythm, rescuers should:",
+      "choices": [
+        "Continue chest compressions at full rate",
+        "Ensure no one is touching the patient",
+        "Shake the patient to confirm unresponsiveness again",
+        "Give two rescue breaths during analysis"
+      ],
+      "answer": 1,
+      "why": "Movement ruins analysis and risks shocking a rescuer. Clear the patient; resume CPR immediately after."
+    },
+    {
+      "tag": "rosc",
+      "stem": "After ROSC (return of spontaneous circulation), the MOST appropriate EMT priority is:",
+      "choices": [
+        "Stop all monitoring because the emergency is over",
+        "Support airway/breathing, reassess vitals frequently, and transport while watching for re-arrest",
+        "Sit the patient upright and have them walk to the stretcher",
+        "Remove the AED pads immediately in all cases"
+      ],
+      "answer": 1,
+      "why": "ROSC patients are fragile. Optimize oxygenation/ventilation, keep pads ready, and treat post-arrest shock."
+    },
+    {
+      "tag": "aspirin dose",
+      "stem": "The usual adult aspirin dose for suspected ACS that EMTs assist with is:",
+      "choices": [
+        "81 mg swallowed enteric-coated with water",
+        "324 mg (commonly four 81 mg) chewed",
+        "650 mg of acetaminophen chewed",
+        "One baby aspirin placed under the tongue"
+      ],
+      "answer": 1,
+      "why": "Chewed non–enteric-coated aspirin (160–325 mg; often 324 mg) gets antiplatelet effect faster."
+    },
+    {
+      "tag": "opqrst chest",
+      "stem": "In OPQRST for chest pain, asking whether anything makes the pain better or worse assesses:",
+      "choices": [
+        "Onset",
+        "Provocation / palliation",
+        "Quality",
+        "Time only"
+      ],
+      "answer": 1,
+      "why": "P = what provokes or palliates. O is onset; Q is quality; R is region/radiation; S severity; T timing."
+    },
+    {
+      "tag": "opqrst quality",
+      "stem": "Asking a chest-pain patient to describe the pain as crushing, sharp, or burning is assessing:",
+      "choices": [
+        "Severity on a 0–10 scale",
+        "Quality of the pain",
+        "Radiation only",
+        "Past medical history"
+      ],
+      "answer": 1,
+      "why": "Quality is the character of the pain. Severity is the number; radiation is where it travels."
+    },
+    {
+      "tag": "pe mimic",
+      "stem": "Sudden dyspnea, pleuritic chest pain, and hypoxia after prolonged immobility can mimic ACS and MOST suggests:",
+      "choices": [
+        "Pulmonary embolism",
+        "Stable angina relieved only by rest",
+        "Simple costochondritis",
+        "Gastroesophageal reflux alone"
+      ],
+      "answer": 0,
+      "why": "PE is a classic ACS mimic — sudden SOB ± chest pain, risk factors like travel or DVT. Support ABCs and go."
+    },
+    {
+      "tag": "aortic dissection",
+      "stem": "Sudden tearing chest or back pain with unequal pulses or BP between arms MOST suggests:",
+      "choices": [
+        "Esophageal spasm",
+        "Aortic dissection",
+        "Stable angina only",
+        "Musculoskeletal strain"
+      ],
+      "answer": 1,
+      "why": "Dissection = abrupt tearing pain, often radiating to the back, with pulse/BP asymmetry. Gentle handling, rapid transport."
+    },
+    {
+      "tag": "dissection care",
+      "stem": "For suspected aortic dissection, which action is MOST appropriate for the EMT?",
+      "choices": [
+        "Give aspirin and nitroglycerin as for typical ACS",
+        "Keep the patient calm, support ABCs, avoid unnecessary jolting, and rapid transport",
+        "Deeply palpate the abdomen to confirm a pulsatile mass",
+        "Have the patient ambulate to see if pain eases"
+      ],
+      "answer": 1,
+      "why": "Nitro/ASA can worsen hypotension/bleeding risk. Minimize stimulation and get them to definitive care."
+    },
+    {
+      "tag": "icd basics",
+      "stem": "An implanted cardioverter-defibrillator (ICD) is designed to:",
+      "choices": [
+        "Prevent all forms of chest pain",
+        "Detect and shock certain lethal ventricular arrhythmias from inside the body",
+        "Replace the need for CPR if the patient collapses",
+        "Always keep heart rate above 100"
+      ],
+      "answer": 1,
+      "why": "ICDs treat VT/VF internally. If the patient is pulseless, still do CPR and use an AED — pad away from the device."
+    },
+    {
+      "tag": "icd aed",
+      "stem": "When defibrillating a patient with an ICD or pacemaker bulge, pad placement should:",
+      "choices": [
+        "Be placed directly over the generator for best conduction",
+        "Be kept at least about an inch away from the implanted device",
+        "Be withheld entirely to protect the device",
+        "Use pediatric pads on all adults with devices"
+      ],
+      "answer": 1,
+      "why": "Offset pads from the generator and treat the arrest normally. Do not withhold life-saving shocks."
+    },
+    {
+      "tag": "mi vs angina",
+      "stem": "Compared with typical angina, myocardial infarction pain is MORE likely to:",
+      "choices": [
+        "Resolve after two minutes of rest every time",
+        "Persist longer and not fully relieve with rest or a single nitro dose",
+        "Be reproduced only by pressing on the chest wall",
+        "Occur exclusively in teenagers"
+      ],
+      "answer": 1,
+      "why": "MI ischemia lasts; tissue is dying. Unrelieved or prolonged pain needs ACS care and transport."
+    },
+    {
+      "tag": "acs o2",
+      "stem": "Oxygen for a chest-pain patient with SpO2 98% on room air who is comfortable should generally be:",
+      "choices": [
+        "Withheld or titrated — routine high-flow O2 is not required if not hypoxic",
+        "Delivered by nonrebreather at 15 L/min for every ACS patient",
+        "Given only by bag-mask ventilation",
+        "Replaced by having them breathe into a paper bag"
+      ],
+      "answer": 0,
+      "why": "Give O2 for hypoxia, distress, or shock. Hyperoxia is not a default ACS treatment for normoxic patients."
+    },
+    {
+      "tag": "chain survival",
+      "stem": "In the adult Chain of Survival, after recognizing arrest and activating EMS, the NEXT critical link is:",
+      "choices": [
+        "Immediate high-quality CPR",
+        "Drawing blood for labs",
+        "Obtaining a full SAMPLE history before compressions",
+        "Waiting for ALS medications"
+      ],
+      "answer": 0,
+      "why": "Recognition → activation → CPR → defibrillation → ALS → post-arrest care. Compressions start now."
+    },
+    {
+      "tag": "cpr quality",
+      "stem": "High-quality adult CPR includes all of the following, EXCEPT:",
+      "choices": [
+        "Compressions about 2 inches deep at 100–120/min",
+        "Full chest recoil between compressions",
+        "Minimal interruptions",
+        "Frequent pulse checks every 5–10 seconds throughout"
+      ],
+      "answer": 3,
+      "why": "Constant pulse hunting kills perfusion. Check briefly at appropriate intervals; keep the ratio and depth right."
+    },
+    {
+      "tag": "chf position",
+      "stem": "A conscious patient with severe pulmonary edema from CHF is BEST positioned:",
+      "choices": [
+        "Fully supine with legs elevated",
+        "Upright / sitting, legs dangling if tolerated",
+        "Prone to improve oxygenation",
+        "Trendelenburg to raise blood pressure"
+      ],
+      "answer": 1,
+      "why": "Sitting reduces venous return and eases work of breathing. Flat positions worsen orthopnea."
+    },
+    {
+      "tag": "nitro indications",
+      "stem": "Before assisting with prescribed nitroglycerin for chest pain, the EMT must confirm all of the following, EXCEPT:",
+      "choices": [
+        "The medication is prescribed for this patient",
+        "Systolic BP meets protocol minimum (often ≥100)",
+        "No recent PDE-5 inhibitor use",
+        "A confirmed STEMI on a 12-lead the EMT interpreted alone"
+      ],
+      "answer": 3,
+      "why": "EMTs assist based on protocol/medical direction — not on independently diagnosing STEMI. Check Rx, BP, and PDE-5."
+    },
+    {
+      "tag": "asa contra",
+      "stem": "Aspirin for suspected ACS should be withheld when the patient has:",
+      "choices": [
+        "A known aspirin allergy or active significant bleeding",
+        "Taken acetaminophen earlier today",
+        "A history of hypertension that is controlled",
+        "Eaten breakfast within the last hour"
+      ],
+      "answer": 0,
+      "why": "Allergy and active bleeding (or other protocol exclusions) block ASA. Food and HTN are not automatic stops."
+    },
+    {
+      "tag": "ami radiation",
+      "stem": "Cardiac ischemic pain commonly radiates to all of the following, EXCEPT:",
+      "choices": [
+        "Left arm or both arms",
+        "Jaw or neck",
+        "Epigastrium / upper abdomen",
+        "The distal toes exclusively"
+      ],
+      "answer": 3,
+      "why": "Classic radiation is arm, jaw, neck, back, or epigastrium — not isolated toe pain."
+    },
+    {
+      "tag": "pericardial tamponade",
+      "stem": "Beck’s triad (hypotension, JVD, muffled heart sounds) after chest trauma suggests:",
+      "choices": [
+        "Cardiac tamponade",
+        "Simple bronchitis",
+        "Stable angina",
+        "Hyperventilation syndrome"
+      ],
+      "answer": 0,
+      "why": "Fluid around the heart impairs filling. Rapid transport — this is obstructive shock physiology."
+    },
+    {
+      "tag": "aaa vs acs",
+      "stem": "Which clue leans MORE toward abdominal aortic aneurysm / dissection than typical ACS?",
+      "choices": [
+        "Crushing substernal pressure relieved by one nitro",
+        "Sudden tearing abdominal or back pain with unequal femoral pulses",
+        "Reproducible chest wall tenderness after coughing",
+        "Burning epigastric pain after spicy food that eases with antacids"
+      ],
+      "answer": 1,
+      "why": "Tearing back/abdomen pain + pulse deficit screams vascular catastrophe, not classic coronary ischemia."
+    },
+    {
+      "tag": "vfib care",
+      "stem": "For a witnessed adult collapse that is pulseless, the AED advises a shock. Your NEXT action is:",
+      "choices": [
+        "Clear the patient and deliver the shock, then immediately resume CPR",
+        "Check a carotid pulse for a full minute before shocking",
+        "Give two minutes of rescue breathing only",
+        "Wait for ALS to confirm the rhythm on a monitor"
+      ],
+      "answer": 0,
+      "why": "Shock promptly, then CPR. Do not delay defibrillation for prolonged pulse checks."
+    },
+    {
+      "tag": "pea asystole",
+      "stem": "If the AED advises “no shock,” the EMT should:",
+      "choices": [
+        "Assume the patient has a pulse and stop CPR",
+        "Resume high-quality CPR immediately and reassess per protocol",
+        "Deliver three stacked shocks anyway",
+        "Turn the AED off permanently"
+      ],
+      "answer": 1,
+      "why": "No-shock rhythms (asystole/PEA) still need CPR. Keep the AED on for the next analysis cycle."
+    },
+    {
+      "tag": "acs transport",
+      "stem": "A patient with suspected ACS who remains symptomatic should be:",
+      "choices": [
+        "Encouraged to walk to reduce anxiety",
+        "Moved with minimal exertion and transported promptly, preferably to cardiac-capable care per protocol",
+        "Left sitting at home if one nitro helped slightly",
+        "Required to sign a refusal after any aspirin dose"
+      ],
+      "answer": 1,
+      "why": "Reduce myocardial demand: carry them, keep calm, early notification, right destination when available."
+    },
+    {
+      "tag": "diaphoretic mi",
+      "stem": "Cool, pale, diaphoretic skin in a patient with crushing chest pressure MOST suggests:",
+      "choices": [
+        "Sympathetic stress from significant cardiac ischemia or evolving shock",
+        "A normal finding in all healthy adults",
+        "Heat exhaustion only",
+        "That the pain is definitely musculoskeletal"
+      ],
+      "answer": 0,
+      "why": "Diaphoresis with ACS symptoms is a sick finding — think ischemia and possible pump failure."
+    },
+    {
+      "tag": "nitro max",
+      "stem": "After assisting with the maximum protocol doses of nitroglycerin without relief, the EMT should:",
+      "choices": [
+        "Continue stacking extra tablets every 30 seconds",
+        "Reassess vitals, continue supportive ACS care, and transport",
+        "Switch to ibuprofen for pain control",
+        "Have the patient stand to redistribute blood flow"
+      ],
+      "answer": 1,
+      "why": "Respect dose limits and hypotension risk. Support ABCs, ASA if indicated, and go."
+    },
+    {
+      "tag": "cpap chf",
+      "stem": "When protocol allows CPAP for CHF/pulmonary edema, the main benefit for the EMT-level provider is:",
+      "choices": [
+        "Forcing fluid out of the alveoli by positive airway pressure and reducing work of breathing",
+        "Replacing the need for oxygen entirely",
+        "Defibrillating lethal arrhythmias",
+        "Diagnosing STEMI without a 12-lead"
+      ],
+      "answer": 0,
+      "why": "CPAP stents airways and decreases preload/afterload burden. Watch BP and mental status; it’s not for every patient."
+    },
+    {
+      "tag": "bradycardia syncope",
+      "stem": "An elderly patient with near-syncope, a slow pulse, and chest discomfort should make you MOST concerned for:",
+      "choices": [
+        "A primary psychiatric panic attack only",
+        "A cardiac conduction or ischemic problem needing rapid evaluation",
+        "A simple ear infection",
+        "Benign dehydration that never warrants transport"
+      ],
+      "answer": 1,
+      "why": "Brady + near-faint + ischemic symptoms = time-sensitive cardiac. Support ABCs and transport."
+    },
+    {
+      "tag": "except angina",
+      "stem": "All of the following are reasonable ACS treatment priorities for the EMT, EXCEPT:",
+      "choices": [
+        "Aspirin when indicated by protocol",
+        "Position of comfort and limited exertion",
+        "Assisting prescribed nitro when criteria are met",
+        "Administering a fibrinolytic drug in the field without medical direction"
+      ],
+      "answer": 3,
+      "why": "Fibrinolysis is hospital/ALS-system dependent. EMTs focus on ASA, NTG assist, O2 as needed, and rapid transport."
+    },
+    {
+      "tag": "edema bilateral",
+      "stem": "Bilateral pitting ankle edema that develops gradually in a cardiac patient MOST often reflects:",
+      "choices": [
+        "Chronic venous congestion from heart failure",
+        "An acute isolated asthma attack",
+        "A fresh arterial embolism to both feet",
+        "Normal findings after one night of rest"
+      ],
+      "answer": 0,
+      "why": "Dependent edema is a right-sided/chronic CHF clue. Correlate with dyspnea, weight gain, and meds."
+    },
+    {
+      "tag": "rosc hypoxia",
+      "stem": "After ROSC, if the patient remains unresponsive with inadequate breathing, you should:",
+      "choices": [
+        "Provide assisted ventilations with oxygen and reassess frequently",
+        "Assume breathing will normalize without support",
+        "Place them prone without an airway plan",
+        "Give oral fluids to raise blood pressure"
+      ],
+      "answer": 0,
+      "why": "Post-arrest brains and hearts need oxygen. Support ventilation; avoid both hypoxia and excessive hyperventilation."
+    },
+    {
+      "tag": "chest pain sample",
+      "stem": "For a chest-pain patient, asking about prior heart attacks, stents, or heart failure mainly gathers the “P” in SAMPLE — which is:",
+      "choices": [
+        "Pulse oximetry reading",
+        "Past medical history / pertinent history",
+        "Provocation of pain",
+        "Primary survey findings only"
+      ],
+      "answer": 1,
+      "why": "SAMPLE’s P is past/pertinent medical history. OPQRST’s P is provocation — different mnemonics."
+    }
+  ],
+  "18": [
+    {
+      "tag": "ischemic stroke",
+      "stem": "Most strokes are ischemic, meaning they are caused by:",
+      "choices": [
+        "Bleeding into brain tissue or subarachnoid space",
+        "Blockage of a cerebral artery by clot or embolus",
+        "A brief absence seizure",
+        "Middle-ear infection alone"
+      ],
+      "answer": 1,
+      "why": "Ischemic = vessel occlusion. Hemorrhagic = bleeding. Both need rapid transport; do not give ASA in the field for stroke."
+    },
+    {
+      "tag": "hemorrhagic clues",
+      "stem": "Which presentation MORE strongly suggests hemorrhagic rather than typical ischemic stroke?",
+      "choices": [
+        "Gradual mild arm weakness over days without headache",
+        "Sudden severe “worst headache,” vomiting, and rapid decline in LOC",
+        "Transient blurry vision that resolved yesterday",
+        "Isolated tinnitus after a loud concert"
+      ],
+      "answer": 1,
+      "why": "Thunderclap headache, vomiting, and sudden coma raise hemorrhage concern. Still use stroke screens and go fast."
+    },
+    {
+      "tag": "be-fast",
+      "stem": "Compared with FAST, BE-FAST adds assessment of:",
+      "choices": [
+        "Blood glucose and fever only",
+        "Balance and Eyes (vision) changes",
+        "Breath sounds and edema",
+        "Blood pressure and ECG"
+      ],
+      "answer": 1,
+      "why": "B = balance problems; E = eye/vision changes. Still Face, Arm, Speech, Time."
+    },
+    {
+      "tag": "cincinnati",
+      "stem": "The Cincinnati Prehospital Stroke Scale assesses which three findings?",
+      "choices": [
+        "Facial droop, arm drift, and abnormal speech",
+        "Pupil size, grip strength, and gait only",
+        "Blood pressure, pulse, and SpO2 only",
+        "Memory, orientation, and cranial nerve XII only"
+      ],
+      "answer": 0,
+      "why": "One abnormal finding is a positive screen. Pair it with last known well and glucose."
+    },
+    {
+      "tag": "cincinnati arm",
+      "stem": "A positive arm-drift finding on stroke screening means:",
+      "choices": [
+        "Both arms stay up equally for the full test",
+        "One arm drifts down or cannot be raised compared with the other",
+        "The patient refuses to cooperate for any reason",
+        "Grip strength is equal bilaterally"
+      ],
+      "answer": 1,
+      "why": "Pronator drift or inability to hold one arm up = abnormal. Document which side."
+    },
+    {
+      "tag": "absence seizure",
+      "stem": "Absence seizures are BEST described as:",
+      "choices": [
+        "Brief staring spells with little or no convulsive movement, often in children",
+        "Prolonged full-body tonic-clonic activity lasting over 5 minutes",
+        "Only nocturnal sleepwalking",
+        "Stroke that always leaves permanent paralysis"
+      ],
+      "answer": 0,
+      "why": "Absence = short “blank out.” Tonic-clonic has stiffening then jerking of the whole body."
+    },
+    {
+      "tag": "tonic clonic",
+      "stem": "A generalized tonic-clonic seizure typically includes:",
+      "choices": [
+        "Only a brief stare lasting 2–3 seconds",
+        "Loss of consciousness with tonic stiffening followed by clonic jerking",
+        "Preserved conversation throughout the event",
+        "Voluntary purposeful fighting movements only"
+      ],
+      "answer": 1,
+      "why": "Tonic = rigid; clonic = rhythmic jerks. Protect the airway/environment and time it."
+    },
+    {
+      "tag": "aura",
+      "stem": "An aura before a seizure is:",
+      "choices": [
+        "A sensory warning (smell, taste, vision, feeling) that a seizure may begin",
+        "The postictal recovery period",
+        "Proof the event cannot be epileptic",
+        "Always a hemorrhagic stroke"
+      ],
+      "answer": 0,
+      "why": "Auras are simple partial / warning symptoms. Ask witnesses what happened just before the event."
+    },
+    {
+      "tag": "febrile seizure",
+      "stem": "For a child with a simple febrile seizure that has stopped, EMT care focuses on:",
+      "choices": [
+        "Packing the child in ice until shivering starts",
+        "Supporting ABCs, gentle cooling if hot, checking glucose per protocol, and transport/evaluation",
+        "Forcing oral antipyretics into an unresponsive child",
+        "Restraining them prone until fever resolves"
+      ],
+      "answer": 1,
+      "why": "Most febrile seizures are brief. Airway, temperature control without overcooling, and rule out worse causes."
+    },
+    {
+      "tag": "migraine caution",
+      "stem": "A severe migraine can mimic stroke. The safest prehospital approach is to:",
+      "choices": [
+        "Assume migraine and leave the patient home if they have a headache history",
+        "Treat new focal deficits as possible stroke until proven otherwise and transport",
+        "Give aspirin for every headache to prevent stroke",
+        "Hyperventilate the patient to reduce intracranial pressure"
+      ],
+      "answer": 1,
+      "why": "History of migraine does not cancel a new facial droop or arm weakness. Err toward stroke pathway."
+    },
+    {
+      "tag": "aeiou tips",
+      "stem": "AEIOU-TIPS is a mnemonic used to remember causes of:",
+      "choices": [
+        "Chest pain only",
+        "Altered mental status",
+        "Isolated ankle sprain",
+        "Normal pediatric growth"
+      ],
+      "answer": 1,
+      "why": "Alcohol/acidosis, Epilepsy, Insulin, Overdose, Uremia, Trauma/temp, Infection, Psych, Stroke/shock — AMS map."
+    },
+    {
+      "tag": "aeiou insulin",
+      "stem": "In AEIOU-TIPS, the “I” MOST commonly reminds EMTs to consider:",
+      "choices": [
+        "Immobilization of every joint",
+        "Insulin-related problems (hypoglycemia / hyperglycemia)",
+        "Insect bites only",
+        "Iron deficiency as the sole AMS cause"
+      ],
+      "answer": 1,
+      "why": "Check blood glucose early. Hypoglycemia is reversible and mimics stroke, seizure, and intoxication."
+    },
+    {
+      "tag": "gcs eye",
+      "stem": "On the Glasgow Coma Scale, spontaneous eye opening scores:",
+      "choices": [
+        "1",
+        "2",
+        "4",
+        "6"
+      ],
+      "answer": 2,
+      "why": "Eyes: 4 spontaneous, 3 to voice, 2 to pain, 1 none. Know the ranges for reporting trend."
+    },
+    {
+      "tag": "gcs motor",
+      "stem": "The highest possible Glasgow Coma Scale total is:",
+      "choices": [
+        "10",
+        "12",
+        "15",
+        "18"
+      ],
+      "answer": 2,
+      "why": "E4 + V5 + M6 = 15. Three is the minimum (no response in any category)."
+    },
+    {
+      "tag": "gcs except",
+      "stem": "All of the following are GCS components, EXCEPT:",
+      "choices": [
+        "Eye opening",
+        "Verbal response",
+        "Motor response",
+        "Blood pressure category"
+      ],
+      "answer": 3,
+      "why": "GCS is neurologic responsiveness only — not vital signs. Still report BP separately."
+    },
+    {
+      "tag": "meningitis",
+      "stem": "Fever, headache, altered mental status, and neck stiffness (nuchal rigidity) MOST suggest:",
+      "choices": [
+        "Meningitis or CNS infection until proven otherwise",
+        "A simple tension headache",
+        "Uncomplicated seasonal allergies",
+        "Stable angina"
+      ],
+      "answer": 0,
+      "why": "Protect yourself (BSI), support ABCs, minimize stimulation, and transport — bacterial meningitis is time-critical."
+    },
+    {
+      "tag": "stroke position",
+      "stem": "A conscious suspected stroke patient who is not in shock is usually transported:",
+      "choices": [
+        "With the head elevated slightly (about 30°) if protocol allows and airway is protected",
+        "In Trendelenburg with legs high",
+        "Prone to protect the airway",
+        "Standing to test balance repeatedly"
+      ],
+      "answer": 0,
+      "why": "Slight head elevation may help ICP/airway comfort. Protect vomit risk; do not fatigue them with walking tests."
+    },
+    {
+      "tag": "stroke asa",
+      "stem": "Why do EMTs generally NOT give aspirin for suspected stroke in the field?",
+      "choices": [
+        "Aspirin has no effect on platelets",
+        "Hemorrhagic stroke cannot be ruled out without imaging, and ASA could worsen bleeding",
+        "Aspirin is only for children",
+        "Stroke patients never have ischemic disease"
+      ],
+      "answer": 1,
+      "why": "Hospital CT distinguishes bleed vs clot. Field ASA is for ACS pathways, not undifferentiated stroke."
+    },
+    {
+      "tag": "focal vs global",
+      "stem": "Sudden unilateral facial droop and one-sided arm weakness is BEST described as a:",
+      "choices": [
+        "Focal neurologic deficit",
+        "Global metabolic finding only",
+        "Normal aging change",
+        "Psychiatric conversion that never needs transport"
+      ],
+      "answer": 0,
+      "why": "Focal findings point to stroke/TIA territory. Still check glucose — metabolic problems can mimic."
+    },
+    {
+      "tag": "seizure vs stroke",
+      "stem": "Which history MOST favors seizure over primary stroke as the cause of a transient deficit?",
+      "choices": [
+        "Witnessed convulsions followed by gradual awakening with tongue bite",
+        "Sudden aphasia and hemiparesis without any convulsive activity",
+        "Thunderclap headache with neck stiffness only",
+        "Progressive dementia over years"
+      ],
+      "answer": 0,
+      "why": "Convulsions + postictal course suggest seizure. Still assess for stroke if deficits persist or onset is unclear."
+    },
+    {
+      "tag": "partial seizure",
+      "stem": "A simple partial (focal aware) seizure may present as:",
+      "choices": [
+        "Localized twitching or sensory symptoms with preserved awareness",
+        "Always full loss of consciousness and incontinence",
+        "Only cardiac arrest",
+        "A normal EEG by definition without symptoms"
+      ],
+      "answer": 0,
+      "why": "Focal seizures can stay in one body part. Protect the patient; they may progress to generalized activity."
+    },
+    {
+      "tag": "ams primary",
+      "stem": "The FIRST priorities for any markedly altered patient are:",
+      "choices": [
+        "Airway, breathing, circulation, and rapid identification of reversible causes",
+        "A complete 12-lead before opening the airway",
+        "Detailed family counseling before vital signs",
+        "Having them stand to assess orthostatics immediately"
+      ],
+      "answer": 0,
+      "why": "ABCs first, then glucose/oxygen/naloxone per protocol. History follows once life threats are handled."
+    },
+    {
+      "tag": "cushing",
+      "stem": "Cushing’s triad (hypertension, bradycardia, irregular respirations) suggests:",
+      "choices": [
+        "Rising intracranial pressure",
+        "Simple dehydration",
+        "Anaphylaxis",
+        "Hyperglycemia only"
+      ],
+      "answer": 0,
+      "why": "Late ICP sign. Support airway, avoid hypotonic fluids/overventilation extremes, rapid transport."
+    },
+    {
+      "tag": "stroke destination",
+      "stem": "When local protocol designates stroke centers, a patient with a positive stroke screen and known last known well should be:",
+      "choices": [
+        "Taken to the closest facility capable of rapid stroke evaluation per protocol, with early notification",
+        "Taken home if deficits improve in the ambulance",
+        "Held on scene until deficits fully resolve",
+        "Routed only after a two-hour on-scene neuro consult"
+      ],
+      "answer": 0,
+      "why": "Time is brain. Notify early, minimize scene time, and follow destination policies."
+    },
+    {
+      "tag": "gcs verbal",
+      "stem": "A patient who opens eyes to pain, groans incomprehensibly, and withdraws from pain has a GCS closest to:",
+      "choices": [
+        "3",
+        "8",
+        "12",
+        "15"
+      ],
+      "answer": 1,
+      "why": "E2 + V2 + M4 = 8. Know how to add the three scores for clear handoff reports."
+    },
+    {
+      "tag": "seizure oxygen",
+      "stem": "During or immediately after a generalized seizure, oxygen is indicated when:",
+      "choices": [
+        "The patient is cyanotic, hypoxic, or has inadequate breathing",
+        "Every seizing patient must get a nonrebreather even with SpO2 99% and good color",
+        "Only if the family requests it",
+        "Never, because oxygen causes seizures"
+      ],
+      "answer": 0,
+      "why": "Support oxygenation for hypoxia/poor ventilation. Do not force a mask that obstructs during thrashing."
+    },
+    {
+      "tag": "neglect stroke",
+      "stem": "A patient who ignores the left side of space and collides into objects on that side may have:",
+      "choices": [
+        "Unilateral neglect, often from right-hemisphere stroke",
+        "Normal vision in all cases",
+        "Only an orthopedic problem",
+        "Proof of malingering"
+      ],
+      "answer": 0,
+      "why": "Neglect is a neuro deficit. Protect them from injury and include it in your stroke report."
+    },
+    {
+      "tag": "meningismus except",
+      "stem": "Classic meningitis findings include all of the following, EXCEPT:",
+      "choices": [
+        "Fever",
+        "Neck stiffness",
+        "Photophobia / headache",
+        "Painless isolated ankle swelling as the primary sign"
+      ],
+      "answer": 3,
+      "why": "Think fever + headache + stiff neck ± rash/AMS. Isolated ankle edema is not a meningitis hallmark."
+    },
+    {
+      "tag": "ams tips trauma",
+      "stem": "In AEIOU-TIPS, trauma and temperature problems are grouped under which letter?",
+      "choices": [
+        "A",
+        "E",
+        "T",
+        "S"
+      ],
+      "answer": 2,
+      "why": "T = trauma / temperature (and sometimes tumor). Always consider head injury and hypo/hyperthermia."
+    },
+    {
+      "tag": "stroke bp",
+      "stem": "For most prehospital stroke patients, EMTs should:",
+      "choices": [
+        "Aggressively lower very high BP with multiple nitroglycerin doses",
+        "Monitor BP, avoid unnecessary BP-lowering meds, and transport",
+        "Ignore BP entirely because it never matters in stroke",
+        "Require the patient to take extra home antihypertensives before transport"
+      ],
+      "answer": 1,
+      "why": "Permissive hypertension is often intentional until imaging. Do not crash the pressure in the field."
+    },
+    {
+      "tag": "febrile vs epilepsy",
+      "stem": "Febrile seizures are MOST associated with:",
+      "choices": [
+        "Young children during a rapid rise in body temperature from illness",
+        "Only adults over 65 with hypertension",
+        "Always structural brain tumors",
+        "Cardiac arrest rhythms exclusively"
+      ],
+      "answer": 0,
+      "why": "Typically 6 months–5 years with fever. Still evaluate — first seizures need medical workup."
+    },
+    {
+      "tag": "dysarthria",
+      "stem": "Slurred speech from weak articulating muscles (often with facial droop) is called:",
+      "choices": [
+        "Dysarthria",
+        "Anosmia",
+        "Tinnitus",
+        "Vertigo only"
+      ],
+      "answer": 0,
+      "why": "Dysarthria is motor speech impairment; aphasia is language. Both can appear on stroke screens as “abnormal speech.”"
+    },
+    {
+      "tag": "ataxia",
+      "stem": "Sudden inability to walk straight or sit upright without falling, with new dizziness, should prompt:",
+      "choices": [
+        "BE-FAST / posterior stroke consideration and rapid transport",
+        "Reassurance that balance problems are never neurologic",
+        "A field diagnosis of inner-ear infection only, with refusal encouraged",
+        "Immediate aspirin for presumed migraine"
+      ],
+      "answer": 0,
+      "why": "Balance/eye findings catch posterior circulation strokes FAST can miss. Treat as stroke until proven otherwise."
+    },
+    {
+      "tag": "gcs trend",
+      "stem": "Serial GCS assessments are valuable mainly because they:",
+      "choices": [
+        "Replace the need for vital signs",
+        "Show improvement or deterioration over time for handoff and decisions",
+        "Diagnose the exact brain lesion without imaging",
+        "Are only used in psychiatric facilities"
+      ],
+      "answer": 1,
+      "why": "A falling GCS means the patient is getting worse — recheck ABCs and speed transport."
+    },
+    {
+      "tag": "seizure recovery position",
+      "stem": "After a convulsive seizure, if the patient is breathing adequately but remains unresponsive, a good position is:",
+      "choices": [
+        "Lateral recovery position to protect the airway from secretions",
+        "Sitting bolt upright forced against their will",
+        "Prone with the face buried in a pillow",
+        "Standing with assistance immediately"
+      ],
+      "answer": 0,
+      "why": "Recovery position drains vomit/saliva. Keep suction ready and watch for another seizure."
+    },
+    {
+      "tag": "ischemic risk",
+      "stem": "Common risk factors for ischemic stroke include all of the following, EXCEPT:",
+      "choices": [
+        "Atrial fibrillation",
+        "Hypertension and atherosclerosis",
+        "Prior TIA",
+        "Being a healthy toddler with no medical history"
+      ],
+      "answer": 3,
+      "why": "AF emboli, HTN, and prior TIA drive adult ischemic stroke risk. Toddlers are not the typical demographic."
+    },
+    {
+      "tag": "ams overdose",
+      "stem": "Pinpoint pupils, slow respirations, and unresponsiveness in AEIOU-TIPS thinking MOST suggest:",
+      "choices": [
+        "Opioid overdose (the “O”)",
+        "Isolated hyperglycemia without respiratory depression",
+        "A migraine aura only",
+        "Hyperthermia from heat stroke exclusively"
+      ],
+      "answer": 0,
+      "why": "Support ventilation and give naloxone per protocol. Do not skip the airway for a drug history debate."
+    },
+    {
+      "tag": "stroke scene time",
+      "stem": "On a clear stroke alert call, scene time should generally be:",
+      "choices": [
+        "Minimized after ABCs, glucose, stroke scale, and last known well are obtained",
+        "Extended for a complete head-to-toe physical lasting 30 minutes",
+        "Spent waiting to see if symptoms resolve completely",
+        "Used mainly to obtain a signed DNR before any assessment"
+      ],
+      "answer": 0,
+      "why": "Load-and-go mentality after critical data. Hospitals need clock time and a focused neuro report."
+    },
+    {
+      "tag": "petit mal name",
+      "stem": "“Petit mal” is an older term that usually refers to:",
+      "choices": [
+        "Absence seizures",
+        "Status epilepticus only",
+        "Hemorrhagic stroke",
+        "Syncope from dehydration"
+      ],
+      "answer": 0,
+      "why": "Petit mal ≈ absence. Grand mal ≈ tonic-clonic. Use modern terms on reports when you can."
+    },
+    {
+      "tag": "neuro except",
+      "stem": "Appropriate EMT actions for suspected stroke include all of the following, EXCEPT:",
+      "choices": [
+        "Checking blood glucose",
+        "Performing a Cincinnati or BE-FAST screen",
+        "Documenting last known well",
+        "Giving oral glucose to every stroke patient regardless of glucose reading"
+      ],
+      "answer": 3,
+      "why": "Treat documented hypoglycemia — do not sugar-load a normoglycemic or hyperglycemic stroke patient."
+    }
+  ]
+}
