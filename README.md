@@ -2,7 +2,7 @@
 
 Study desk for **Snoqualmie Pass Fire & Rescue** students in the King County EMS EMT Program, Fall 2026.
 
-Live: [https://sz3lp.github.io/pass-ready/](https://sz3lp.github.io/pass-ready/)
+Live: [https://northcascadiadev.com/](https://northcascadiadev.com/)
 
 ## Accounts (free)
 
