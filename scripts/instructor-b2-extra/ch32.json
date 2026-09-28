@@ -1,0 +1,484 @@
+{
+  "32": [
+    {
+      "tag": "strain",
+      "stem": "A strain is BEST defined as an injury to a:",
+      "choices": [
+        "Ligament connecting bone to bone",
+        "Muscle or tendon",
+        "Articular cartilage only",
+        "Bone shaft with displacement from the joint"
+      ],
+      "answer": 1,
+      "why": "Strain = muscle/tendon. Sprain = ligament. Dislocation = bone out of joint."
+    },
+    {
+      "tag": "strain vs sprain",
+      "stem": "Which statement correctly distinguishes a strain from a sprain?",
+      "choices": [
+        "A strain involves ligaments; a sprain involves muscle",
+        "A strain involves muscle or tendon; a sprain involves ligaments",
+        "Both terms mean the same injury to a joint capsule",
+        "A sprain always includes a complete bone fracture"
+      ],
+      "answer": 1,
+      "why": "Remember: sTrain → Tendon/muscle; sPrain → ligament (joint)."
+    },
+    {
+      "tag": "open fracture",
+      "stem": "Field care for an open fracture includes all of the following, EXCEPT:",
+      "choices": [
+        "Control bleeding and cover the wound with a sterile dressing",
+        "Splint the extremity and check distal CSM",
+        "Push bone ends back under the skin to close the wound",
+        "Treat for shock and transport"
+      ],
+      "answer": 2,
+      "why": "Never force bone ends back under the skin. Cover, control bleeding, splint, transport."
+    },
+    {
+      "tag": "open fracture care",
+      "stem": "You find bone protruding through the skin of a forearm. After scene safety and ABCs, your NEXT priority is to:",
+      "choices": [
+        "Irrigate the wound with hydrogen peroxide until clean",
+        "Control hemorrhage and cover the open wound with a sterile dressing before splinting",
+        "Attempt closed reduction in the field",
+        "Apply a traction splint to the forearm"
+      ],
+      "answer": 1,
+      "why": "Open fracture = soft-tissue wound plus broken bone. Stop bleeding, sterile cover, then immobilize."
+    },
+    {
+      "tag": "sling swathe",
+      "stem": "A sling and swathe is MOST appropriate to immobilize a:",
+      "choices": [
+        "Isolated mid-shaft femur fracture",
+        "Suspected clavicle or shoulder injury",
+        "Unstable pelvic ring fracture",
+        "Open tibial fracture with arterial bleeding only"
+      ],
+      "answer": 1,
+      "why": "Sling supports the arm; swathe binds it to the chest — classic for clavicle/shoulder girdle injuries."
+    },
+    {
+      "tag": "sling",
+      "stem": "The purpose of the swathe when using a sling and swathe is to:",
+      "choices": [
+        "Apply circumferential traction to the humerus",
+        "Hold the arm against the chest to limit shoulder motion",
+        "Replace the need for a distal CSM check",
+        "Reduce a dislocated hip at the scene"
+      ],
+      "answer": 1,
+      "why": "The swathe secures the arm to the torso so the shoulder cannot swing freely."
+    },
+    {
+      "tag": "joint splint",
+      "stem": "When splinting a suspected joint injury (for example, an elbow), you should generally:",
+      "choices": [
+        "Force the joint through full range of motion first",
+        "Immobilize the joint and the bones above and below it in the position found",
+        "Apply a traction splint across the joint",
+        "Leave the joint free so the patient can \"work out\" the injury"
+      ],
+      "answer": 1,
+      "why": "Joint injuries: splint as found, immobilizing the joint plus adjacent long bones."
+    },
+    {
+      "tag": "long bone splint",
+      "stem": "Proper immobilization of a long-bone fracture requires that the splint:",
+      "choices": [
+        "Immobilize only the fracture site itself",
+        "Immobilize the joints above and below the fracture",
+        "Always include a traction device regardless of location",
+        "Be applied before any wound care on an open fracture"
+      ],
+      "answer": 1,
+      "why": "Long bone rule: joints above and below. Joint rule: bones above and below."
+    },
+    {
+      "tag": "angulated fracture",
+      "stem": "An angulated closed forearm fracture has no distal pulse. Per common EMT training, you should:",
+      "choices": [
+        "Leave it severely angulated and never attempt realignment",
+        "Gently attempt realignment once toward anatomic position, then splint and recheck CSM",
+        "Forcefully crank the limb until it \"pops\" into place repeatedly",
+        "Apply a traction splint designed for the femur"
+      ],
+      "answer": 1,
+      "why": "No distal pulse after position-found care → gentle realignment once (if trained/protocol), then splint and reassess."
+    },
+    {
+      "tag": "realign",
+      "stem": "If gentle realignment of an angulated fracture restores a distal pulse, you should NEXT:",
+      "choices": [
+        "Immediately reverse the realignment to the original angle",
+        "Splint in the improved position and recheck CSM frequently",
+        "Have the patient walk to stretch the vessels",
+        "Remove all dressings so the skin can \"breathe\""
+      ],
+      "answer": 1,
+      "why": "Keep the improved alignment with a good splint and keep checking neurovascular status."
+    },
+    {
+      "tag": "shoulder dislocation",
+      "stem": "Field management of a suspected shoulder dislocation typically includes:",
+      "choices": [
+        "Forceful field reduction by yanking the arm overhead",
+        "Supporting the arm in the position of comfort (often sling/swathe) and transporting",
+        "Applying a femoral traction splint to the upper extremity",
+        "Having the patient do push-ups to relocate the humeral head"
+      ],
+      "answer": 1,
+      "why": "EMTs do not force shoulder reductions. Support as found/comfort, protect, transport."
+    },
+    {
+      "tag": "shoulder",
+      "stem": "A patient holds the injured arm away from the body and reports sudden shoulder pain after a fall. You note a squared-off shoulder contour. This presentation is MOST consistent with:",
+      "choices": [
+        "An isolated mid-shaft femur fracture",
+        "A shoulder dislocation",
+        "A greenstick fracture of the tibia",
+        "Compartment syndrome of the calf"
+      ],
+      "answer": 1,
+      "why": "Squared shoulder, arm held slightly abducted/supported = classic anterior shoulder dislocation picture."
+    },
+    {
+      "tag": "clavicle",
+      "stem": "A patient who fell onto the shoulder reports pain over the mid-clavicle and supports the arm against the chest. Appropriate EMT care is to:",
+      "choices": [
+        "Apply a traction splint to the clavicle",
+        "Immobilize with a sling and swathe and check distal CSM",
+        "Force the clavicle ends into alignment with manual pressure",
+        "Ignore the injury because clavicle fractures never bleed"
+      ],
+      "answer": 1,
+      "why": "Clavicle: sling/swathe, CSM, ice if protocol, transport. Do not \"set\" it in the field."
+    },
+    {
+      "tag": "clavicle FOOSH",
+      "stem": "Clavicle fractures are commonly associated with which mechanism?",
+      "choices": [
+        "Direct blow or fall onto the shoulder; sometimes FOOSH transmitted force",
+        "Isolated twisting of the ankle only",
+        "Crush injury confined to the toes",
+        "Hyperflexion of the lumbar spine alone"
+      ],
+      "answer": 0,
+      "why": "Fall on shoulder or FOOSH force up the arm can fracture the clavicle — common in bikes/scooters."
+    },
+    {
+      "tag": "FOOSH scooter",
+      "stem": "A teen falls from a scooter and braces with an outstretched hand (FOOSH). Which injury pattern should you specifically assess for?",
+      "choices": [
+        "Wrist, forearm, elbow, or clavicle/shoulder girdle injury",
+        "Isolated calcaneus fracture only",
+        "Pelvic binder indication without any trunk MOI",
+        "Guaranteed mid-shaft femur fracture requiring traction"
+      ],
+      "answer": 0,
+      "why": "FOOSH transmits force up the kinetic chain — wrist/forearm, elbow, and sometimes clavicle/shoulder."
+    },
+    {
+      "tag": "amputation",
+      "stem": "Care of a completely amputated part includes wrapping it in dry sterile dressings, placing it in a plastic bag, and then:",
+      "choices": [
+        "Packing it directly in dry ice so it freezes solid",
+        "Keeping it cool by placing the bag on ice (not in direct contact with ice/water)",
+        "Soaking it in warm sterile saline for the entire transport",
+        "Discarding it if transport time exceeds 10 minutes"
+      ],
+      "answer": 1,
+      "why": "Dry sterile wrap → bag → cool with ice (part stays dry; no direct ice contact). Transport with the patient."
+    },
+    {
+      "tag": "amputation care",
+      "stem": "Which action is INCORRECT when managing an amputated body part?",
+      "choices": [
+        "Control bleeding on the stump with direct pressure and a pressure dressing",
+        "Keep the amputated part with the patient during transport",
+        "Immerse the amputated part directly in ice water",
+        "Label the bag with the patient's name and time of injury when possible"
+      ],
+      "answer": 2,
+      "why": "Never put the part directly in ice or water — frostbite/tissue damage ruins reimplantation chances."
+    },
+    {
+      "tag": "differentiate",
+      "stem": "Compared with a sprain, a fracture is MORE likely to present with:",
+      "choices": [
+        "Only mild joint stiffness without tenderness",
+        "Deformity, crepitus, and point tenderness over a bone",
+        "Completely normal use of the limb in all cases",
+        "Pain limited exclusively to muscle belly stretch"
+      ],
+      "answer": 1,
+      "why": "Fracture clues: deformity, crepitus, bony point tenderness. Sprains are ligamentous around a joint."
+    },
+    {
+      "tag": "fracture vs dislocation",
+      "stem": "A dislocation differs from a fracture primarily because a dislocation involves:",
+      "choices": [
+        "A break in the continuity of bone only",
+        "Displacement of a bone end from its normal position in a joint",
+        "Injury limited to muscle fibers remote from any joint",
+        "Always an open wound over the injury site"
+      ],
+      "answer": 1,
+      "why": "Dislocation = bone out of joint. Fracture = break in bone. Both can coexist (fracture-dislocation)."
+    },
+    {
+      "tag": "sprain signs",
+      "stem": "A patient twisted an ankle. The joint is swollen and tender but has no gross deformity and can still move somewhat. This is MOST consistent with a:",
+      "choices": [
+        "Complete mid-shaft femur fracture",
+        "Sprain",
+        "Open skull fracture",
+        "Pathologic hip dislocation requiring field reduction"
+      ],
+      "answer": 1,
+      "why": "Sprains: joint pain/swelling without the dramatic deformity of many dislocations/fractures — still splint and transport if unsure."
+    },
+    {
+      "tag": "greenstick",
+      "stem": "A greenstick fracture is BEST described as:",
+      "choices": [
+        "A complete break through both cortices with free bone ends in an adult femur",
+        "An incomplete fracture in which the bone bends and cracks on one side, common in children",
+        "A fracture that occurs only through metastatic cancer deposits",
+        "Displacement of the femoral head from the acetabulum"
+      ],
+      "answer": 1,
+      "why": "Kids' bones are flexible — greenstick = incomplete bend/break, like a green twig."
+    },
+    {
+      "tag": "pathologic",
+      "stem": "A pathologic fracture is one that:",
+      "choices": [
+        "Occurs only during high-speed motor vehicle crashes",
+        "Occurs through bone weakened by disease (e.g., cancer, osteoporosis) often with minimal force",
+        "Always involves an open wound and protruding bone",
+        "Is defined solely by the presence of a joint dislocation"
+      ],
+      "answer": 1,
+      "why": "Pathologic = diseased/weak bone fails under little or no trauma. Treat the fracture and the patient."
+    },
+    {
+      "tag": "osteoporosis FOOSH",
+      "stem": "An elderly woman with known osteoporosis falls on an outstretched hand. Which injury is especially common in this population?",
+      "choices": [
+        "Distal radius (wrist) fracture",
+        "Isolated midfoot sprain that never needs evaluation",
+        "Guaranteed bilateral femur fractures requiring dual traction",
+        "Greenstick fractures of both tibias only"
+      ],
+      "answer": 0,
+      "why": "Osteoporotic FOOSH → distal radius (Colles-type) is classic in older adults; also think hip/humerus."
+    },
+    {
+      "tag": "elderly FOOSH",
+      "stem": "After an elderly FOOSH injury, EMS should also carefully assess for:",
+      "choices": [
+        "Associated head injury, other fractures, and ability to ambulate safely",
+        "Only the wrist, because FOOSH never affects anything else",
+        "Immediate need for a pelvic binder without examining the pelvis",
+        "Mandatory field reduction of every wrist deformity"
+      ],
+      "answer": 0,
+      "why": "Falls in the elderly are multi-injury events — wrist plus head, hip, spine, and functional status."
+    },
+    {
+      "tag": "knee no traction",
+      "stem": "A patient has an isolated injury involving the knee joint with deformity. You should:",
+      "choices": [
+        "Apply a standard femoral traction splint across the knee",
+        "Splint the knee in the position found and avoid traction-splint application",
+        "Force the knee into full extension before any immobilization",
+        "Walk the patient to stretch the joint capsule"
+      ],
+      "answer": 1,
+      "why": "Knee (and hip/ankle) injuries contraindicate traction splints. Splint as found; protect distal CSM."
+    },
+    {
+      "tag": "knee",
+      "stem": "Which statement about knee injuries is MOST accurate for EMT care?",
+      "choices": [
+        "All knee injuries should receive a traction splint",
+        "Immobilize as found; pad voids; check distal CSM; do not use femoral traction",
+        "Always reduce patellar dislocations with vigorous traction",
+        "Knee injuries never threaten neurovascular status"
+      ],
+      "answer": 1,
+      "why": "Position found, good padding, CSM checks. Traction splints are for mid-shaft femur — not the knee."
+    },
+    {
+      "tag": "ankle stirrup",
+      "stem": "A common method to immobilize an injured ankle when using a soft or pillow splint is a:",
+      "choices": [
+        "Stirrup-style wrap that supports the foot and ankle",
+        "Femoral traction hitch applied at the toes",
+        "Pelvic binder cinched around the malleoli",
+        "Sling and swathe of the lower leg to the chest"
+      ],
+      "answer": 0,
+      "why": "Stirrup (U-shaped) support cradles heel/ankle; then secure and check CSM."
+    },
+    {
+      "tag": "ankle",
+      "stem": "When splinting a suspected ankle fracture, you should:",
+      "choices": [
+        "Remove the shoe only if it interferes with assessment/care, then immobilize foot-ankle-lower leg",
+        "Always force the ankle into a 90° angle regardless of pain or pulses",
+        "Apply a traction splint as first-line care",
+        "Leave the injury unsupported so swelling can \"drain\""
+      ],
+      "answer": 0,
+      "why": "Expose as needed for CSM/wound care, then immobilize the foot, ankle, and distal tibia/fibula region."
+    },
+    {
+      "tag": "rigid splint",
+      "stem": "A rigid splint is MOST useful when you need to:",
+      "choices": [
+        "Conform loosely around a massively swollen joint without structure",
+        "Provide firm immobilization of a straight long-bone segment",
+        "Replace hemorrhage control on a spurting artery",
+        "Apply continuous mechanical traction to the pelvis"
+      ],
+      "answer": 1,
+      "why": "Rigid (board/SAM-type) splints give firm support for relatively straight limb segments."
+    },
+    {
+      "tag": "soft splint",
+      "stem": "A soft (pillow or blanket) splint is often preferred for:",
+      "choices": [
+        "Isolated mid-shaft femur fractures requiring traction",
+        "Ankle or foot injuries where conforming support reduces pain",
+        "Unstable pelvic fractures as the sole definitive hospital care",
+        "Replacing sterile dressings on open fractures"
+      ],
+      "answer": 1,
+      "why": "Soft/pillow splints mold to irregular shapes — great for ankles/feet when secured well."
+    },
+    {
+      "tag": "CSM vs PMS",
+      "stem": "In musculoskeletal assessment, CSM and PMS refer to the same distal neurovascular check. CSM stands for:",
+      "choices": [
+        "Circulation, Sensory, Motor",
+        "Compression, Splint, Mobility",
+        "Crepitus, Swelling, Mobility",
+        "Color, Shock, Mentation"
+      ],
+      "answer": 0,
+      "why": "CSM = Circulation, Sensory, Motor. PMS = Pulse, Motor, Sensation. Same idea, different letters."
+    },
+    {
+      "tag": "CSM",
+      "stem": "When instructors say \"check CSM,\" they want you to evaluate distal:",
+      "choices": [
+        "Only capillary refill, ignoring movement and feeling",
+        "Pulse/circulation, sensation, and motor function",
+        "Only the patient's ability to walk",
+        "Only skin temperature proximal to the injury"
+      ],
+      "answer": 1,
+      "why": "Distal pulse/perfusion, can they feel, can they move — before and after every splint."
+    },
+    {
+      "tag": "six Ps",
+      "stem": "The \"six Ps\" associated with compartment syndrome and limb ischemia include all of the following, EXCEPT:",
+      "choices": [
+        "Pain and Pressure (or Pallor)",
+        "Paresthesia and Paralysis",
+        "Pulselessness and Poikilothermia (coolness)",
+        "Polydipsia and Polyuria"
+      ],
+      "answer": 3,
+      "why": "Six Ps: Pain, Pallor, Paresthesia, Pulselessness, Paralysis, Poikilothermia (Pressure). Polydipsia/polyuria = diabetes."
+    },
+    {
+      "tag": "compartment Ps",
+      "stem": "Which finding is a LATE sign of compartment syndrome?",
+      "choices": [
+        "Pain with passive stretch of the affected muscles",
+        "Increasing pain and tense swelling of the compartment",
+        "Absence of a distal pulse",
+        "Patient anxiety about the injury"
+      ],
+      "answer": 2,
+      "why": "Pulselessness comes late. Early: pain out of proportion and pain on passive stretch."
+    },
+    {
+      "tag": "pelvic shock",
+      "stem": "A high-energy trauma patient has pelvic instability and signs of shock. Your priorities include:",
+      "choices": [
+        "Minimizing pelvic motion, considering a binder per protocol, and rapid transport while treating shock",
+        "Walking the patient to \"settle\" the pelvis",
+        "Applying bilateral femoral traction splints as primary pelvic care",
+        "Delaying transport until the pelvis is surgically fixed on scene"
+      ],
+      "answer": 0,
+      "why": "Pelvic fractures can hide massive hemorrhage. Limit movement, binder if trained, shock care, go."
+    },
+    {
+      "tag": "pelvic fracture",
+      "stem": "Blood loss from an unstable pelvic fracture is dangerous mainly because:",
+      "choices": [
+        "It is always limited to less than 100 mL",
+        "Retroperitoneal and pelvic bleeding can be massive without much external blood",
+        "It only causes problems if the skin is open",
+        "It never produces hypotension"
+      ],
+      "answer": 1,
+      "why": "Pelvis can hold liters of blood. Shock may precede dramatic external bleeding."
+    },
+    {
+      "tag": "SCFE",
+      "stem": "Slipped capital femoral epiphysis (SCFE) is BEST understood by EMTs as:",
+      "choices": [
+        "A pediatric/adolescent hip problem where the femoral head slips at the growth plate — do not force the hip",
+        "An adult-only mid-shaft femur fracture treated with traction every time",
+        "A type of greenstick fracture of the clavicle",
+        "A wrist sprain from FOOSH that never needs evaluation"
+      ],
+      "answer": 0,
+      "why": "SCFE: kid/teen hip/thigh/knee pain, often after growth spurt — immobilize gently, no forced ROM, transport."
+    },
+    {
+      "tag": "pediatric hip",
+      "stem": "An overweight 12-year-old has groin and knee pain and limps after minor activity. Suspect a hip growth-plate problem and:",
+      "choices": [
+        "Encourage running to \"loosen\" the joint",
+        "Minimize weight-bearing, support the limb, and transport for evaluation",
+        "Apply a traction splint across the pelvis",
+        "Perform forceful field reduction of the femoral head"
+      ],
+      "answer": 1,
+      "why": "Possible SCFE/hip pathology — off the leg, gentle care, hospital evaluation. No field hip tricks."
+    },
+    {
+      "tag": "crepitus",
+      "stem": "Crepitus on exam of an injured limb MOST strongly suggests:",
+      "choices": [
+        "A simple muscle strain without bone involvement",
+        "Fractured bone ends grating against each other",
+        "A sprain limited to ligament stretch only",
+        "Normal joint lubrication"
+      ],
+      "answer": 1,
+      "why": "Crepitus = grating of fracture fragments. Stop grinding it — splint and reassess CSM."
+    },
+    {
+      "tag": "splinting principle",
+      "stem": "The general rule for musculoskeletal immobilization is to:",
+      "choices": [
+        "Splint before exposing life-threatening hemorrhage",
+        "Expose the injury, control bleeding, dress open wounds, then splint while protecting distal CSM",
+        "Always straighten every deformity before ABCs",
+        "Never check distal neurovascular status after the splint is on"
+      ],
+      "answer": 1,
+      "why": "Life threats first, then wound care, then splint — with distal checks built into the skill."
+    }
+  ]
+}
