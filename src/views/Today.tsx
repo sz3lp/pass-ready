@@ -90,13 +90,22 @@ export function TodayView({ go }: { go: (v: View, extra?: string) => void }) {
           </div>
         </div>
         <p className="mt-2 text-xs text-mute">Same-night 86% is fluency. Retention is whether you still know it.</p>
-        <button
-          type="button"
-          onClick={() => go(primary.view, primary.extra)}
-          className="mt-4 rounded-xl bg-tape px-4 py-2 font-display text-lg font-bold uppercase text-paper"
-        >
-          {primary.label} <ArrowRight className="ml-1 inline size-4" />
-        </button>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => go(primary.view, primary.extra)}
+            className="rounded-xl bg-tape px-4 py-2 font-display text-lg font-bold uppercase text-paper"
+          >
+            {primary.label} <ArrowRight className="ml-1 inline size-4" />
+          </button>
+          <button
+            type="button"
+            onClick={() => go("scroll")}
+            className="rounded-xl border border-line px-4 py-2 font-display text-lg font-bold uppercase"
+          >
+            Scroll {block.label}
+          </button>
+        </div>
       </Panel>
 
       <button type="button" onClick={() => go("learn")} className="text-left">

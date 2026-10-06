@@ -262,6 +262,13 @@ export function DrillView({ seedChapter, seedMode }: { seedChapter?: number; see
         <p className="mt-2 text-sm text-tape">{dueN} due tonight in {live.label}.</p>
       </Panel>
       <div className="grid gap-3 sm:grid-cols-2">
+        <button type="button" onClick={() => { window.location.hash = "scroll/test" }} className="text-left">
+          <Panel className="h-full hover:border-tape/50">
+            <p className="font-display text-xs uppercase tracking-widest text-tape">Swipe</p>
+            <h2 className="font-display text-2xl font-bold uppercase">Scroll the test</h2>
+            <p className="mt-1 text-sm text-mute">One question per screen. Swipe up for the next stem.</p>
+          </Panel>
+        </button>
         <button type="button" onClick={() => start("mission")} className="text-left">
           <Panel className="h-full hover:border-tape/50">
             <p className="font-display text-xs uppercase tracking-widest text-tape">Due queue</p>
