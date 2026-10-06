@@ -6,6 +6,7 @@ import {
   ClipboardList,
   Crosshair,
   Ellipsis,
+  ChevronsUp,
   LayoutGrid,
   Swords,
   Trophy,
@@ -19,6 +20,7 @@ import type { View } from "./nav"
 import { BRAND } from "./data/brand"
 import { TodayView } from "./views/Today"
 import { LearnView } from "./views/Learn"
+import { ScrollView } from "./views/Scroll"
 import { DrillView } from "./views/Drill"
 import { TestsView } from "./views/Tests"
 import { SkillsView } from "./views/Skills"
@@ -35,12 +37,13 @@ type Tab = { id: View; label: string; icon: typeof Zap; short?: string }
 
 const PRIMARY_MOBILE: Tab[] = [
   { id: "today", label: "Today", icon: LayoutGrid },
-  { id: "learn", label: "Learn", icon: BookOpen },
+  { id: "scroll", label: "Scroll", icon: ChevronsUp },
   { id: "drill", label: "Drill", icon: Zap },
-  { id: "skills", label: "Skills", icon: Swords },
+  { id: "learn", label: "Learn", icon: BookOpen },
 ]
 
 const MORE_TABS: Tab[] = [
+  { id: "skills", label: "Skills", icon: Swords },
   { id: "jeopardy", label: "Jeopardy", icon: Trophy, short: "Board" },
   { id: "play", label: "Play / Buzz", icon: Bell },
   { id: "tests", label: "Unit tests", icon: ClipboardList },
@@ -56,13 +59,25 @@ const ALL_TABS: Tab[] = [
 
 const MORE_VIEWS = new Set<View>(MORE_TABS.map((t) => t.id))
 
-function parseHash(): { view: View; chapter?: number; session?: string; testId?: string; playCode?: string; drillMode?: "call" | "exam"; learnChapter?: number } {
+function parseHash(): {
+  view: View
+  chapter?: number
+  session?: string
+  testId?: string
+  playCode?: string
+  drillMode?: "call" | "exam"
+  learnChapter?: number
+  scrollChapter?: number
+  scrollMode?: "learn" | "mix" | "test"
+} {
   const raw = window.location.hash.replace(/^#/, "") || "today"
   const [viewRaw, extra] = raw.split("/")
   const view = ALL_TABS.some((t) => t.id === viewRaw) ? (viewRaw as View) : "today"
   const drillMode = view === "drill" && (extra === "call" || extra === "exam") ? extra : undefined
   const chapter = view === "drill" && extra?.startsWith("c") ? Number(extra.slice(1)) : undefined
   const learnChapter = view === "learn" && extra?.startsWith("c") ? Number(extra.slice(1)) : undefined
+  const scrollMode = view === "scroll" && (extra === "learn" || extra === "mix" || extra === "test") ? extra : undefined
+  const scrollChapter = view === "scroll" && extra?.startsWith("c") ? Number(extra.slice(1)) : undefined
   const session = view === "jeopardy" && extra?.length ? extra : undefined
   const testId = view === "tests" && extra ? extra : undefined
   const playCode = view === "play" && extra ? extra : undefined
@@ -70,6 +85,8 @@ function parseHash(): { view: View; chapter?: number; session?: string; testId?:
     view,
     chapter: Number.isFinite(chapter) ? chapter : undefined,
     learnChapter: Number.isFinite(learnChapter) ? learnChapter : undefined,
+    scrollChapter: Number.isFinite(scrollChapter) ? scrollChapter : undefined,
+    scrollMode,
     session,
     testId,
     playCode,
@@ -78,7 +95,7 @@ function parseHash(): { view: View; chapter?: number; session?: string; testId?:
 }
 
 function Shell() {
-  const [{ view, chapter, session, testId, playCode, drillMode, learnChapter }, setRoute] = useState(parseHash)
+  const [{ view, chapter, session, testId, playCode, drillMode, learnChapter, scrollChapter, scrollMode }, setRoute] = useState(parseHash)
   const [moreOpen, setMoreOpen] = useState(false)
   const { openAccount } = useAuth()
 
@@ -100,6 +117,17 @@ function Shell() {
   }
 
   const moreActive = MORE_VIEWS.has(view)
+
+  if (view === "scroll") {
+    return (
+      <ScrollView
+        seedChapter={scrollChapter}
+        seedMode={scrollMode}
+        onClose={() => go("today")}
+        onOpenNotes={(n) => go("learn", `c${n}`)}
+      />
+    )
+  }
 
   return (
     <div className="min-h-dvh bg-paper text-ink">
