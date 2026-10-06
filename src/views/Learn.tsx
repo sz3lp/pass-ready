@@ -135,8 +135,15 @@ export function LearnView({
           <div className="mt-4 flex flex-wrap gap-2">
             <button
               type="button"
-              onClick={() => go("drill", `c${active}`)}
+              onClick={() => go("scroll", `c${active}`)}
               className="rounded-xl bg-tape px-4 py-2 font-display text-lg font-bold uppercase text-paper"
+            >
+              Scroll this chapter
+            </button>
+            <button
+              type="button"
+              onClick={() => go("drill", `c${active}`)}
+              className="rounded-xl border border-line px-4 py-2 text-sm"
             >
               Drill this chapter
             </button>
@@ -166,6 +173,13 @@ export function LearnView({
           </div>
         </div>
         <div className="mt-4 flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => go("scroll", "learn")}
+            className="rounded-full bg-tape px-3 py-1.5 text-xs font-bold uppercase text-paper"
+          >
+            Scroll this block
+          </button>
           <button
             type="button"
             onClick={() => setTab("primary")}
