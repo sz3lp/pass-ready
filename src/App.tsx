@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import {
   Bell,
   BookOpen,
+  Bot,
   CalendarDays,
   ClipboardList,
   Crosshair,
@@ -29,6 +30,7 @@ import { CrewView } from "./views/Crew"
 import { CalendarView } from "./views/Calendar"
 import { JeopardyView } from "./views/Jeopardy"
 import { PlayView } from "./views/Play"
+import { DetectiveView } from "./views/Detective"
 import { AccountBar } from "./components/Account"
 
 const asset = (file: string) => `${import.meta.env.BASE_URL}${file}`
@@ -43,6 +45,7 @@ const PRIMARY_MOBILE: Tab[] = [
 ]
 
 const MORE_TABS: Tab[] = [
+  { id: "detective", label: "AI Detective", icon: Bot, short: "AI Sim" },
   { id: "skills", label: "Skills", icon: Swords },
   { id: "jeopardy", label: "Jeopardy", icon: Trophy, short: "Board" },
   { id: "play", label: "Play / Buzz", icon: Bell },
@@ -225,6 +228,7 @@ function Shell() {
         {view === "calendar" && <CalendarView />}
         {view === "jeopardy" && <JeopardyView sessionId={session} go={go} />}
         {view === "play" && <PlayView seedCode={playCode} />}
+        {view === "detective" && <DetectiveView />}
       </main>
 
       <nav

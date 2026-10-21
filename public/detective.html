@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Medical Detective AI – SPFR / KCEMS</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --accent-blue: #38bdf8;
+      --accent-emerald: #10b981;
+      --accent-red: #ef4444;
+      --accent-gold: #f59e0b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: #334155;
+    }
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden">
+  <!-- Header -->
+  <header class="flex items-center justify-between px-4 py-3 bg-slate-900 border-b border-slate-800 shrink-0">
+    <div class="flex items-center gap-3">
+      <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-sky-600 text-white font-bold text-lg shadow-md">
+        🩺
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="font-bold text-sm sm:text-base tracking-wide text-slate-100 uppercase">Medical Detective AI</h1>
+          <span id="engineBadge" class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-sky-500/20 text-sky-400 border border-sky-500/30">Local Engine</span>
+          <span id="bonusBadge" class="hidden px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 animate-pulse">🎉 +5 Detective Bonus</span>
+        </div>
+        <p class="text-xs text-slate-400">Snoqualmie Pass Fire & Rescue • KCEMS EMT 2026</p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <select id="caseSelector" class="bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-2.5 py-1.5 outline-none focus:ring-2 focus:ring-sky-500">
+        <option value="0">Call 1: 64M – Severe Dyspnea (CHF)</option>
+        <option value="1">Call 2: 32F – Sudden Dyspnea (PE)</option>
+        <option value="2">Call 3: 26F – Syncope & Abdominal Pain (Ectopic)</option>
+        <option value="3">Call 4: 19M – Restaurant Distress (Anaphylaxis)</option>
+        <option value="4">Call 5: 58M – Unresponsive / Focal Deficit (Hypoglycemia)</option>
+        <option value="5">Call 6: 63M – Worst Headache of Life (SAH)</option>
+        <option value="6">Call 7: 22F – Exhaustion & Deep Breathing (DKA)</option>
+        <option value="7">Call 8: 81F – Acute Confusion & Fall (Sepsis)</option>
+        <option value="8">Call 9: 68M – Epigastric Heartburn (Inferior STEMI)</option>
+        <option value="9">Call 10: 20M – Sudden Chest Pop (Pneumothorax)</option>
+      </select>
+
+      <button id="btnRandom" title="Random Mystery Case" class="p-2 rounded-xl bg-slate-800 border border-slate-700 text-slate-300 hover:text-white">
+        🎲
+      </button>
+
+      <button id="btnKey" title="Configure Gemini API Key" class="p-2 rounded-xl bg-slate-800 border border-slate-700 text-slate-300 hover:text-white">
+        🔑
+      </button>
+
+      <button id="btnVoice" title="Toggle Voice Audio Out" class="p-2 rounded-xl bg-slate-800 border border-slate-700 text-sky-400">
+        🔊
+      </button>
+    </div>
+  </header>
+
+  <!-- Live Vitals Bar -->
+  <section class="bg-slate-900/80 border-b border-slate-800 px-3 py-2 shrink-0">
+    <div class="flex items-center justify-between text-[11px] text-slate-400 pb-1">
+      <span class="flex items-center gap-1 font-semibold text-slate-200">
+        <span class="text-red-500 font-bold">♥</span> Patient Monitor
+      </span>
+      <span id="vitalsStateText">Ask partner for vitals or run exam to reveal</span>
+    </div>
+    <div class="grid grid-cols-4 sm:grid-cols-7 gap-1.5 text-center text-xs">
+      <div class="bg-slate-800/80 p-1.5 rounded-lg border border-slate-700/50">
+        <p class="text-[9px] uppercase text-slate-400">BP</p>
+        <p id="vitBP" class="font-mono font-bold text-slate-200">— / —</p>
+      </div>
+      <div class="bg-slate-800/80 p-1.5 rounded-lg border border-slate-700/50">
+        <p class="text-[9px] uppercase text-slate-400">Pulse</p>
+        <p id="vitHR" class="font-mono font-bold text-slate-200">— bpm</p>
+      </div>
+      <div class="bg-slate-800/80 p-1.5 rounded-lg border border-slate-700/50">
+        <p class="text-[9px] uppercase text-slate-400">Resp</p>
+        <p id="vitRR" class="font-mono font-bold text-slate-200">— /min</p>
+      </div>
+      <div class="bg-slate-800/80 p-1.5 rounded-lg border border-slate-700/50">
+        <p class="text-[9px] uppercase text-slate-400">SpO2</p>
+        <p id="vitSpO2" class="font-mono font-bold text-slate-200">— %</p>
+      </div>
+      <div class="bg-slate-800/80 p-1.5 rounded-lg border border-slate-700/50">
+        <p class="text-[9px] uppercase text-slate-400">BGL</p>
+        <p id="vitBGL" class="font-mono font-bold text-slate-200">— mg/dL</p>
+      </div>
+      <div class="hidden sm:block bg-slate-800/80 p-1.5 rounded-lg border border-slate-700/50">
+        <p class="text-[9px] uppercase text-slate-400">Skin</p>
+        <p id="vitSkin" class="truncate font-mono text-[11px] font-semibold text-slate-200">—</p>
+      </div>
+      <div class="hidden sm:block bg-slate-800/80 p-1.5 rounded-lg border border-slate-700/50">
+        <p class="text-[9px] uppercase text-slate-400">Lungs</p>
+        <p id="vitLungs" class="truncate font-mono text-[11px] font-semibold text-slate-200">—</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Chat Log -->
+  <main id="chatLog" class="flex-1 overflow-y-auto p-4 space-y-3.5 bg-slate-950">
+    <!-- Messages injected dynamically -->
+  </main>
+
+  <!-- Quick Action Chips -->
+  <div class="bg-slate-900 border-t border-slate-800 px-3 py-1.5 flex gap-1.5 overflow-x-auto shrink-0">
+    <button class="chip px-2.5 py-1 text-xs rounded-full bg-slate-800 border border-slate-700 text-slate-300 hover:text-white whitespace-nowrap">BSI, scene is safe</button>
+    <button class="chip px-2.5 py-1 text-xs rounded-full bg-slate-800 border border-slate-700 text-slate-300 hover:text-white whitespace-nowrap">Check full vitals</button>
+    <button class="chip px-2.5 py-1 text-xs rounded-full bg-slate-800 border border-slate-700 text-slate-300 hover:text-white whitespace-nowrap">Listen to lung sounds</button>
+    <button class="chip px-2.5 py-1 text-xs rounded-full bg-slate-800 border border-slate-700 text-slate-300 hover:text-white whitespace-nowrap">Check blood glucose (BGL)</button>
+    <button class="chip px-2.5 py-1 text-xs rounded-full bg-slate-800 border border-slate-700 text-slate-300 hover:text-white whitespace-nowrap">Apply 15L NRB</button>
+    <button class="chip px-2.5 py-1 text-xs rounded-full bg-slate-800 border border-slate-700 text-slate-300 hover:text-white whitespace-nowrap">What medications do you take?</button>
+    <button class="chip px-2.5 py-1 text-xs rounded-full bg-slate-800 border border-slate-700 text-slate-300 hover:text-white whitespace-nowrap">Request ALS intercept</button>
+    <button class="chip px-2.5 py-1 text-xs rounded-full bg-emerald-950/40 border border-emerald-600/40 text-emerald-400 hover:text-emerald-300 whitespace-nowrap font-semibold">I'm done / Submit report</button>
+  </div>
+
+  <!-- Input Bar -->
+  <footer class="bg-slate-900 border-t border-slate-800 p-3 shrink-0 flex items-center gap-2">
+    <button id="btnMic" class="w-11 h-11 flex items-center justify-center rounded-xl bg-slate-800 border border-slate-700 text-slate-300 hover:text-white text-lg transition-all" title="Speech to text">
+      🎙️
+    </button>
+    <input id="inputBox" type="text" placeholder="Speak or type your assessment, vitals request, or deduction..." class="flex-1 bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none focus:ring-2 focus:ring-sky-500">
+    <button id="btnSend" class="w-11 h-11 flex items-center justify-center rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold transition-all shadow-md">
+      ➤
+    </button>
+  </footer>
+
+  <!-- Modal API Key -->
+  <div id="modalKey" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-5 shadow-2xl">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <h3 class="font-bold text-slate-100 flex items-center gap-2">🔑 Configure Gemini AI</h3>
+        <button id="btnCloseKey" class="text-slate-400 hover:text-white text-xl">&times;</button>
+      </div>
+      <div class="py-4 space-y-3 text-xs text-slate-300">
+        <p>Connect Google's <strong>Gemini 1.5 Flash</strong> API for unscripted conversational medical simulation.</p>
+        <div class="bg-slate-800 p-3 rounded-xl border border-slate-700">
+          <p class="font-semibold text-sky-400">Get a free key:</p>
+          <p class="text-slate-400 mt-0.5">Go to <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-sky-400 underline">aistudio.google.com</a> and click "Create API key".</p>
+        </div>
+        <div>
+          <label class="block text-slate-200 font-semibold mb-1 uppercase text-[10px]">Gemini API Key</label>
+          <input id="apiKeyInput" type="password" placeholder="AIzaSy..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 font-mono text-sm text-slate-100 outline-none focus:ring-2 focus:ring-sky-500">
+        </div>
+        <p class="text-[10px] text-slate-500">* Leave blank to use the built-in Local Clinical Engine with zero latency.</p>
+      </div>
+      <div class="flex justify-end gap-2 pt-2 border-t border-slate-800">
+        <button id="btnClearKey" class="px-4 py-2 rounded-xl border border-slate-700 text-slate-400 hover:text-white text-xs">Clear Key</button>
+        <button id="btnSaveKey" class="px-5 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs">Save Key</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scorecard Modal -->
+  <div id="modalScore" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full max-h-[85vh] overflow-y-auto p-5 shadow-2xl">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <h3 class="font-bold text-lg text-slate-100">📋 Official NREMT Scorecard</h3>
+        <button id="btnCloseScore" class="text-slate-400 hover:text-white text-2xl">&times;</button>
+      </div>
+      <div id="scorecardBody" class="py-4 text-xs leading-relaxed text-slate-200 whitespace-pre-line font-mono">
+      </div>
+      <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
+        <button id="btnReviewChat" class="px-4 py-2 rounded-xl border border-slate-700 text-slate-300 hover:text-white text-xs">Review Chat</button>
+        <button id="btnNextCase" class="px-5 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs">Next Mystery Call</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SCENARIOS = [
+      {
+        id: 1,
+        title: "64M – Severe Dyspnea & Orthopnea",
+        cad: "Medic 41, Engine 12: Respond Priority 2 to 442 Maple Street for a 64yo male, chief complaint of 'general weakness and breathing trouble.' Time out: 23:40.",
+        hiddenDiagnosis: "Acute Pulmonary Edema / CHF Exacerbation",
+        vitals: { bp: "210/112 mmHg", hr: "124 bpm", rr: "28/min", spo2: "82% RA (88% NRB)", bgl: "136 mg/dL", skin: "Cool, pale, diaphoretic; 3+ pitting edema", pupils: "Equal and reactive", lungs: "Coarse crackles bilaterally, faint expiratory wheezes" },
+        trap: "Wheezes are cardiac asthma from wet alveoli, not bronchospasm. Giving albuterol worsens tachycardia!",
+        initial: "Can't... catch breath... woke up gasping... feels like I'm drowning... had to sit straight up..."
+      },
+      {
+        id: 2,
+        title: "32F – Sudden Dyspnea & Chest Pain",
+        cad: "Aid 24, Medic 12: Respond Priority 2 to 1100 North 4th. 32yo female with sudden shortness of breath and chest pain. Coworkers say 'panic attack.' Time out: 00:18.",
+        hiddenDiagnosis: "Acute Pulmonary Embolism (PE)",
+        vitals: { bp: "106/70 mmHg", hr: "134 bpm", rr: "32/min", spo2: "89% RA (91% on 15L NRB)", bgl: "102 mg/dL", skin: "Pale, cool. Right calf swollen, red, tender", pupils: "Equal and reactive", lungs: "100% clear bilaterally" },
+        trap: "Lungs are crystal clear and coworkers scream panic attack. PE is a perfusion failure, not ventilation!",
+        initial: "I... can't breathe... knife stabbing into my right chest... I just got off a 10-hour flight from London..."
+      },
+      {
+        id: 3,
+        title: "26F – Syncope & Severe Abdominal Pain",
+        cad: "Aid 31, Medic 14: Respond Priority 2 to 742 East Pine Street. 26yo female, syncope following stomach flu and vomiting. Time out: 00:24.",
+        hiddenDiagnosis: "Ruptured Ectopic Pregnancy with Hemorrhagic Shock",
+        vitals: { bp: "84/50 mmHg", hr: "136 bpm", rr: "24/min", spo2: "94% RA", bgl: "102 mg/dL", skin: "Cool, pale, clammy. Guarding in RLQ", pupils: "Equal, sluggish", lungs: "Clear bilaterally" },
+        trap: "Shoulder pain blamed on hitting the sink is Kehr's Sign (free blood under diaphragm).",
+        initial: "My stomach hurts so bad... and my right shoulder is throbbing... so dizzy when I lift my head..."
+      },
+      {
+        id: 4,
+        title: "19M – Restaurant Respiratory Distress",
+        cad: "Aid 15, Medic 7: Respond Priority 1 to Thai Bistro. 19yo male with acute respiratory distress and facial swelling. Time out: 19:15.",
+        hiddenDiagnosis: "Severe Anaphylaxis with Distributive Shock",
+        vitals: { bp: "86/48 mmHg", hr: "138 bpm", rr: "30/min", spo2: "87% RA", bgl: "110 mg/dL", skin: "Diffuse hives, lips and tongue swollen", pupils: "Equal and reactive", lungs: "Stridor at neck; diffuse wheezes" },
+        trap: "Delaying Epinephrine IM to give Albuterol. Albuterol does not reverse laryngeal edema or shock!",
+        initial: "Throat... closing... peanut sauce... can't get... air..."
+      },
+      {
+        id: 5,
+        title: "58M – Unresponsive / Focal Deficit in Car",
+        cad: "Aid 10: Dispatched to supermarket lot for 58yo male slumped over wheel. Bystanders report 'drunk or stroke.' Time out: 14:02.",
+        hiddenDiagnosis: "Severe Hypoglycemia (Stroke Mimic with Hemiplegia)",
+        vitals: { bp: "142/86 mmHg", hr: "114 bpm", rr: "18/min", spo2: "98% RA", bgl: "32 mg/dL", skin: "Cool, pale, drenched in cold sweat", pupils: "Equal and reactive", lungs: "Clear bilaterally" },
+        trap: "Looks like a Code Stroke, but profuse cold sweat + BGL 32 proves it's neuroglycopenia!",
+        initial: "(Moans unintelligibly, slurring words, unable to lift right arm, shivering)"
+      },
+      {
+        id: 6,
+        title: "63M – Worst Headache of Life",
+        cad: "Medic 22: 63yo male with 'worst migraine of his life and nausea.' Time out: 21:05.",
+        hiddenDiagnosis: "Subarachnoid Hemorrhage (SAH) with Cushing's Triad",
+        vitals: { bp: "204/116 mmHg", hr: "52 bpm", rr: "14/min irregular", spo2: "99% RA", bgl: "165 mg/dL", skin: "Pink, warm, dry", pupils: "Sluggish, right pupil larger", lungs: "Clear bilaterally" },
+        trap: "Treating as a benign migraine. Thunderclap onset + HTN + bradycardia = Cushing's Triad!",
+        initial: "Turn the lights off... baseball bat hit me in back of head... worst pain of my life... feel like throwing up..."
+      },
+      {
+        id: 7,
+        title: "22F – Exhaustion & Deep Breathing",
+        cad: "Aid 18: 22yo female student with 'uncontrolled hyperventilation and belly pain.' Time out: 03:12.",
+        hiddenDiagnosis: "Diabetic Ketoacidosis (DKA)",
+        vitals: { bp: "96/60 mmHg", hr: "128 bpm", rr: "28/min deep Kussmaul", spo2: "99% RA", bgl: "540 mg/dL", skin: "Warm, dry, flushed; fruity acetone breath", pupils: "Equal and reactive", lungs: "Clear bilaterally with massive tidal volume" },
+        trap: "Assuming tachypnea is an anxiety attack. Kussmaul breathing is acid blowoff!",
+        initial: "So... weak... belly cramps... been vomiting all night... drinking water constantly but so thirsty..."
+      },
+      {
+        id: 8,
+        title: "81F – Acute Confusion & Fall",
+        cad: "Aid 3: 81yo female who fell getting out of bed and has worsening confusion. Staff says 'dementia day.' Time out: 09:30.",
+        hiddenDiagnosis: "Septic Shock secondary to Urosepsis",
+        vitals: { bp: "86/52 mmHg", hr: "120 bpm", rr: "24/min", spo2: "93% RA", bgl: "108 mg/dL", skin: "Warm, dry, flushed; temp 96.0°F", pupils: "Equal, reactive", lungs: "Clear; Foley bag has cloudy foul urine" },
+        trap: "Missing hypothermia (96.0°F) which is the geriatric fever equivalent in sepsis!",
+        initial: "(Talking to deceased sister, confused about where she is, disoriented to time and place)"
+      },
+      {
+        id: 9,
+        title: "68M – Epigastric Heartburn",
+        cad: "Medic 11: 68yo male with 'severe acid reflux, nausea, and shoulder blade ache.' Time out: 20:10.",
+        hiddenDiagnosis: "Inferior Wall STEMI (Right Coronary Artery Occlusion)",
+        vitals: { bp: "104/64 mmHg", hr: "48 bpm", rr: "18/min", spo2: "96% RA", bgl: "122 mg/dL", skin: "Cool, pale, diaphoretic", pupils: "Equal and reactive", lungs: "Clear bilaterally" },
+        trap: "RCA feeds inferior wall on diaphragm and SA/AV nodes. Giving Nitro tanks RV preload and drops BP!",
+        initial: "Heavy pressure right in the pit of my stomach... belching won't fix it... feeling clammy..."
+      },
+      {
+        id: 10,
+        title: "20M – Sudden Chest Pop",
+        cad: "Aid 7: 20yo tall, thin male runner with sudden sharp right chest pain. Time out: 16:45.",
+        hiddenDiagnosis: "Spontaneous Pneumothorax",
+        vitals: { bp: "124/78 mmHg", hr: "116 bpm", rr: "28/min shallow", spo2: "89% RA", bgl: "98 mg/dL", skin: "Pale, cool, mild diaphoresis", pupils: "Equal and reactive", lungs: "Left clear; right ABSENT" },
+        trap: "Positive pressure bagging can turn this into a fatal Tension Pneumo in 60 seconds!",
+        initial: "Felt like a balloon popped inside my right ribcage... can't take a deep breath... sharp stabbing pain..."
+      }
+    ];
+
+    let currentIdx = 0;
+    let apiKey = localStorage.getItem("passready_gemini_key") || "";
+    let voiceOut = true;
+    let isListening = false;
+    let recognition = null;
+    let history = [];
+
+    const chatLog = document.getElementById("chatLog");
+    const inputBox = document.getElementById("inputBox");
+    const btnSend = document.getElementById("btnSend");
+    const btnMic = document.getElementById("btnMic");
+    const btnVoice = document.getElementById("btnVoice");
+    const btnKey = document.getElementById("btnKey");
+    const btnRandom = document.getElementById("btnRandom");
+    const caseSelector = document.getElementById("caseSelector");
+    const engineBadge = document.getElementById("engineBadge");
+    const bonusBadge = document.getElementById("bonusBadge");
+
+    function updateBadge() {
+      if (apiKey) {
+        engineBadge.innerText = "Gemini 1.5 Flash";
+        engineBadge.className = "px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-purple-500/20 text-purple-400 border border-purple-500/30";
+      } else {
+        engineBadge.innerText = "Local Engine";
+        engineBadge.className = "px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-sky-500/20 text-sky-400 border border-sky-500/30";
+      }
+    }
+    updateBadge();
+
+    // Voice Out setup
+    function speak(text) {
+      if (!voiceOut || !window.speechSynthesis) return;
+      window.speechSynthesis.cancel();
+      const clean = text.replace(/[*#_`]/g, "").replace(/\[.*?\]/g, "");
+      const u = new SpeechSynthesisUtterance(clean);
+      u.rate = 1.05;
+      window.speechSynthesis.speak(u);
+    }
+
+    btnVoice.addEventListener("click", () => {
+      voiceOut = !voiceOut;
+      btnVoice.innerText = voiceOut ? "🔊" : "🔇";
+      btnVoice.className = voiceOut ? "p-2 rounded-xl bg-slate-800 border border-slate-700 text-sky-400" : "p-2 rounded-xl bg-slate-800 border border-slate-700 text-slate-500";
+    });
+
+    // Speech recognition setup
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SR) {
+      recognition = new SR();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.onresult = (e) => {
+        const text = e.results[0][0].transcript;
+        inputBox.value = text;
+        sendMessage(text);
+        stopMic();
+      };
+      recognition.onerror = () => stopMic();
+      recognition.onend = () => stopMic();
+    }
+
+    function stopMic() {
+      isListening = false;
+      btnMic.innerText = "🎙️";
+      btnMic.classList.remove("bg-red-600", "animate-pulse");
+    }
+
+    btnMic.addEventListener("click", () => {
+      if (!recognition) {
+        alert("Speech recognition not supported in this browser.");
+        return;
+      }
+      if (isListening) {
+        recognition.stop();
+        stopMic();
+      } else {
+        isListening = true;
+        btnMic.innerText = "🛑";
+        btnMic.classList.add("bg-red-600", "animate-pulse");
+        recognition.start();
+      }
+    });
+
+    // Message append helper
+    function appendMessage(role, text) {
+      const msgDiv = document.createElement("div");
+      const isUser = role === "user";
+      const isDispatch = role === "dispatch";
+      const isPartner = role === "partner";
+      const isExaminer = role === "examiner";
+
+      msgDiv.className = `flex flex-col ${isUser ? "items-end" : "items-start"}`;
+
+      let roleLabel = "👤 Patient";
+      let roleColor = "text-sky-400";
+      let bubbleBg = "bg-slate-800 border border-slate-700 text-slate-100";
+
+      if (isUser) {
+        roleLabel = "EMT (You)";
+        roleColor = "text-slate-300";
+        bubbleBg = "bg-sky-600 text-white";
+      } else if (isDispatch) {
+        roleLabel = "🚨 CAD Dispatch";
+        roleColor = "text-red-400";
+        bubbleBg = "bg-red-950/30 border border-red-800/40 text-slate-100";
+      } else if (isPartner) {
+        roleLabel = "🩺 EMT Partner";
+        roleColor = "text-emerald-400";
+        bubbleBg = "bg-emerald-950/30 border border-emerald-800/40 text-slate-100";
+      } else if (isExaminer) {
+        roleLabel = "📋 NREMT Proctor";
+        roleColor = "text-amber-400";
+        bubbleBg = "bg-amber-950/30 border border-amber-800/40 text-slate-100 font-mono text-xs";
+      }
+
+      msgDiv.innerHTML = `
+        <div class="px-1 pb-1 text-[10px] uppercase font-bold tracking-wider ${roleColor}">
+          ${roleLabel}
+        </div>
+        <div class="max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed whitespace-pre-line ${bubbleBg}">
+          ${text}
+        </div>
+      `;
+      chatLog.appendChild(msgDiv);
+      chatLog.scrollTop = chatLog.scrollHeight;
+      history.push({ role, text });
+    }
+
+    // Start Case
+    function loadCase(idx) {
+      currentIdx = idx;
+      caseSelector.value = idx;
+      chatLog.innerHTML = "";
+      history = [];
+      bonusBadge.classList.add("hidden");
+
+      // Reset Vitals
+      document.getElementById("vitBP").innerText = "— / —";
+      document.getElementById("vitHR").innerText = "— bpm";
+      document.getElementById("vitRR").innerText = "— /min";
+      document.getElementById("vitSpO2").innerText = "— %";
+      document.getElementById("vitBGL").innerText = "— mg/dL";
+      document.getElementById("vitSkin").innerText = "—";
+      document.getElementById("vitLungs").innerText = "—";
+      document.getElementById("vitalsStateText").innerText = "Ask partner for vitals or run exam to reveal";
+
+      const scn = SCENARIOS[idx];
+      appendMessage("dispatch", scn.cad);
+      appendMessage("patient", `"${scn.initial}"`);
+      speak(`${scn.cad}. Patient says: ${scn.initial}`);
+    }
+
+    caseSelector.addEventListener("change", (e) => loadCase(Number(e.target.value)));
+    btnRandom.addEventListener("click", () => loadCase(Math.floor(Math.random() * SCENARIOS.length)));
+
+    // Reveal Vitals
+    function revealVitals() {
+      const v = SCENARIOS[currentIdx].vitals;
+      document.getElementById("vitBP").innerText = v.bp;
+      document.getElementById("vitHR").innerText = v.hr;
+      document.getElementById("vitRR").innerText = v.rr;
+      document.getElementById("vitSpO2").innerText = v.spo2;
+      document.getElementById("vitBGL").innerText = v.bgl;
+      document.getElementById("vitSkin").innerText = v.skin;
+      document.getElementById("vitLungs").innerText = v.lungs;
+      document.getElementById("vitalsStateText").innerText = "Live Monitor Active";
+    }
+
+    // Evaluation logic
+    function scoreAssessment() {
+      const allText = history.map(h => h.text).join(" ").toLowerCase();
+      let pts = 0;
+      let log = [];
+      let fails = [];
+
+      if (allText.includes("bsi") || allText.includes("scene safe")) {
+        pts += 3; log.push("✓ BSI / Scene Safety verbalized (+3)");
+      } else fails.push("⚠️ CRITICAL: Missed BSI / Scene Safety declaration");
+
+      if (allText.includes("als") || allText.includes("medic")) {
+        pts += 2; log.push("✓ Requested ALS intercept (+2)");
+      }
+      if (allText.includes("sick") || allText.includes("impression")) {
+        pts += 3; log.push("✓ Formed General Impression (+3)");
+      }
+      if (allText.includes("oxygen") || allText.includes("nrb") || allText.includes("cpap")) {
+        pts += 4; log.push("✓ Appropriate Oxygen Therapy (+4)");
+      }
+      if (allText.includes("vital") || allText.includes("bp") || allText.includes("pulse")) {
+        pts += 5; log.push("✓ Obtained baseline vitals (+5)");
+      }
+      if (allText.includes("glucose") || allText.includes("bgl") || allText.includes("sugar")) {
+        pts += 4; log.push("✓ Checked Blood Glucose Level (+4)");
+      }
+      if (allText.includes("sample") || allText.includes("opqrst") || allText.includes("medication")) {
+        pts += 6; log.push("✓ SAMPLE / OPQRST history gathered (+6)");
+      }
+      if (allText.includes("transport") || allText.includes("priority")) {
+        pts += 4; log.push("✓ Transport Priority stated (+4)");
+      }
+
+      // Check deduction
+      const diagWords = SCENARIOS[currentIdx].hiddenDiagnosis.toLowerCase().split(/[\s/()]+/).filter(w => w.length > 3);
+      const hit = diagWords.some(w => allText.includes(w));
+      if (hit) {
+        pts += 5;
+        bonusBadge.classList.remove("hidden");
+        log.push(`🎉 DETECTIVE BONUS (+5): Identified ${SCENARIOS[currentIdx].hiddenDiagnosis}!`);
+      }
+
+      const pass = pts >= 25 && fails.length === 0;
+
+      return `
+RESULT: ${pass ? "✅ PASS" : "❌ RE-TEST REQUIRED"}
+TOTAL SCORE: ${pts} / 36 points ${hit ? "(Includes +5 Detective Bonus)" : ""}
+
+POINTS AWARDED:
+${log.map(l => "• " + l).join("\n")}
+
+${fails.length > 0 ? "CRITICAL CRITERIA FAILS:\n" + fails.map(f => "• " + f).join("\n") : "✓ Zero Critical Criteria violations."}
+
+------------------------------------------------
+SECRET PATHOLOGY: ${SCENARIOS[currentIdx].hiddenDiagnosis}
+THE LETHAL TRAP: ${SCENARIOS[currentIdx].trap}
+      `;
+    }
+
+    // Local Clinical Engine
+    function localEngine(q) {
+      const lower = q.toLowerCase();
+      const scn = SCENARIOS[currentIdx];
+
+      if (lower.includes("done") || lower.includes("assessment complete")) {
+        const report = scoreAssessment();
+        document.getElementById("scorecardBody").innerText = report;
+        document.getElementById("modalScore").classList.remove("hidden");
+        return "[EXAMINER]: Assessment finished. Scorecard generated on your screen.";
+      }
+
+      const diagWords = scn.hiddenDiagnosis.toLowerCase().split(/[\s/()]+/).filter(w => w.length > 3);
+      if (diagWords.some(w => lower.includes(w))) {
+        bonusBadge.classList.remove("hidden");
+      }
+
+      if (lower.includes("vital") || (lower.includes("bp") && lower.includes("pulse"))) {
+        revealVitals();
+        return `[PARTNER]: Vitals on monitor:\n• BP: ${scn.vitals.bp}\n• HR: ${scn.vitals.hr}\n• RR: ${scn.vitals.rr}\n• SpO2: ${scn.vitals.spo2}\n• BGL: ${scn.vitals.bgl}\n• Skin: ${scn.vitals.skin}\n• Pupils: ${scn.vitals.pupils}`;
+      }
+
+      if (lower.includes("lung") || lower.includes("breath") || lower.includes("listen") || lower.includes("auscultat")) {
+        return `[PARTNER]: Lung sounds: ${scn.vitals.lungs}`;
+      }
+
+      if (lower.includes("sugar") || lower.includes("glucose") || lower.includes("bgl")) {
+        return `[PARTNER]: Blood glucose is ${scn.vitals.bgl}`;
+      }
+
+      if (lower.includes("medication") || lower.includes("pill") || lower.includes("history") || lower.includes("sample")) {
+        return `[PATIENT]: "I have high blood pressure and other conditions... but I haven't been feeling well."`;
+      }
+
+      if (lower.includes("pain") || lower.includes("hurt") || lower.includes("radiat") || lower.includes("opqrst")) {
+        return `[PATIENT]: "${scn.initial}"`;
+      }
+
+      if (lower.includes("oxygen") || lower.includes("nrb") || lower.includes("cpap")) {
+        return `[PARTNER]: Oxygen therapy applied. Patient's SpO2 responds and work of breathing monitored.`;
+      }
+
+      return `[PATIENT]: "${scn.initial}"\n[PARTNER]: "What would you like to check next, EMT?"`;
+    }
+
+    // Send Message
+    async function sendMessage(text) {
+      const msg = text || inputBox.value.trim();
+      if (!msg) return;
+      inputBox.value = "";
+      appendMessage("user", msg);
+
+      if (apiKey) {
+        try {
+          const sys = `You are an expert NREMT Medical Practical Exam Simulator for an EMT student.
+Case: ${SCENARIOS[currentIdx].hiddenDiagnosis}
+Vitals: ${JSON.stringify(SCENARIOS[currentIdx].vitals)}
+Trap: ${SCENARIOS[currentIdx].trap}
+Respond as [PATIENT] and [PARTNER]. Guard clues. Dynamic reactions to treatments. When EMT says done, act as [EXAMINER] and grade 42-point NREMT sheet.`;
+
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              contents: [{ role: "user", parts: [{ text: msg }] }],
+              systemInstruction: { parts: [{ text: sys }] }
+            })
+          });
+          const data = await res.json();
+          const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || localEngine(msg);
+          appendMessage(reply.includes("[EXAMINER]") ? "examiner" : reply.includes("[PARTNER]") ? "partner" : "patient", reply);
+          speak(reply);
+          return;
+        } catch (e) {
+          console.warn("Gemini call failed, using local engine", e);
+        }
+      }
+
+      // Fallback local engine
+      const reply = localEngine(msg);
+      appendMessage(reply.includes("[EXAMINER]") ? "examiner" : reply.includes("[PARTNER]") ? "partner" : "patient", reply);
+      speak(reply);
+    }
+
+    btnSend.addEventListener("click", () => sendMessage());
+    inputBox.addEventListener("keydown", (e) => { if (e.key === "Enter") sendMessage(); });
+
+    document.querySelectorAll(".chip").forEach(chip => {
+      chip.addEventListener("click", () => sendMessage(chip.innerText));
+    });
+
+    // API Key modal
+    btnKey.addEventListener("click", () => {
+      document.getElementById("apiKeyInput").value = apiKey;
+      document.getElementById("modalKey").classList.remove("hidden");
+    });
+    document.getElementById("btnCloseKey").addEventListener("click", () => document.getElementById("modalKey").classList.add("hidden"));
+    document.getElementById("btnSaveKey").addEventListener("click", () => {
+      apiKey = document.getElementById("apiKeyInput").value.trim();
+      localStorage.setItem("passready_gemini_key", apiKey);
+      updateBadge();
+      document.getElementById("modalKey").classList.add("hidden");
+    });
+    document.getElementById("btnClearKey").addEventListener("click", () => {
+      apiKey = "";
+      localStorage.removeItem("passready_gemini_key");
+      document.getElementById("apiKeyInput").value = "";
+      updateBadge();
+      document.getElementById("modalKey").classList.add("hidden");
+    });
+
+    // Score modal
+    document.getElementById("btnCloseScore").addEventListener("click", () => document.getElementById("modalScore").classList.add("hidden"));
+    document.getElementById("btnReviewChat").addEventListener("click", () => document.getElementById("modalScore").classList.add("hidden"));
+    document.getElementById("btnNextCase").addEventListener("click", () => {
+      document.getElementById("modalScore").classList.add("hidden");
+      loadCase((currentIdx + 1) % SCENARIOS.length);
+    });
+
+    // Initial load
+    loadCase(0);
+  </script>
+</body>
+</html>

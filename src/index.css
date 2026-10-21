@@ -19,6 +19,7 @@
 @source "./views/Jeopardy.tsx";
 @source "./views/Tests.tsx";
 @source "./views/Play.tsx";
+@source "./views/Detective.tsx";
 @source "./data/tests.ts";
 @source "./data/videos.ts";
 @source "./lib/practice.ts";
