@@ -10,6 +10,7 @@ import {
   RotateCcw,
   Activity,
   Brain,
+  Sliders,
   X
 } from "lucide-react"
 
@@ -238,8 +239,14 @@ export function DetectiveView() {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState("")
   const [apiKey, setApiKey] = useState(() => localStorage.getItem("passready_gemini_key") || "")
+  const [openAiKey, setOpenAiKey] = useState(() => localStorage.getItem("passready_openai_key") || "")
+  const [openAiVoice, setOpenAiVoice] = useState(() => localStorage.getItem("passready_openai_voice") || "nova")
+  const [selectedVoiceURI, setSelectedVoiceURI] = useState(() => localStorage.getItem("passready_voice_uri") || "")
+  const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([])
   const [showKeyModal, setShowKeyModal] = useState(false)
+  const [settingsTab, setSettingsTab] = useState<"ai" | "voice">("voice")
   const [tempKey, setTempKey] = useState(apiKey)
+  const [tempOpenAiKey, setTempOpenAiKey] = useState(openAiKey)
   const [isListening, setIsListening] = useState(false)
   const [voiceOut, setVoiceOut] = useState(true)
   const [loading, setLoading] = useState(false)
@@ -251,6 +258,43 @@ export function DetectiveView() {
   const currentScenario = SCENARIOS[scenarioIndex]
   const chatEndRef = useRef<HTMLDivElement>(null)
   const recognitionRef = useRef<any>(null)
+  const currentAudioRef = useRef<HTMLAudioElement | null>(null)
+
+  // Load and sort browser voices (prioritize Natural / Neural / Enhanced)
+  useEffect(() => {
+    if (!("speechSynthesis" in window)) return
+
+    const updateVoices = () => {
+      const all = window.speechSynthesis.getVoices()
+      const english = all.filter((v) => v.lang.startsWith("en") || !v.lang)
+      // Sort: Natural / Neural / Online first, then Google, then others, Desktop last
+      const sorted = [...english].sort((a, b) => {
+        const score = (v: SpeechSynthesisVoice) => {
+          const name = v.name.toLowerCase()
+          if (name.includes("natural") || name.includes("neural") || name.includes("online")) return 10
+          if (name.includes("google") && !name.includes("legacy")) return 8
+          if (name.includes("enhanced") || name.includes("siri") || name.includes("premium")) return 7
+          if (name.includes("desktop")) return 1
+          return 4
+        }
+        return score(b) - score(a)
+      })
+
+      setAvailableVoices(sorted)
+
+      // Auto-select best natural voice if none selected
+      if (!selectedVoiceURI && sorted.length > 0) {
+        setSelectedVoiceURI(sorted[0].voiceURI)
+        localStorage.setItem("passready_voice_uri", sorted[0].voiceURI)
+      }
+    }
+
+    updateVoices()
+    window.speechSynthesis.onvoiceschanged = updateVoices
+    return () => {
+      window.speechSynthesis.onvoiceschanged = null
+    }
+  }, [])
 
   // Initialize Speech Recognition
   useEffect(() => {
@@ -298,7 +342,7 @@ export function DetectiveView() {
     ]
     setMessages(initialMsgs)
     if (voiceOut) {
-      speakText(`${scn.cad}. The patient says: ${scn.initialPatientSpeech}`)
+      speakText(`${scn.cad}. The patient says: ${scn.initialPatientSpeech}`, "dispatch")
     }
   }
 
@@ -310,14 +354,78 @@ export function DetectiveView() {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages, loading])
 
-  const speakText = (text: string) => {
-    if (!voiceOut || !window.speechSynthesis) return
-    window.speechSynthesis.cancel()
-    const cleanText = text.replace(/[*#_`]/g, "").replace(/\[.*?\]/g, "")
-    const utterance = new SpeechSynthesisUtterance(cleanText)
-    utterance.rate = 1.05
-    utterance.pitch = 1.0
-    window.speechSynthesis.speak(utterance)
+  // Natural speech playback (OpenAI Neural TTS if key present, else Natural Browser Voice)
+  const speakText = async (text: string, sender: Message["sender"] = "patient") => {
+    if (!voiceOut) return
+
+    // Stop any playing audio
+    if (currentAudioRef.current) {
+      currentAudioRef.current.pause()
+      currentAudioRef.current = null
+    }
+    if (window.speechSynthesis) {
+      window.speechSynthesis.cancel()
+    }
+
+    const cleanText = text.replace(/[*#_`]/g, "").replace(/\[.*?\]/g, "").trim()
+    if (!cleanText) return
+
+    // Option A: Studio-grade OpenAI Neural TTS
+    if (openAiKey) {
+      try {
+        const voiceChoice = sender === "dispatch" ? "onyx" : sender === "patient" ? openAiVoice : "nova"
+        const res = await fetch("https://api.openai.com/v1/audio/speech", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${openAiKey}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            model: "tts-1",
+            voice: voiceChoice,
+            input: cleanText
+          })
+        })
+        if (res.ok) {
+          const blob = await res.blob()
+          const audioUrl = URL.createObjectURL(blob)
+          const audio = new Audio(audioUrl)
+          currentAudioRef.current = audio
+          audio.play()
+          return
+        }
+      } catch (err) {
+        console.warn("OpenAI TTS failed, falling back to natural browser voice", err)
+      }
+    }
+
+    // Option B: High-fidelity Natural Browser Voice
+    if (window.speechSynthesis) {
+      const utterance = new SpeechSynthesisUtterance(cleanText)
+
+      const voice = availableVoices.find((v) => v.voiceURI === selectedVoiceURI) || availableVoices[0]
+      if (voice) {
+        utterance.voice = voice
+      }
+
+      // Pacing for human cadence
+      if (sender === "patient") {
+        utterance.rate = 0.94 // slightly slower, breathier
+        utterance.pitch = 0.98
+      } else if (sender === "dispatch") {
+        utterance.rate = 1.04 // crisp dispatcher pacing
+        utterance.pitch = 1.02
+      } else {
+        utterance.rate = 1.0
+        utterance.pitch = 1.0
+      }
+
+      window.speechSynthesis.speak(utterance)
+    }
+  }
+
+  const testVoiceSample = () => {
+    speakText("Medic 41, Engine 12: Respond Priority 2 to Maple Street for acute breathing trouble. Skin is cool and diaphoretic.", "dispatch")
   }
 
   const toggleMic = () => {
@@ -332,12 +440,6 @@ export function DetectiveView() {
       setIsListening(true)
       recognitionRef.current.start()
     }
-  }
-
-  const saveApiKey = () => {
-    localStorage.setItem("passready_gemini_key", tempKey.trim())
-    setApiKey(tempKey.trim())
-    setShowKeyModal(false)
   }
 
   const evaluateAssessment = (userHistory: Message[]) => {
@@ -636,7 +738,7 @@ Rules:
 
       setMessages((prev) => [...prev, botMsg])
       if (voiceOut) {
-        speakText(replyText)
+        speakText(replyText, botMsg.sender)
       }
     } finally {
       setLoading(false)
@@ -877,14 +979,14 @@ Rules:
         </button>
       </div>
 
-      {/* API Key Modal */}
+      {/* Settings & Voice Modal */}
       {showKeyModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/60 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-2xl border border-line bg-panel p-5 shadow-2xl">
+          <div className="w-full max-w-lg rounded-2xl border border-line bg-panel p-5 shadow-2xl">
             <div className="flex items-center justify-between pb-3 border-b border-line">
               <div className="flex items-center gap-2">
-                <Sparkles className="size-5 text-gold" />
-                <h3 className="font-display text-lg font-bold uppercase text-ink">Gemini AI Configuration</h3>
+                <Sliders className="size-5 text-tape" />
+                <h3 className="font-display text-lg font-bold uppercase text-ink">Simulator & Voice Settings</h3>
               </div>
               <button
                 type="button"
@@ -895,53 +997,175 @@ Rules:
               </button>
             </div>
 
-            <div className="my-4 space-y-3 text-xs text-mute">
-              <p>
-                Connect Google's <strong>Gemini 1.5 Flash</strong> API for unscripted, lifelike patient reasoning. Keys are stored locally on your device.
-              </p>
-              <div className="rounded-xl bg-paper p-3 text-[11px] text-ink">
-                <p className="font-semibold">💡 Get a free API key in 10 seconds:</p>
-                <p className="mt-1 text-mute">
-                  Visit <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer" className="text-tape underline font-medium">Google AI Studio</a>, sign in with your Google account, and click "Create API key".
-                </p>
-              </div>
-
-              <div>
-                <label className="block font-semibold uppercase text-ink pb-1">Gemini API Key:</label>
-                <input
-                  type="password"
-                  value={tempKey}
-                  onChange={(e) => setTempKey(e.target.value)}
-                  placeholder="AIzaSy..."
-                  className="w-full rounded-xl border border-line bg-paper px-3 py-2 text-sm font-mono text-ink outline-none focus:ring-2 focus:ring-tape/40"
-                />
-              </div>
-
-              <p className="text-[10px] text-mute">
-                * If no key is entered, the app seamlessly runs on the <strong>Local Clinical Simulation Engine</strong> with zero latency.
-              </p>
+            {/* Tabs */}
+            <div className="flex border-b border-line mt-3 text-xs font-semibold">
+              <button
+                type="button"
+                onClick={() => setSettingsTab("voice")}
+                className={`pb-2 px-3 border-b-2 transition-colors ${
+                  settingsTab === "voice"
+                    ? "border-tape text-tape"
+                    : "border-transparent text-mute hover:text-ink"
+                }`}
+              >
+                🗣️ Natural Voice
+              </button>
+              <button
+                type="button"
+                onClick={() => setSettingsTab("ai")}
+                className={`pb-2 px-3 border-b-2 transition-colors ${
+                  settingsTab === "ai"
+                    ? "border-tape text-tape"
+                    : "border-transparent text-mute hover:text-ink"
+                }`}
+              >
+                🤖 Gemini AI
+              </button>
             </div>
 
-            <div className="flex justify-end gap-2 pt-2">
+            {settingsTab === "voice" && (
+              <div className="my-4 space-y-4 text-xs text-mute">
+                <div>
+                  <div className="flex items-center justify-between pb-1">
+                    <label className="font-semibold uppercase text-ink">Select Natural Voice:</label>
+                    <button
+                      type="button"
+                      onClick={testVoiceSample}
+                      className="text-tape hover:underline font-bold text-[11px] flex items-center gap-1"
+                    >
+                      ▶ Test Voice
+                    </button>
+                  </div>
+                  <select
+                    value={selectedVoiceURI}
+                    onChange={(e) => {
+                      setSelectedVoiceURI(e.target.value)
+                      localStorage.setItem("passready_voice_uri", e.target.value)
+                    }}
+                    className="w-full rounded-xl border border-line bg-paper px-3 py-2 text-xs font-medium text-ink outline-none focus:ring-2 focus:ring-tape/40"
+                  >
+                    {availableVoices.map((v) => {
+                      const name = v.name
+                      const isNatural = name.toLowerCase().includes("natural") || name.toLowerCase().includes("neural") || name.toLowerCase().includes("online")
+                      const isGoogle = name.toLowerCase().includes("google")
+                      const isEnhanced = name.toLowerCase().includes("enhanced") || name.toLowerCase().includes("siri")
+                      const badge = isNatural ? "🌟 [Natural]" : isGoogle ? "⚡ [Google Neural]" : isEnhanced ? "💎 [Enhanced]" : ""
+                      return (
+                        <option key={v.voiceURI} value={v.voiceURI}>
+                          {badge ? `${badge} ` : ""}{name} ({v.lang})
+                        </option>
+                      )
+                    })}
+                  </select>
+                  <p className="text-[10px] text-mute mt-1.5">
+                    💡 Tip: Select any voice marked <strong>🌟 [Natural]</strong> or <strong>⚡ [Google Neural]</strong> for authentic, non-robotic human speech.
+                  </p>
+                </div>
+
+                <div className="border-t border-line pt-3">
+                  <div className="flex items-center gap-1.5 pb-1">
+                    <Sparkles className="size-3.5 text-gold" />
+                    <label className="font-semibold uppercase text-ink">Studio-Grade Human Voice (Optional):</label>
+                  </div>
+                  <p className="text-[11px] text-mute pb-2">
+                    Want 100% human studio quality with natural breaths and inflections? Enter an OpenAI API key to enable OpenAI Neural TTS:
+                  </p>
+                  <div className="grid grid-cols-3 gap-2">
+                    <div className="col-span-2">
+                      <input
+                        type="password"
+                        value={tempOpenAiKey}
+                        onChange={(e) => setTempOpenAiKey(e.target.value)}
+                        placeholder="sk-proj-..."
+                        className="w-full rounded-xl border border-line bg-paper px-3 py-2 text-xs font-mono text-ink outline-none focus:ring-2 focus:ring-tape/40"
+                      />
+                    </div>
+                    <select
+                      value={openAiVoice}
+                      onChange={(e) => {
+                        setOpenAiVoice(e.target.value)
+                        localStorage.setItem("passready_openai_voice", e.target.value)
+                      }}
+                      className="rounded-xl border border-line bg-paper px-2 py-2 text-xs font-medium text-ink outline-none"
+                    >
+                      <option value="nova">Nova (Realistic F)</option>
+                      <option value="alloy">Alloy (Balanced)</option>
+                      <option value="echo">Echo (Realistic M)</option>
+                      <option value="onyx">Onyx (Deep M)</option>
+                      <option value="shimmer">Shimmer (Clear F)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {settingsTab === "ai" && (
+              <div className="my-4 space-y-3 text-xs text-mute">
+                <p>
+                  Connect Google's <strong>Gemini 1.5 Flash</strong> API for unscripted, lifelike patient reasoning. Keys are stored locally on your device.
+                </p>
+                <div className="rounded-xl bg-paper p-3 text-[11px] text-ink">
+                  <p className="font-semibold">💡 Get a free API key in 10 seconds:</p>
+                  <p className="mt-1 text-mute">
+                    Visit <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer" className="text-tape underline font-medium">Google AI Studio</a>, sign in with your Google account, and click "Create API key".
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block font-semibold uppercase text-ink pb-1">Gemini API Key:</label>
+                  <input
+                    type="password"
+                    value={tempKey}
+                    onChange={(e) => setTempKey(e.target.value)}
+                    placeholder="AIzaSy..."
+                    className="w-full rounded-xl border border-line bg-paper px-3 py-2 text-sm font-mono text-ink outline-none focus:ring-2 focus:ring-tape/40"
+                  />
+                </div>
+
+                <p className="text-[10px] text-mute">
+                  * If no key is entered, the app seamlessly runs on the <strong>Local Clinical Simulation Engine</strong> with zero latency.
+                </p>
+              </div>
+            )}
+
+            <div className="flex justify-between items-center pt-3 border-t border-line">
               <button
                 type="button"
                 onClick={() => {
                   setTempKey("")
+                  setTempOpenAiKey("")
                   localStorage.removeItem("passready_gemini_key")
+                  localStorage.removeItem("passready_openai_key")
                   setApiKey("")
+                  setOpenAiKey("")
                   setShowKeyModal(false)
                 }}
-                className="tap rounded-xl border border-line px-4 py-2 text-xs font-semibold text-mute hover:text-ink"
+                className="tap text-xs font-semibold text-mute hover:text-medic"
               >
-                Clear Key
+                Reset All Keys
               </button>
-              <button
-                type="button"
-                onClick={saveApiKey}
-                className="tap rounded-xl bg-tape px-5 py-2 text-xs font-bold text-white hover:bg-tape/90"
-              >
-                Save & Enable Gemini
-              </button>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowKeyModal(false)}
+                  className="tap rounded-xl border border-line px-4 py-2 text-xs font-semibold text-mute hover:text-ink"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    localStorage.setItem("passready_gemini_key", tempKey.trim())
+                    setApiKey(tempKey.trim())
+                    localStorage.setItem("passready_openai_key", tempOpenAiKey.trim())
+                    setOpenAiKey(tempOpenAiKey.trim())
+                    setShowKeyModal(false)
+                  }}
+                  className="tap rounded-xl bg-tape px-5 py-2 text-xs font-bold text-white hover:bg-tape/90"
+                >
+                  Save Settings
+                </button>
+              </div>
             </div>
           </div>
         </div>

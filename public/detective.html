@@ -139,17 +139,55 @@
     </button>
   </footer>
 
-  <!-- Modal API Key -->
+  <!-- Modal Settings & Voice -->
   <div id="modalKey" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-5 shadow-2xl">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full p-5 shadow-2xl">
       <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-        <h3 class="font-bold text-slate-100 flex items-center gap-2">🔑 Configure Gemini AI</h3>
+        <h3 class="font-bold text-slate-100 flex items-center gap-2">⚙️ Simulator & Voice Settings</h3>
         <button id="btnCloseKey" class="text-slate-400 hover:text-white text-xl">&times;</button>
       </div>
-      <div class="py-4 space-y-3 text-xs text-slate-300">
+
+      <div class="flex border-b border-slate-800 mt-3 text-xs font-semibold">
+        <button id="tabBtnVoice" class="pb-2 px-3 border-b-2 border-sky-500 text-sky-400">🗣️ Natural Voice</button>
+        <button id="tabBtnAI" class="pb-2 px-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200">🤖 Gemini AI</button>
+      </div>
+
+      <!-- Tab Voice -->
+      <div id="tabContentVoice" class="py-4 space-y-4 text-xs text-slate-300">
+        <div>
+          <div class="flex items-center justify-between pb-1">
+            <label class="block text-slate-200 font-semibold uppercase text-[10px]">Select Natural Voice:</label>
+            <button id="btnTestVoice" class="text-sky-400 hover:underline font-bold text-[11px]">▶ Test Voice</button>
+          </div>
+          <select id="voiceSelect" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 outline-none focus:ring-2 focus:ring-sky-500">
+            <!-- Injected dynamically -->
+          </select>
+          <p class="text-[10px] text-slate-400 mt-1">
+            💡 Select any voice marked <strong>🌟 [Natural]</strong> or <strong>⚡ [Google Neural]</strong> for human-sounding, non-robotic speech.
+          </p>
+        </div>
+
+        <div class="border-t border-slate-800 pt-3">
+          <label class="block text-slate-200 font-semibold mb-1 uppercase text-[10px]">Studio-Grade Human Voice (Optional OpenAI TTS):</label>
+          <p class="text-[11px] text-slate-400 pb-2">For 100% human studio quality with natural breaths and inflections, enter an OpenAI key:</p>
+          <div class="grid grid-cols-3 gap-2">
+            <input id="openAiKeyInput" type="password" placeholder="sk-proj-..." class="col-span-2 bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 font-mono text-xs text-slate-100 outline-none focus:ring-2 focus:ring-sky-500">
+            <select id="openAiVoiceSelect" class="bg-slate-800 border border-slate-700 rounded-xl px-2 py-2 text-xs text-slate-100 outline-none">
+              <option value="nova">Nova (Realistic F)</option>
+              <option value="alloy">Alloy (Balanced)</option>
+              <option value="echo">Echo (Realistic M)</option>
+              <option value="onyx">Onyx (Deep M)</option>
+              <option value="shimmer">Shimmer (Clear F)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab AI -->
+      <div id="tabContentAI" class="hidden py-4 space-y-3 text-xs text-slate-300">
         <p>Connect Google's <strong>Gemini 1.5 Flash</strong> API for unscripted conversational medical simulation.</p>
         <div class="bg-slate-800 p-3 rounded-xl border border-slate-700">
-          <p class="font-semibold text-sky-400">Get a free key:</p>
+          <p class="font-semibold text-sky-400">Get a free key in 10 seconds:</p>
           <p class="text-slate-400 mt-0.5">Go to <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-sky-400 underline">aistudio.google.com</a> and click "Create API key".</p>
         </div>
         <div>
@@ -158,9 +196,13 @@
         </div>
         <p class="text-[10px] text-slate-500">* Leave blank to use the built-in Local Clinical Engine with zero latency.</p>
       </div>
-      <div class="flex justify-end gap-2 pt-2 border-t border-slate-800">
-        <button id="btnClearKey" class="px-4 py-2 rounded-xl border border-slate-700 text-slate-400 hover:text-white text-xs">Clear Key</button>
-        <button id="btnSaveKey" class="px-5 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs">Save Key</button>
+
+      <div class="flex justify-between items-center pt-3 border-t border-slate-800">
+        <button id="btnClearKey" class="text-xs text-slate-500 hover:text-red-400">Reset All Keys</button>
+        <div class="flex gap-2">
+          <button id="btnCancelKey" class="px-4 py-2 rounded-xl border border-slate-700 text-slate-400 hover:text-white text-xs">Cancel</button>
+          <button id="btnSaveKey" class="px-5 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs">Save Settings</button>
+        </div>
       </div>
     </div>
   </div>
@@ -277,6 +319,11 @@
 
     let currentIdx = 0;
     let apiKey = localStorage.getItem("passready_gemini_key") || "";
+    let openAiKey = localStorage.getItem("passready_openai_key") || "";
+    let openAiVoice = localStorage.getItem("passready_openai_voice") || "nova";
+    let selectedVoiceURI = localStorage.getItem("passready_voice_uri") || "";
+    let availableVoices = [];
+    let currentAudio = null;
     let voiceOut = true;
     let isListening = false;
     let recognition = null;
@@ -292,6 +339,7 @@
     const caseSelector = document.getElementById("caseSelector");
     const engineBadge = document.getElementById("engineBadge");
     const bonusBadge = document.getElementById("bonusBadge");
+    const voiceSelect = document.getElementById("voiceSelect");
 
     function updateBadge() {
       if (apiKey) {
@@ -304,15 +352,117 @@
     }
     updateBadge();
 
-    // Voice Out setup
-    function speak(text) {
-      if (!voiceOut || !window.speechSynthesis) return;
-      window.speechSynthesis.cancel();
-      const clean = text.replace(/[*#_`]/g, "").replace(/\[.*?\]/g, "");
-      const u = new SpeechSynthesisUtterance(clean);
-      u.rate = 1.05;
-      window.speechSynthesis.speak(u);
+    // Natural Voice loading and sorting
+    function loadVoices() {
+      if (!window.speechSynthesis) return;
+      const all = window.speechSynthesis.getVoices();
+      const english = all.filter(v => v.lang.startsWith("en") || !v.lang);
+      availableVoices = english.sort((a, b) => {
+        const score = (v) => {
+          const n = v.name.toLowerCase();
+          if (n.includes("natural") || n.includes("neural") || n.includes("online")) return 10;
+          if (n.includes("google") && !n.includes("legacy")) return 8;
+          if (n.includes("enhanced") || n.includes("siri") || n.includes("premium")) return 7;
+          if (n.includes("desktop")) return 1;
+          return 4;
+        };
+        return score(b) - score(a);
+      });
+
+      if (!selectedVoiceURI && availableVoices.length > 0) {
+        selectedVoiceURI = availableVoices[0].voiceURI;
+        localStorage.setItem("passready_voice_uri", selectedVoiceURI);
+      }
+
+      voiceSelect.innerHTML = "";
+      availableVoices.forEach(v => {
+        const opt = document.createElement("option");
+        opt.value = v.voiceURI;
+        const n = v.name.toLowerCase();
+        const badge = (n.includes("natural") || n.includes("neural") || n.includes("online")) ? "🌟 [Natural] "
+                    : n.includes("google") ? "⚡ [Google Neural] "
+                    : (n.includes("enhanced") || n.includes("siri")) ? "💎 [Enhanced] " : "";
+        opt.innerText = `${badge}${v.name} (${v.lang})`;
+        if (v.voiceURI === selectedVoiceURI) opt.selected = true;
+        voiceSelect.appendChild(opt);
+      });
     }
+
+    if (window.speechSynthesis) {
+      loadVoices();
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+    }
+
+    voiceSelect.addEventListener("change", (e) => {
+      selectedVoiceURI = e.target.value;
+      localStorage.setItem("passready_voice_uri", selectedVoiceURI);
+    });
+
+    // Voice Out setup (supports OpenAI Studio TTS + Natural Browser Voice)
+    async function speak(text, sender = "patient") {
+      if (!voiceOut) return;
+
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio = null;
+      }
+      if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+
+      const clean = text.replace(/[*#_`]/g, "").replace(/\[.*?\]/g, "").trim();
+      if (!clean) return;
+
+      // Studio-grade OpenAI TTS if key configured
+      if (openAiKey) {
+        try {
+          const v = sender === "dispatch" ? "onyx" : sender === "patient" ? openAiVoice : "nova";
+          const res = await fetch("https://api.openai.com/v1/audio/speech", {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${openAiKey}`,
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              model: "tts-1",
+              voice: v,
+              input: clean
+            })
+          });
+          if (res.ok) {
+            const blob = await res.blob();
+            currentAudio = new Audio(URL.createObjectURL(blob));
+            currentAudio.play();
+            return;
+          }
+        } catch (e) {
+          console.warn("OpenAI TTS error, falling back to browser natural voice", e);
+        }
+      }
+
+      // Natural Browser Voice
+      if (window.speechSynthesis) {
+        const u = new SpeechSynthesisUtterance(clean);
+        const voice = availableVoices.find(v => v.voiceURI === selectedVoiceURI) || availableVoices[0];
+        if (voice) u.voice = voice;
+
+        if (sender === "patient") {
+          u.rate = 0.94;
+          u.pitch = 0.98;
+        } else if (sender === "dispatch") {
+          u.rate = 1.04;
+          u.pitch = 1.02;
+        } else {
+          u.rate = 1.0;
+          u.pitch = 1.0;
+        }
+        window.speechSynthesis.speak(u);
+      }
+    }
+
+    document.getElementById("btnTestVoice").addEventListener("click", () => {
+      speak("Medic 41, Engine 12: Respond Priority 2 to Maple Street for acute breathing trouble. Skin is cool and diaphoretic.", "dispatch");
+    });
 
     btnVoice.addEventListener("click", () => {
       voiceOut = !voiceOut;
@@ -572,8 +722,9 @@ Respond as [PATIENT] and [PARTNER]. Guard clues. Dynamic reactions to treatments
           });
           const data = await res.json();
           const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || localEngine(msg);
-          appendMessage(reply.includes("[EXAMINER]") ? "examiner" : reply.includes("[PARTNER]") ? "partner" : "patient", reply);
-          speak(reply);
+          const role = reply.includes("[EXAMINER]") ? "examiner" : reply.includes("[PARTNER]") ? "partner" : "patient";
+          appendMessage(role, reply);
+          speak(reply, role);
           return;
         } catch (e) {
           console.warn("Gemini call failed, using local engine", e);
@@ -581,9 +732,9 @@ Respond as [PATIENT] and [PARTNER]. Guard clues. Dynamic reactions to treatments
       }
 
       // Fallback local engine
-      const reply = localEngine(msg);
-      appendMessage(reply.includes("[EXAMINER]") ? "examiner" : reply.includes("[PARTNER]") ? "partner" : "patient", reply);
-      speak(reply);
+      const role = reply.includes("[EXAMINER]") ? "examiner" : reply.includes("[PARTNER]") ? "partner" : "patient";
+      appendMessage(role, reply);
+      speak(reply, role);
     }
 
     btnSend.addEventListener("click", () => sendMessage());
@@ -593,24 +744,59 @@ Respond as [PATIENT] and [PARTNER]. Guard clues. Dynamic reactions to treatments
       chip.addEventListener("click", () => sendMessage(chip.innerText));
     });
 
-    // API Key modal
+    // Settings Modal & Tabs
+    const modalKey = document.getElementById("modalKey");
+    const tabBtnVoice = document.getElementById("tabBtnVoice");
+    const tabBtnAI = document.getElementById("tabBtnAI");
+    const tabContentVoice = document.getElementById("tabContentVoice");
+    const tabContentAI = document.getElementById("tabContentAI");
+
+    tabBtnVoice.addEventListener("click", () => {
+      tabBtnVoice.className = "pb-2 px-3 border-b-2 border-sky-500 text-sky-400 font-semibold";
+      tabBtnAI.className = "pb-2 px-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-semibold";
+      tabContentVoice.classList.remove("hidden");
+      tabContentAI.classList.add("hidden");
+    });
+
+    tabBtnAI.addEventListener("click", () => {
+      tabBtnAI.className = "pb-2 px-3 border-b-2 border-sky-500 text-sky-400 font-semibold";
+      tabBtnVoice.className = "pb-2 px-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-semibold";
+      tabContentAI.classList.remove("hidden");
+      tabContentVoice.classList.add("hidden");
+    });
+
     btnKey.addEventListener("click", () => {
       document.getElementById("apiKeyInput").value = apiKey;
-      document.getElementById("modalKey").classList.remove("hidden");
+      document.getElementById("openAiKeyInput").value = openAiKey;
+      document.getElementById("openAiVoiceSelect").value = openAiVoice;
+      modalKey.classList.remove("hidden");
     });
-    document.getElementById("btnCloseKey").addEventListener("click", () => document.getElementById("modalKey").classList.add("hidden"));
+
+    document.getElementById("btnCloseKey").addEventListener("click", () => modalKey.classList.add("hidden"));
+    document.getElementById("btnCancelKey").addEventListener("click", () => modalKey.classList.add("hidden"));
+
     document.getElementById("btnSaveKey").addEventListener("click", () => {
       apiKey = document.getElementById("apiKeyInput").value.trim();
+      openAiKey = document.getElementById("openAiKeyInput").value.trim();
+      openAiVoice = document.getElementById("openAiVoiceSelect").value;
+
       localStorage.setItem("passready_gemini_key", apiKey);
+      localStorage.setItem("passready_openai_key", openAiKey);
+      localStorage.setItem("passready_openai_voice", openAiVoice);
+
       updateBadge();
-      document.getElementById("modalKey").classList.add("hidden");
+      modalKey.classList.add("hidden");
     });
+
     document.getElementById("btnClearKey").addEventListener("click", () => {
       apiKey = "";
+      openAiKey = "";
       localStorage.removeItem("passready_gemini_key");
+      localStorage.removeItem("passready_openai_key");
       document.getElementById("apiKeyInput").value = "";
+      document.getElementById("openAiKeyInput").value = "";
       updateBadge();
-      document.getElementById("modalKey").classList.add("hidden");
+      modalKey.classList.add("hidden");
     });
 
     // Score modal
