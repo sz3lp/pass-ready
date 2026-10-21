@@ -652,49 +652,197 @@ THE LETHAL TRAP: ${SCENARIOS[currentIdx].trap}
       `;
     }
 
-    // Local Clinical Engine
+    let patientTreated = false;
+
+    // Full Conversational Clinical Engine
     function localEngine(q) {
       const lower = q.toLowerCase();
       const scn = SCENARIOS[currentIdx];
 
-      if (lower.includes("done") || lower.includes("assessment complete")) {
+      // End of call
+      if (lower.includes("done") || lower.includes("assessment complete") || lower.includes("hand off") || lower.includes("handoff")) {
         const report = scoreAssessment();
         document.getElementById("scorecardBody").innerText = report;
         document.getElementById("modalScore").classList.remove("hidden");
-        return "[EXAMINER]: Assessment finished. Scorecard generated on your screen.";
+        return "[EXAMINER]: Assessment concluded. Your official NREMT practical scorecard and diagnostic breakdown are ready on screen.";
       }
 
+      // Check diagnostic deduction
       const diagWords = scn.hiddenDiagnosis.toLowerCase().split(/[\s/()]+/).filter(w => w.length > 3);
       if (diagWords.some(w => lower.includes(w))) {
         bonusBadge.classList.remove("hidden");
       }
 
+      // BSI / Scene Safety
+      if (lower.includes("bsi") || lower.includes("scene safe") || lower.includes("scene is safe") || lower.includes("gloves")) {
+        return `[PARTNER]: "BSI is on, eye protection and gloves donned, scene is safe. Nature of illness appears acute. How do you want to begin your primary assessment?"`;
+      }
+
+      // Interaction / Direct communication ("Nod to me", "Can you hear me", "What is your name", "Are you allergic")
+      if (lower.includes("nod") || lower.includes("hear me") || lower.includes("your name") || lower.includes("allergic") || lower.includes("look at me") || lower.includes("talk to me") || lower.includes("what happened")) {
+        if (scn.id === 4) { // Anaphylaxis
+          return `[PATIENT]: "(Nods frantically with wide, terrified eyes, clutching his swollen throat and pointing to his backpack) 'Peanut... oil... in the satay sauce... EpiPen in... my bag...' (Inspiratory stridor is loud and raspy)"`;
+        }
+        if (scn.id === 1) { // CHF
+          return `[PATIENT]: "(Nods weakly between gasps) 'Yes... my name is Robert... woke up choking... feels like my chest is filled with water...'`;
+        }
+        if (scn.id === 2) { // PE
+          return `[PATIENT]: "(Nods in terror, clutching chest) 'Yes... can't get any air in... knife stabbing in my right side... just flew home yesterday...'`;
+        }
+        if (scn.id === 3) { // Ectopic
+          return `[PATIENT]: "(Nods with eyes closed, grimacing in pain) 'Yes... I feel so dizzy... like I'm going to pass out again... stomach is cramping...'`;
+        }
+        if (scn.id === 5) { // Hypoglycemia
+          return `[PATIENT]: "(Stares blankly through you, groans incoherently, right arm hangs limp at his side, shivering in cold sweat)"`;
+        }
+        if (scn.id === 6) { // SAH
+          return `[PATIENT]: "(Shields eyes from light, groaning) 'Please... don't talk loud... baseball bat hit the back of my head... feels like my skull is splitting...'`;
+        }
+        if (scn.id === 7) { // DKA
+          return `[PATIENT]: "(Takes deep, heavy sighing Kussmaul breath) 'Yes... so tired... stomach hurts... drinking water nonstop for two days...'`;
+        }
+        if (scn.id === 8) { // Sepsis
+          return `[PATIENT]: "(Looks confused, talking to someone not in the room) 'Margaret... where are the keys?...' [PARTNER]: 'She's disoriented to person, place, and time.'"`;
+        }
+        if (scn.id === 9) { // STEMI
+          return `[PATIENT]: "(Grimaces, rubbing pit of stomach) 'Yes... severe heartburn and nausea since dinner... feels like a bowling ball on my sternum...'`;
+        }
+        if (scn.id === 10) { // Pneumothorax
+          return `[PATIENT]: "(Nods, clutching right side) 'Jogging on the track... all of a sudden a loud pop in my chest... every breath feels like needles...'`;
+        }
+      }
+
+      // Epinephrine / Auto-injector / Epi
+      if (lower.includes("epi") || lower.includes("epinephrine") || lower.includes("auto-injector") || lower.includes("epipen")) {
+        if (scn.id === 4) {
+          patientTreated = true;
+          return `[PARTNER]: "Administering Epinephrine 0.3 mg (1:1,000) IM into the right anterolateral thigh! (Held firmly for 3 seconds). Within 60 seconds, laryngeal edema begins to relax, stridor decreases, and wheezing opens up. Patient takes a deep, relieving breath: 'Throat... opening up... thank you...' BP improves to 104/66 mmHg, HR 130 bpm."`;
+        } else {
+          return `[PARTNER]: ⚠️ CAUTION: Epinephrine IM is indicated for severe anaphylaxis with airway swelling or shock. This patient does not have an anaphylactic airway emergency!`;
+        }
+      }
+
+      // Oxygen / NRB / CPAP / BVM
+      if (lower.includes("oxygen") || lower.includes("nrb") || lower.includes("cpap") || lower.includes("mask") || lower.includes("bvm") || lower.includes("cannula")) {
+        if (scn.id === 1) { // CHF
+          return `[PARTNER]: "CPAP / High-flow O2 applied at 15 L/min. Positive pressure pushes alveolar fluid back across the pulmonary capillary membrane. SpO2 improves to 92%. Patient's panic eases."`;
+        }
+        if (scn.id === 2) { // PE
+          return `[PARTNER]: "15 L/min Non-Rebreather placed. SpO2 creeps from 89% to 91% (refractory hypoxia due to pulmonary artery clot / V/Q mismatch). Lung sounds remain completely clear."`;
+        }
+        if (scn.id === 10) { // Spontaneous Pneumo
+          return `[PARTNER]: "15 L/min NRB mask placed on patient. SpO2 rises to 94%. (Crucial: avoiding positive pressure BVM to prevent turning this into a Tension Pneumothorax!)"`;
+        }
+        return `[PARTNER]: "High-flow oxygen administered via Non-Rebreather at 15 L/min. SpO2 monitored."`;
+      }
+
+      // Aspirin / Nitroglycerin
+      if (lower.includes("aspirin") || lower.includes("asa")) {
+        if (scn.id === 1 || scn.id === 9) {
+          return `[PARTNER]: "Administering 324 mg chewable Aspirin. Patient chews and swallows. (Prevents further platelet aggregation for suspected ACS)."`;
+        }
+        return `[PARTNER]: "Aspirin administered. Patient chews and swallows."`;
+      }
+
+      if (lower.includes("nitro") || lower.includes("nitroglycerin")) {
+        if (scn.id === 9) {
+          return `[PARTNER]: ⚠️ DANGER! You administered Nitroglycerin to an Inferior Wall STEMI! The right ventricle is preload-dependent. Blood pressure plummets from 104/64 down to 72/40 mmHg! Patient turns ashen and passes out!`;
+        }
+        if (scn.id === 1) {
+          return `[PARTNER]: "Nitroglycerin 0.4 mg SL administered (BP is 210/112, well above 100 cutoff; no ED meds in 48h). Preload and afterload reduction eases the failing left ventricle."`;
+        }
+        return `[PARTNER]: "Checking BP and contraindications before administering Nitroglycerin."`;
+      }
+
+      // Glucose / D10 / Sugar
+      if (lower.includes("glucose") || lower.includes("sugar") || lower.includes("d10") || lower.includes("dextrose") || lower.includes("oral glucose")) {
+        if (scn.id === 5) {
+          patientTreated = true;
+          return `[PARTNER]: "Administering IV Dextrose (D10 100 mL bolus) / Glucagon IM! Within 4 minutes, blood glucose rises to 88 mg/dL. The patient blinks, sits up, the right-sided facial droop vanishes, and right arm motor function returns to 100%!"`;
+        }
+        return `[PARTNER]: "Fingerstick obtained: Blood glucose reads ${scn.vitals.bgl}."`;
+      }
+
+      // Albuterol
+      if (lower.includes("albuterol") || lower.includes("inhaler") || lower.includes("nebulizer")) {
+        if (scn.id === 1) {
+          return `[PARTNER]: ⚠️ WARNING: You gave an Albuterol nebulizer for 'wheezing' in a CHF patient! The wheezing was cardiac asthma from fluid overload. The beta-2 agonist spikes the heart rate from 124 to 150 bpm and worsens myocardial oxygen demand!`;
+        }
+        return `[PARTNER]: "Albuterol nebulizer 2.5 mg / 3 mL prepared and administered with 6 L/min O2."`;
+      }
+
+      // Vitals Request
       if (lower.includes("vital") || (lower.includes("bp") && lower.includes("pulse"))) {
         revealVitals();
-        return `[PARTNER]: Vitals on monitor:\n• BP: ${scn.vitals.bp}\n• HR: ${scn.vitals.hr}\n• RR: ${scn.vitals.rr}\n• SpO2: ${scn.vitals.spo2}\n• BGL: ${scn.vitals.bgl}\n• Skin: ${scn.vitals.skin}\n• Pupils: ${scn.vitals.pupils}`;
+        return `[PARTNER]: "Full set of vitals on the monitor:\n• BP: ${scn.vitals.bp}\n• HR: ${scn.vitals.hr}\n• RR: ${scn.vitals.rr}\n• SpO2: ${scn.vitals.spo2}\n• BGL: ${scn.vitals.bgl}\n• Skin: ${scn.vitals.skin}\n• Pupils: ${scn.vitals.pupils}"`;
       }
 
+      // Lung Sounds / Auscultation
       if (lower.includes("lung") || lower.includes("breath") || lower.includes("listen") || lower.includes("auscultat")) {
-        return `[PARTNER]: Lung sounds: ${scn.vitals.lungs}`;
+        return `[PARTNER]: "Stethoscope auscultation across all lung fields:\n${scn.vitals.lungs}"`;
       }
 
-      if (lower.includes("sugar") || lower.includes("glucose") || lower.includes("bgl")) {
-        return `[PARTNER]: Blood glucose is ${scn.vitals.bgl}`;
+      // Blood Glucose specifically
+      if (lower.includes("bgl") || lower.includes("fingerstick") || lower.includes("check sugar")) {
+        return `[PARTNER]: "Glucometer fingerstick: Blood Glucose is ${scn.vitals.bgl}."`;
       }
 
-      if (lower.includes("medication") || lower.includes("pill") || lower.includes("history") || lower.includes("sample")) {
-        return `[PATIENT]: "I have high blood pressure and other conditions... but I haven't been feeling well."`;
+      // BP specifically
+      if (lower.includes("blood pressure") || lower.includes("bp")) {
+        return `[PARTNER]: "Blood pressure cuff reads ${scn.vitals.bp}."`;
       }
 
-      if (lower.includes("pain") || lower.includes("hurt") || lower.includes("radiat") || lower.includes("opqrst")) {
-        return `[PATIENT]: "${scn.initial}"`;
+      // Pulse / Skin / Cap Refill
+      if (lower.includes("pulse") || lower.includes("radial") || lower.includes("skin") || lower.includes("cap refill")) {
+        return `[PARTNER]: "Radial pulse is ${scn.vitals.hr}. Skin condition is ${scn.vitals.skin}."`;
       }
 
-      if (lower.includes("oxygen") || lower.includes("nrb") || lower.includes("cpap")) {
-        return `[PARTNER]: Oxygen therapy applied. Patient's SpO2 responds and work of breathing monitored.`;
+      // Pupils / Stroke / Neuro
+      if (lower.includes("pupil") || lower.includes("stroke") || lower.includes("lams") || lower.includes("cincinnati") || lower.includes("neuro") || lower.includes("fast")) {
+        return `[PARTNER]: "Pupils: ${scn.vitals.pupils}. Neuro assessment notes ${scn.title.includes('SAH') ? 'profound photophobia and nuchal rigidity' : scn.title.includes('Hypoglycemia') ? 'focal right hemiparesis and facial droop' : 'no focal deficits'}.`;
       }
 
-      return `[PATIENT]: "${scn.initial}"\n[PARTNER]: "What would you like to check next, EMT?"`;
+      // ALS Request
+      if (lower.includes("als") || lower.includes("medic") || lower.includes("paramedic") || lower.includes("rendezvous")) {
+        return `[PARTNER]: "Dispatch acknowledged your ALS upgrade. Medic 1 is responding Code 3 from Station 2, ETA 7 minutes."`;
+      }
+
+      // Transport / Stretcher
+      if (lower.includes("transport") || lower.includes("stretcher") || lower.includes("gurney") || lower.includes("cot") || lower.includes("code 3") || lower.includes("load and go")) {
+        return `[PARTNER]: "Patient secured to cot in position of comfort. Packaging complete, loading into the ambulance for Priority 1 Code 3 transport."`;
+      }
+
+      // Medications / SAMPLE History
+      if (lower.includes("medication") || lower.includes("pill") || lower.includes("history") || lower.includes("sample") || lower.includes("allerg")) {
+        if (scn.id === 1) return `[PATIENT]: "(Between gasps) 'I take Lasix water pills and carvedilol... ran out 3 days ago... no money for refill...'`;
+        if (scn.id === 2) return `[PATIENT]: "'No daily meds except oral contraceptives (birth control)... no allergies...'`;
+        if (scn.id === 3) return `[PATIENT]: "'No meds... LMP was about 7 or 8 weeks ago, my period has always been irregular...'`;
+        if (scn.id === 4) return `[PATIENT]: "'Allergic to peanuts... have an EpiPen in my bag... never felt it hit this fast before...'`;
+        if (scn.id === 5) return `[PARTNER]: "Searching wallet: ID card states Type 1 Diabetic. Patient's insulin pump site is on abdomen."`;
+        if (scn.id === 6) return `[PATIENT]: "'Take lisinopril for blood pressure... never had any migraine in my life...'`;
+        if (scn.id === 7) return `[PATIENT]: "'Type 1 diabetes... lost my Humalog insulin pens 3 days ago on campus...'`;
+        if (scn.id === 8) return `[PARTNER]: "Care home transfer sheet shows history of recurrent UTIs and hypertension. Prescribed Metoprolol."`;
+        if (scn.id === 9) return `[PATIENT]: "'Meds for cholesterol... no Viagra or ED meds... never had chest heartburn like this...'`;
+        if (scn.id === 10) return `[PATIENT]: "'No medical history, no medications, don't smoke. Just felt a loud pop while running...'`;
+      }
+
+      // Pain / OPQRST
+      if (lower.includes("pain") || lower.includes("hurt") || lower.includes("radiat") || lower.includes("opqrst") || lower.includes("scale")) {
+        if (scn.id === 1) return `[PATIENT]: "'Heavy crushing pressure across my whole chest... like a ton of bricks sitting on me... worse lying flat.'`;
+        if (scn.id === 2) return `[PATIENT]: "'Sharp knife stabbing in right chest... 9 out of 10... agonizing when I inhale...'`;
+        if (scn.id === 3) return `[PATIENT]: "'Agonizing pain in lower abdomen... and my right shoulder has a deep throbbing ache (Kehr's sign)...'`;
+        if (scn.id === 4) return `[PATIENT]: "'Throat feels tight like it's in a vice... burning rash all over my arms and chest...'`;
+        if (scn.id === 6) return `[PATIENT]: "'10 out of 10 agonizing thunderclap pain at the base of my skull and neck... blinding...'`;
+        if (scn.id === 9) return `[PATIENT]: "'Deep burning ache in the pit of my stomach radiating to my back between shoulder blades...'`;
+        if (scn.id === 10) return `[PATIENT]: "'Sharp 8 out of 10 stabbing pain in right lateral chest wall with every breath...'`;
+      }
+
+      // Dynamic Contextual Fallback (Never repeats the same robotic sentence!)
+      if (patientTreated) {
+        return `[PATIENT]: "(Breathing steadily) 'My airway feels much clearer now... thank you.'\n[PARTNER]: 'Vitals are stabilizing. What is your transport plan or hand-off report, EMT?'"`;
+      } else {
+        return `[PATIENT]: "(Gasping in distress) 'Please... hurry... can't breathe...'\n[PARTNER]: 'Patient is in severe distress. Do you want to check vitals, administer medications, assess airway/lungs, or request ALS?'"`;
+      }
     }
 
     // Send Message
