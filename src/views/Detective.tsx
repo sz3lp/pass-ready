@@ -11,8 +11,10 @@ import {
   Activity,
   Brain,
   Sliders,
-  X
+  X,
+  FileText
 } from "lucide-react"
+import { MASTER_SCENARIOS_25, type MasterScenario } from "../data/allScenarios25"
 
 export interface Message {
   id: string
@@ -21,218 +23,8 @@ export interface Message {
   timestamp: string
 }
 
-export interface Scenario {
-  id: number
-  title: string
-  cad: string
-  hiddenDiagnosis: string
-  category: string
-  vitals: {
-    bp: string
-    hr: string
-    rr: string
-    spo2: string
-    bgl: string
-    skin: string
-    pupils: string
-    lungs: string
-  }
-  trap: string
-  initialPatientSpeech: string
-}
-
-export const SCENARIOS: Scenario[] = [
-  {
-    id: 1,
-    title: "64M – Severe Dyspnea & Orthopnea",
-    cad: "Medic 41, Engine 12: Respond Priority 2 to 442 Maple Street for a 64yo male, chief complaint of 'general weakness and breathing trouble.' Time out: 23:40.",
-    hiddenDiagnosis: "Acute Pulmonary Edema / CHF Exacerbation",
-    category: "Cardiac",
-    vitals: {
-      bp: "210/112 mmHg",
-      hr: "124 bpm (irregular / Afib)",
-      rr: "28/min (wet, labored)",
-      spo2: "82% on room air (88% on NRB)",
-      bgl: "136 mg/dL",
-      skin: "Cool, pale, diaphoretic; 3+ pitting ankle edema",
-      pupils: "Equal, round, reactive to light",
-      lungs: "Coarse crackles (rales) bilaterally at bases and mid-fields; faint expiratory wheezes"
-    },
-    trap: "Audible wheezing is 'cardiac asthma' caused by interstitial alveolar flooding, NOT bronchospasm. Giving Albuterol worsens tachycardia!",
-    initialPatientSpeech: "Can't... catch breath... woke up gasping... feels like I'm drowning... had to sit straight up..."
-  },
-  {
-    id: 2,
-    title: "32F – Sudden Dyspnea & Chest Pain",
-    cad: "Aid 24, Medic 12: Respond Priority 2 to corporate offices at 1100 North 4th. 32yo female with sudden shortness of breath and chest pain. Coworkers say 'panic attack.' Time out: 00:18.",
-    hiddenDiagnosis: "Acute Pulmonary Embolism (PE)",
-    category: "Respiratory",
-    vitals: {
-      bp: "106/70 mmHg",
-      hr: "134 bpm (sinus tachycardia)",
-      rr: "32/min (rapid, shallow)",
-      spo2: "89% on room air (only 91% on 15L NRB - refractory hypoxia)",
-      bgl: "102 mg/dL",
-      skin: "Pale, cool, clammy fingertips. Right calf swollen, red, tender",
-      pupils: "Equal and reactive",
-      lungs: "Clear bilaterally in all fields — completely normal lung sounds"
-    },
-    trap: "Lungs sound 100% crystal clear and coworker screams panic attack! PE is a perfusion failure (V/Q mismatch), not ventilation failure.",
-    initialPatientSpeech: "I... can't breathe... knife stabbing into my right chest... I just got off a 10-hour flight from London..."
-  },
-  {
-    id: 3,
-    title: "26F – Syncope & Severe Abdominal Pain",
-    cad: "Aid 31, Medic 14: Respond Priority 2 to 742 East Pine Street. 26yo female, syncope following stomach flu and vomiting. Time out: 00:24.",
-    hiddenDiagnosis: "Ruptured Ectopic Pregnancy with Hemorrhagic Shock",
-    category: "Shock / GYN",
-    vitals: {
-      bp: "84/50 mmHg (decompensated hypotension)",
-      hr: "136 bpm (weak, thready)",
-      rr: "24/min (shallow)",
-      spo2: "94% room air",
-      bgl: "102 mg/dL",
-      skin: "Cool, pale, clammy. Cap refill 3.5s. Guarding in RLQ",
-      pupils: "Equal, sluggish",
-      lungs: "Clear bilaterally"
-    },
-    trap: "Right shoulder pain blamed on hitting the sink is Kehr's Sign (free blood under diaphragm irritating the phrenic nerve).",
-    initialPatientSpeech: "My stomach hurts so bad... and my right shoulder is throbbing... so dizzy when I lift my head..."
-  },
-  {
-    id: 4,
-    title: "19M – Restaurant Respiratory Distress",
-    cad: "Aid 15, Medic 7: Respond Priority 1 to Thai Bistro, 550 Broadway. 19yo male with acute respiratory distress and facial swelling. Time out: 19:15.",
-    hiddenDiagnosis: "Severe Anaphylaxis with Distributive Shock",
-    category: "Immunologic",
-    vitals: {
-      bp: "86/48 mmHg",
-      hr: "138 bpm",
-      rr: "30/min (severe work of breathing)",
-      spo2: "87% on room air",
-      bgl: "110 mg/dL",
-      skin: "Diffuse urticaria (hives), lips and tongue swollen (angioedema), warm and flushed",
-      pupils: "Equal and reactive",
-      lungs: "Inspiratory stridor at neck; diffuse high-pitched expiratory wheezes"
-    },
-    trap: "Delaying Epinephrine IM to give Albuterol or Benadryl first. Albuterol does not reverse laryngeal edema or vascular collapse!",
-    initialPatientSpeech: "Throat... closing... peanut sauce... can't get... air..."
-  },
-  {
-    id: 5,
-    title: "58M – Unresponsive / Focal Deficit in Car",
-    cad: "Aid 10: Dispatched to supermarket parking lot for 58yo male slumped over wheel. Bystanders report 'drunk or having a stroke.' Time out: 14:02.",
-    hiddenDiagnosis: "Severe Hypoglycemia (Stroke Mimic with Hemiplegia)",
-    category: "Endocrine",
-    vitals: {
-      bp: "142/86 mmHg",
-      hr: "114 bpm",
-      rr: "18/min",
-      spo2: "98% room air",
-      bgl: "32 mg/dL (CRITICAL LOW)",
-      skin: "Cool, pale, drenched in cold sweat",
-      pupils: "Equal and reactive",
-      lungs: "Clear bilaterally"
-    },
-    trap: "Apparent right-sided facial droop and flaccid right arm looks like a Code Stroke, but profuse cold sweat + BGL 32 proves it's neuroglycopenia!",
-    initialPatientSpeech: "(Moans unintelligibly, slurring words, unable to lift right arm, shivering)"
-  },
-  {
-    id: 6,
-    title: "63M – Sudden Thunderclap Headache",
-    cad: "Medic 22: Respond Priority 2 to private residence for 63yo male with 'worst migraine of his life and nausea.' Time out: 21:05.",
-    hiddenDiagnosis: "Subarachnoid Hemorrhage (SAH) with Cushing's Triad",
-    category: "Neurologic",
-    vitals: {
-      bp: "204/116 mmHg (widened pulse pressure)",
-      hr: "52 bpm (profound bradycardia)",
-      rr: "14/min (irregular, Cheyne-Stokes)",
-      spo2: "99% room air",
-      bgl: "165 mg/dL",
-      skin: "Pink, warm, dry",
-      pupils: "Sluggish, right pupil slightly larger than left",
-      lungs: "Clear bilaterally"
-    },
-    trap: "Treating as a benign migraine. The combination of thunderclap onset + HTN + bradycardia + irregular breathing is textbook Cushing's Triad!",
-    initialPatientSpeech: "Turn the lights off... baseball bat hit me in back of head... worst pain of my life... feel like throwing up..."
-  },
-  {
-    id: 7,
-    title: "22F – Extreme Exhaustion & Deep Breathing",
-    cad: "Aid 18: Dispatched to university dorm for 22yo female student with 'uncontrolled hyperventilation and stomach pain.' Time out: 03:12.",
-    hiddenDiagnosis: "Diabetic Ketoacidosis (DKA)",
-    category: "Endocrine",
-    vitals: {
-      bp: "96/60 mmHg",
-      hr: "128 bpm (weak, rapid)",
-      rr: "28/min (deep, rapid, sighing Kussmaul respirations)",
-      spo2: "99% room air",
-      bgl: "540 mg/dL (HIGH)",
-      skin: "Warm, dry, flushed, poor turgor; fruity acetone odor on breath",
-      pupils: "Equal and reactive",
-      lungs: "Clear bilaterally with massive air movement"
-    },
-    trap: "Assuming tachypnea is an anxiety attack or asthma. The deep sighing Kussmaul breathing is respiratory compensation for metabolic acidosis.",
-    initialPatientSpeech: "So... weak... belly cramps... been vomiting all night... drinking water constantly but so thirsty..."
-  },
-  {
-    id: 8,
-    title: "81F – Acute Confusion & Fall in Memory Care",
-    cad: "Aid 3: Respond to adult family home for 81yo female who fell getting out of bed and has worsening confusion. Staff reports 'bad dementia day.' Time out: 09:30.",
-    hiddenDiagnosis: "Septic Shock secondary to Urosepsis",
-    category: "Shock / Infection",
-    vitals: {
-      bp: "86/52 mmHg (MAP 63)",
-      hr: "120 bpm",
-      rr: "24/min",
-      spo2: "93% room air",
-      bgl: "108 mg/dL",
-      skin: "Warm, dry, flushed extremities; temp 96.0°F (hypothermic)",
-      pupils: "Equal, reactive",
-      lungs: "Clear bilaterally; Foley catheter bag has cloudy, foul-smelling dark urine"
-    },
-    trap: "Writing off AMS as 'baseline dementia' and missing hypothermia (96.0°F) which is the geriatric fever equivalent in sepsis!",
-    initialPatientSpeech: "(Talking to her deceased sister, confused about where she is, disoriented to time and place)"
-  },
-  {
-    id: 9,
-    title: "68M – Epigastric Heartburn & Weakness",
-    cad: "Medic 11: 68yo male reporting 'severe acid reflux, nausea, and shoulder blade ache after dinner.' Time out: 20:10.",
-    hiddenDiagnosis: "Inferior Wall STEMI (Right Coronary Artery Occlusion)",
-    category: "Cardiac",
-    vitals: {
-      bp: "104/64 mmHg",
-      hr: "48 bpm (sinus bradycardia from nodal ischemia)",
-      rr: "18/min",
-      spo2: "96% room air",
-      bgl: "122 mg/dL",
-      skin: "Cool, pale, diaphoretic",
-      pupils: "Equal and reactive",
-      lungs: "Clear bilaterally"
-    },
-    trap: "RCA supplies both the inferior wall (rests on diaphragm -> indigestion) and SA/AV nodes (bradycardia). Giving Nitro can tank preload and cause arrest!",
-    initialPatientSpeech: "Feels like heavy pressure right in the pit of my stomach... belching won't fix it... feeling clammy..."
-  },
-  {
-    id: 10,
-    title: "20M – Sudden Chest Pop on High School Track",
-    cad: "Aid 7: 20yo tall, thin male runner with sudden sharp right-sided chest pain while jogging. Time out: 16:45.",
-    hiddenDiagnosis: "Spontaneous Pneumothorax",
-    category: "Respiratory",
-    vitals: {
-      bp: "124/78 mmHg",
-      hr: "116 bpm",
-      rr: "28/min (shallow, guarding right side)",
-      spo2: "89% on room air",
-      bgl: "98 mg/dL",
-      skin: "Pale, cool, mild diaphoresis at hairline",
-      pupils: "Equal and reactive",
-      lungs: "Normal breath sounds on left; completely ABSENT breath sounds on right"
-    },
-    trap: "Bag-valve-mask positive pressure can turn a simple spontaneous pneumothorax into a fatal Tension Pneumothorax within 60 seconds!",
-    initialPatientSpeech: "Felt like a balloon popped inside my right ribcage... can't take a deep breath... sharp stabbing pain..."
-  }
-]
+export type Scenario = MasterScenario
+export const SCENARIOS: Scenario[] = MASTER_SCENARIOS_25
 
 export function DetectiveView() {
   const [scenarioIndex, setScenarioIndex] = useState<number>(() => Math.floor(Math.random() * SCENARIOS.length))
@@ -244,6 +36,7 @@ export function DetectiveView() {
   const [selectedVoiceURI, setSelectedVoiceURI] = useState(() => localStorage.getItem("passready_voice_uri") || "")
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([])
   const [showKeyModal, setShowKeyModal] = useState(false)
+  const [showScriptModal, setShowScriptModal] = useState(false)
   const [settingsTab, setSettingsTab] = useState<"ai" | "voice">("voice")
   const [tempKey, setTempKey] = useState(apiKey)
   const [tempOpenAiKey, setTempOpenAiKey] = useState(openAiKey)
@@ -881,6 +674,17 @@ Rules:
             ))}
           </select>
 
+          {/* NREMT Verbal Script Modal Button */}
+          <button
+            type="button"
+            onClick={() => setShowScriptModal(true)}
+            title="View Turn-by-Turn Gold-Standard Verbal Script"
+            className="tap flex items-center gap-1.5 rounded-xl border border-line bg-paper px-2.5 py-1.5 text-xs font-semibold text-ink hover:border-tape/60 hover:text-tape"
+          >
+            <FileText className="size-3.5 text-tape" />
+            <span className="hidden sm:inline">NREMT Script</span>
+          </button>
+
           {/* Random Case Button */}
           <button
             type="button"
@@ -1260,6 +1064,107 @@ Rules:
                   Save Settings
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* NREMT Verbal Script Modal */}
+      {showScriptModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-3 sm:p-6 backdrop-blur-sm">
+          <div className="flex max-h-[90vh] w-full max-w-4xl flex-col rounded-2xl border border-line bg-paper shadow-2xl">
+            <div className="flex items-center justify-between border-b border-line px-5 py-3.5">
+              <div>
+                <div className="flex items-center gap-2">
+                  <FileText className="size-5 text-tape" />
+                  <h3 className="font-display text-base sm:text-lg font-bold uppercase text-ink">
+                    Texas EMS School Verbal Script: {currentScenario.title}
+                  </h3>
+                </div>
+                <p className="text-[11px] text-mute mt-0.5">
+                  9-Minute Standardized NREMT Linear Cadence • {currentScenario.category}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowScriptModal(false)}
+                className="tap rounded-lg p-1 text-mute hover:bg-panel hover:text-ink"
+              >
+                <X className="size-5" />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4 text-xs text-ink">
+              {/* Dispatch & Hallmarks */}
+              <div className="rounded-xl border border-line bg-panel/50 p-3 space-y-2">
+                <p className="font-semibold text-tape uppercase tracking-wider text-[11px]">CAD Broadcast</p>
+                <p className="italic text-ink font-medium">"{currentScenario.cad}"</p>
+                {currentScenario.clues && currentScenario.clues.length > 0 && (
+                  <div className="pt-2 border-t border-line/60">
+                    <p className="font-semibold uppercase text-ink text-[11px] mb-1">Diagnostic Clues & Hallmarks:</p>
+                    <ul className="list-disc list-inside space-y-0.5 text-mute">
+                      {currentScenario.clues.map((c, i) => (
+                        <li key={i}>{c}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+
+              {/* Turn-by-Turn Dialogue */}
+              {currentScenario.dialogue && currentScenario.dialogue.length > 0 && (
+                <div>
+                  <h4 className="font-bold uppercase text-ink text-xs mb-2 flex items-center gap-1.5">
+                    <span>Turn-by-Turn Word-for-Word Verbal Script</span>
+                  </h4>
+                  <div className="rounded-xl border border-line overflow-hidden">
+                    <table className="w-full text-left border-collapse text-xs">
+                      <thead>
+                        <tr className="bg-panel border-b border-line text-[11px] font-bold text-mute uppercase">
+                          <th className="py-2 px-3 w-16">Time</th>
+                          <th className="py-2 px-3 w-28">Speaker</th>
+                          <th className="py-2 px-3">Spoken Dialogue / Clinical Action</th>
+                          <th className="py-2 px-3 w-48 hidden md:table-cell">Proctor / Notes</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-line/60 bg-paper">
+                        {currentScenario.dialogue.map((t, idx) => (
+                          <tr key={idx} className={idx % 2 === 0 ? "bg-paper" : "bg-panel/30"}>
+                            <td className="py-2 px-3 font-mono text-[10px] text-mute whitespace-nowrap">{t.time}</td>
+                            <td className="py-2 px-3 font-bold text-ink whitespace-nowrap">{t.speaker}</td>
+                            <td className="py-2 px-3 text-ink leading-relaxed">{t.speech}</td>
+                            <td className="py-2 px-3 italic text-mute text-[11px] hidden md:table-cell">{t.note}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+
+              {/* ALS Hand-off Report */}
+              {currentScenario.handOffReport && (
+                <div className="rounded-xl border border-tape/40 bg-tape/5 p-3 space-y-1">
+                  <p className="font-bold uppercase text-tape text-[11px]">Structured ALS Transfer of Care (SBAR)</p>
+                  <p className="italic text-ink leading-relaxed">"{currentScenario.handOffReport}"</p>
+                </div>
+              )}
+
+              {/* Critical Traps */}
+              <div className="rounded-xl border border-red-500/30 bg-red-500/5 p-3 space-y-1">
+                <p className="font-bold uppercase text-red-600 text-[11px]">⚠️ Critical Rubric Checkpoint / Automatic Fail Traps</p>
+                <p className="text-ink leading-relaxed font-medium">{currentScenario.trap}</p>
+              </div>
+            </div>
+
+            <div className="flex justify-end border-t border-line px-5 py-2.5">
+              <button
+                type="button"
+                onClick={() => setShowScriptModal(false)}
+                className="tap rounded-xl bg-panel px-4 py-1.5 text-xs font-semibold text-ink hover:bg-line"
+              >
+                Close Script
+              </button>
             </div>
           </div>
         </div>
