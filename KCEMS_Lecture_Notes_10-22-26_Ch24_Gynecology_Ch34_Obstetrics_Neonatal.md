@@ -48,6 +48,14 @@
 * **Vagina:** Muscular canal extending from cervix to the exterior; serves as the birth canal.
 * **Perineum:** Muscular area between vaginal opening and anus.
 
+#### 🔬 Reproductive Pathway & Ectopic Risk Diagram:
+```mermaid
+flowchart TD
+    Ovary["Ovary (Releases Mature Ovum)"] -->|Ovulation| FallopianOuter["Outer 1/3 of Fallopian Tube<br>★ Normal Fertilization Site ★"]
+    FallopianOuter -->|Normal Ciliary Transport| UterineWall["Uterine Cavity (Endometrium)<br>★ Normal Embryo Implantation ★"]
+    FallopianOuter -.->|PID / Tubal Scarring Blockage| TubalEctopic["Fallopian Tube Wall<br>🚨 ECTOPIC PREGNANCY RUPTURE (Hemorrhagic Shock) 🚨"]
+```
+
 ---
 
 ### II. Pelvic Inflammatory Disease (PID)
@@ -120,6 +128,16 @@
 * **EMT Management:**
   * **Always position pregnant patients in the LEFT LATERAL RECUMBENT position.**
   * If on a backboard for trauma, tilt or wedge the backboard $15^\circ \text{ to } 30^\circ$ to the left by placing rolled towels under the right side.
+
+![Supine Hypotensive Syndrome Mechanism](supine_hypotension_mechanism.jpg)
+
+```mermaid
+flowchart LR
+    A["Supine Position (Lying Flat)"] -->|Heavy Gravid Uterus| B["Compression of Inferior Vena Cava (IVC)"]
+    B -->|Obstruction| C["Severely Decreased Venous Return"]
+    C -->|Decreased Cardiac Preload| D["Maternal Hypotension & Syncope"]
+    D -->|ACTION: Roll to Left Side| E["Left Lateral Recumbent Position<br>★ Decompresses IVC & Restores Perfusion ★"]
+```
 
 ---
 
@@ -212,6 +230,25 @@ Ask these 4 mandatory questions to decide whether to deliver on scene:
 | **Breech Presentation** | Buttocks or both lower extremities present first. | Buttocks or feet crown first. | Allow delivery of limbs and torso. If head is trapped: **insert gloved hand, form a "V" with fingers over infant's mouth and nose to establish an airway space in the vaginal wall**. Rapid transport. |
 | **Limb Presentation** | Single arm or leg protrudes from vagina. | Single extremity visible. Cannot deliver vaginally in the field. | **DO NOT PULL OR ATTEMPT DELIVERY.** Place mother in knee-chest or left lateral position. Cover limb with sterile moist dressing. Immediate Code 3 transport. |
 | **Meconium Staining** | Fetal distress causes passage of first stool (meconium) into amniotic fluid. | Amniotic fluid is green, dark brown, or yellowish with pea-soup consistency. | If infant is vigorous/crying: routine care, gentle suction. If infant is depressed (limp, no cry, HR $< 100$): do NOT aggressively suction; proceed immediately with standard BVM ventilation! |
+
+### 🖼️ Clinical Comparison: Placenta Previa vs. Abruptio Placentae
+![Placenta Previa vs Abruptio Placentae Medical Comparison](placenta_previa_vs_abruptio.jpg)
+
+---
+
+### 🚨 Critical Obstetric Action: Prolapsed Umbilical Cord
+![Prolapsed Umbilical Cord Emergency Positioning](prolapsed_cord_management.jpg)
+
+```mermaid
+flowchart TD
+    A["Prolapsed Umbilical Cord Observed at Vaginal Opening"] --> B["STEP 1: DO NOT attempt to push cord back into vagina!"]
+    B --> C["STEP 2: Insert sterile gloved fingers into vagina"]
+    C --> D["STEP 3: Gently push presenting fetal head UPWARD away from cord"]
+    D --> E["★ HOLD THIS POSITION CONTINUOUSLY UNTIL SURGICAL TAKEOVER ★"]
+    D --> F["STEP 4: Position mother in KNEE-CHEST or Trendelenburg (hips elevated)"]
+    D --> G["STEP 5: Wrap exposed cord in sterile gauze moistened with saline"]
+    D --> H["STEP 6: Immediate Priority 1 (Code 3) transport with hospital pre-alert"]
+```
 
 ---
 
