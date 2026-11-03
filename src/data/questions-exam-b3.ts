@@ -152,6 +152,30 @@ const c2 = exam(2, [
 
 const c9 = exam(9, [
   {
+    tag: "navigate-bls-continuum",
+    stem: "After assuming care of a cardiac arrest patient from an EMT, the paramedic should remember that:",
+    choices: [
+      "ALS interventions are fundamentally more critical than BLS interventions",
+      "the BLS care provided by the EMT is the \"first stage\" of ALS care",
+      "BLS efforts must continue throughout the patient care continuum",
+      "the EMT's role ends the moment ALS equipment is opened",
+    ],
+    answer: 2,
+    why: "Navigate Ch. 9 miss key: BLS does not stop when ALS arrives. Compressions, airway, and BVM continue while ALS adds advanced interventions.",
+  },
+  {
+    tag: "navigate-crm",
+    stem: "A team of EMTs is caring for a critically injured patient. The team leader advises that transport will not begin until the patient's closed forearm fracture is splinted. Utilizing crew resource management, the EMT should:",
+    choices: [
+      "follow the order silently because the team leader is responsible",
+      "advise the team leader that immediate transport is more important than splinting",
+      "finish the splint yourself so the leader does not get upset",
+      "ask the patient whether they prefer the arm splinted before leaving",
+    ],
+    answer: 1,
+    why: "Critical patients get load-and-go. Closed fractures are not life threats. CRM means you speak up when the plan endangers the patient.",
+  },
+  {
     tag: "closed-loop communication",
     stem: "During a busy chest-pain call, your team leader says, \"Give the aspirin.\" Which response BEST demonstrates closed-loop communication?",
     choices: [
@@ -266,6 +290,54 @@ const c9 = exam(9, [
 /* ------------------------------------------------------------------ */
 
 const c12 = exam(12, [
+  {
+    tag: "navigate-nitro-side-effect",
+    stem: "Which of the following is a common side effect of nitroglycerin?",
+    choices: [
+      "Bradycardia",
+      "Hypertension",
+      "Headache",
+      "Nasal congestion",
+    ],
+    answer: 2,
+    why: "Navigate miss key: nitro causes cerebral vasodilation → headache. Nasal congestion is the trap answer.",
+  },
+  {
+    tag: "navigate-physician-order",
+    stem: "An EMT may administer or assist with a medication only after obtaining:",
+    choices: [
+      "a physician's order",
+      "permission from the patient's family",
+      "verbal consent from the receiving nurse",
+      "approval from the fire department captain",
+    ],
+    answer: 0,
+    why: "Navigate miss key: meds require a physician order — online medical control or offline standing orders from the medical director.",
+  },
+  {
+    tag: "navigate-charcoal",
+    stem: "Activated charcoal is useful in some poisonings because of its ability to:",
+    choices: [
+      "neutralize acids in the stomach",
+      "induce vomiting",
+      "adsorb toxins so they are not absorbed",
+      "speed kidney excretion of drugs",
+    ],
+    answer: 2,
+    why: "Charcoal works by adsorption — toxins stick to it in the gut. It does not reverse already absorbed drug.",
+  },
+  {
+    tag: "navigate-oral-glucose",
+    stem: "Which of the following is a contraindication for oral glucose?",
+    choices: [
+      "Unconsciousness or inability to swallow",
+      "Known diabetes mellitus",
+      "Blood glucose of 60 mg/dL with intact gag",
+      "History of hypertension",
+    ],
+    answer: 0,
+    why: "No gag / can't swallow = aspiration risk. Awake diabetics who can follow commands get the gel.",
+  },
   {
     tag: "six rights",
     stem: "Before assisting a patient with nitroglycerin you confirm patient, medication, dose, route, time, and documentation. These are the:",
