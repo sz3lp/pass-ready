@@ -93,13 +93,15 @@ function buildDeck(chapters: number[], mode: FeedMode, stack: number): FeedCard[
   if (mode === "learn") return chapters.flatMap(learnCards)
   if (mode === "test") {
     const pool = shuffle(coreQuestions(chapters), stack * 7919)
-    const cap = chapters.length === 1 ? pool.length : 40
+    // Whole-block test scroll: keep a fat deck so Quizlet items actually appear.
+    const cap = chapters.length === 1 ? pool.length : Math.min(pool.length, 120)
     return pool.slice(0, cap).map((question) => ({ kind: "question" as const, id: question.id, question }))
   }
   const cards: FeedCard[] = []
   for (const chapter of chapters) {
     const notes = learnCards(chapter)
-    const questions = shuffle(coreQuestions([chapter]), stack * 1000 + chapter).slice(0, 6)
+    // Cram denser: pull more bank items per chapter (Quizlet B3 is in QUESTIONS now).
+    const questions = shuffle(coreQuestions([chapter]), stack * 1000 + chapter).slice(0, 14)
     let qi = 0
     for (const card of notes) {
       cards.push(card)

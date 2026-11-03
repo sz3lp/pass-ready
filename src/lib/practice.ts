@@ -2,6 +2,7 @@ import {
   EXAM_QUESTIONS,
   JB_TESTPREP,
   QUESTIONS,
+  QUIZLET_B3,
   examQuestionsForChapters,
   questionsForChapters,
   type Question,
@@ -17,10 +18,20 @@ export function poolFor(test: PracticeTest) {
   if (test.id === "jb") return JB_TESTPREP
   if (test.id === "b2i") return INSTRUCTOR_B2
 
+  const exam = test.chapters.length ? examQuestionsForChapters(test.chapters) : EXAM_QUESTIONS
+
+  // Block III written/quiz: Quizlet/AAOS bank first (remapped by topic), then other exam items.
+  if (test.id === "b3" || test.id === "q3") {
+    const qz = QUIZLET_B3.filter((q) => test.chapters.includes(q.chapter))
+    if (qz.length >= Math.min(test.target, 8)) {
+      const ids = new Set(qz.map((q) => q.id))
+      return [...qz, ...exam.filter((q) => !ids.has(q.id))]
+    }
+  }
+
   const jb = test.chapters.length
     ? JB_TESTPREP.filter((q) => test.chapters.includes(q.chapter))
     : JB_TESTPREP
-  const exam = test.chapters.length ? examQuestionsForChapters(test.chapters) : EXAM_QUESTIONS
   // Prefer authentic JB items when the chapter set has enough; fill from exam bank.
   if (jb.length >= Math.min(test.target, 8)) {
     const jbIds = new Set(jb.map((q) => q.id))
